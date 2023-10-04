@@ -18,6 +18,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
+import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
@@ -46,6 +48,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     private JLabel m_label;
 
     private ActionListener m_reusableActionListener = new ShapeActionListener();
+
+    private XMLVisitor xmlVisitor ;
+    private JSonVisitor jsonVisitor;
 
     /**
      * Tracks buttons to manage the background.
@@ -77,6 +82,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         addShape(Shapes.TRIANGLE, new ImageIcon(getClass().getResource("images/triangle.png")));
         addShape(Shapes.CIRCLE, new ImageIcon(getClass().getResource("images/circle.png")));
         setPreferredSize(new Dimension(400, 400));
+
+        xmlVisitor = new XMLVisitor();
+        jsonVisitor = new JSonVisitor();
     }
 
     /**
@@ -108,16 +116,31 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             Graphics2D g2 = (Graphics2D) m_panel.getGraphics();
             switch(m_selected) {
                 case CIRCLE:
-                    new Circle(evt.getX(), evt.getY()).draw(g2);
+                    Circle circle;
+                    circle = new Circle(evt.getX(), evt.getY());
+                    jsonVisitor.visit(circle);
+                    xmlVisitor.visit(circle);
+                    circle.draw(g2);
                     break;
                 case TRIANGLE:
-                    new Triangle(evt.getX(), evt.getY()).draw(g2);
+                    Triangle triangle;
+                    triangle = new Triangle(evt.getX(), evt.getY());
+                    jsonVisitor.visit(triangle);
+                    xmlVisitor.visit(triangle);
+                    triangle.draw(g2);
                     break;
                 case SQUARE:
-                    new Square(evt.getX(), evt.getY()).draw(g2);
+                    Square square;
+                    square = new Square(evt.getX(), evt.getY());
+                    jsonVisitor.visit(square);
+                    xmlVisitor.visit(square);
+                    square.draw(g2);
+                    
                     break;
                 default:
                     System.out.println("No shape named " + m_selected);
+
+                
             }
         }
     }
