@@ -10,36 +10,43 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  */
 public class XMLVisitor implements Visitor {
 
+    private String prefixe = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + "<root><shapes>";
     private String representation = null;
+    private String suffixe = "</shapes></root>";
 
+    private String shapes="";
     public XMLVisitor() {
     }
 
     @Override
     public void visit(Circle circle) {
-        this.representation = "<shape>"
+        this.shapes += "<shape>"
                 + "<type>circle</type>"
                 + "<x>"+circle.getX()+"</x>"
                 + "<y>"+circle.getY()+"</y>"
                 + "</shape>";
+        this.representation = prefixe + shapes + suffixe;
     }
 
     @Override
     public void visit(Square square) {
-        this.representation = "<shape>"
+        this.shapes += "<shape>"
                 + "<type>square</type>"
                 + "<x>"+square.getX()+"</x>"
                 + "<y>"+square.getY()+"</y>"
                 + "</shape>";
+
+        this.representation = prefixe + shapes + suffixe;
     }
 
     @Override
     public void visit(Triangle triangle) {
-        this.representation = "<shape>"
+        this.shapes += "<shape>"
                 + "<type>triangle</type>"
                 + "<x>"+triangle.getX()+"</x>"
                 + "<y>"+triangle.getY()+"</y>"
                 + "</shape>";
+        this.representation = prefixe + shapes + suffixe;
     }
 
     /**
