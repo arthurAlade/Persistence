@@ -17,17 +17,29 @@ public class XMLVisitor implements Visitor {
 
     @Override
     public void visit(Circle circle) {
-    // TODO Request callback for the circle
+        this.representation = "<shape>"
+                + "<type>circle</type>"
+                + "<x>"+circle.getX()+"</x>"
+                + "<y>"+circle.getY()+"</y>"
+                + "</shape>";
     }
 
     @Override
     public void visit(Square square) {
-    // TODO Request callback for the square
+        this.representation = "<shape>"
+                + "<type>square</type>"
+                + "<x>"+square.getX()+"</x>"
+                + "<y>"+square.getY()+"</y>"
+                + "</shape>";
     }
 
     @Override
     public void visit(Triangle triangle) {
-    // TODO Request callback for the triangle
+        this.representation = "<shape>"
+                + "<type>triangle</type>"
+                + "<x>"+triangle.getX()+"</x>"
+                + "<y>"+triangle.getY()+"</y>"
+                + "</shape>";
     }
 
     /**
