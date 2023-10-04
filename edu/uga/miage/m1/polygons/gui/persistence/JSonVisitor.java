@@ -17,17 +17,30 @@ public class JSonVisitor implements Visitor {
 
     @Override
     public void visit(Circle circle) {
-    // TODO Request callback for the circle
+        this.representation = "{\n"
+                + "        \"type\": \"circle\",\n"
+                + "        \"x\": " + circle.getX() + ",\n"
+                + "        \"y\": " + circle.getY() + "\n"
+                + "}";
+
     }
 
     @Override
     public void visit(Square square) {
-    // TODO Request callback for the square
+        this.representation = "{\n"
+                + "        \"type\": \"square\",\n"
+                + "        \"x\": " + square.getX() + ",\n"
+                + "        \"y\": " + square.getY() + "\n"
+                + "}";
     }
 
     @Override
     public void visit(Triangle triangle) {
-    // TODO Request callback for the triangle
+        this.representation ="{\n"
+                + "        \"type\": \"triangle\",\n"
+                + "        \"x\": " + triangle.getX() + ",\n"
+                + "        \"y\": " + triangle.getY() + "\n"
+                + "}";
     }
 
     /**
