@@ -1,7 +1,6 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
-import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 
@@ -32,6 +31,7 @@ public class JSonVisitor implements Visitor {
                 + "}";
 
         this.representation = prefixe + shapes + suffixe;
+        System.out.println(this.getRepresentation());
     }
 
     @Override
@@ -46,6 +46,7 @@ public class JSonVisitor implements Visitor {
                 + "}";
 
         this.representation = prefixe + shapes + suffixe;
+        System.out.println(this.getRepresentation());
     }
 
     @Override
@@ -60,6 +61,7 @@ public class JSonVisitor implements Visitor {
                 + "}";
 
         this.representation = prefixe + shapes + suffixe;
+        System.out.println(this.getRepresentation());
     }
 
     /**
