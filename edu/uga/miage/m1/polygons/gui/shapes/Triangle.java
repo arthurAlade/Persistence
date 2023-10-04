@@ -70,7 +70,7 @@ public class Triangle implements SimpleShape, Visitable {
 
     @Override
     public void accept(Visitor visitor) {
-    // TODO
+        visitor.visit(this);
     }
 
     @Override

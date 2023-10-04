@@ -55,8 +55,9 @@ public class Circle implements SimpleShape, Visitable {
     }
 
     @Override
+    // Accepte un visiteur
     public void accept(Visitor visitor) {
-    // TODO
+        visitor.visit(this);        
     }
 
     public int getX() {
