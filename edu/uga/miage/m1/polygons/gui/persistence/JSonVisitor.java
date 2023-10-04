@@ -10,37 +10,56 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  */
 public class JSonVisitor implements Visitor {
 
-    private String representation = null;
+    private String prefixe = "{\"shapes\":[";
+    private String representation = "";
+    private String suffixe = "]}";
+
+    private String shapes = "";
 
     public JSonVisitor() {
     }
 
     @Override
     public void visit(Circle circle) {
-        this.representation = "{\n"
+        if(shapes!= ""){
+            shapes+=",";
+        }
+
+        this.shapes += "{\n"
                 + "        \"type\": \"circle\",\n"
                 + "        \"x\": " + circle.getX() + ",\n"
                 + "        \"y\": " + circle.getY() + "\n"
                 + "}";
 
+        this.representation = prefixe + shapes + suffixe;
     }
 
     @Override
     public void visit(Square square) {
-        this.representation = "{\n"
+        if(shapes!= ""){
+            shapes+=",";
+        }
+        this.shapes += "{\n"
                 + "        \"type\": \"square\",\n"
                 + "        \"x\": " + square.getX() + ",\n"
                 + "        \"y\": " + square.getY() + "\n"
                 + "}";
+
+        this.representation = prefixe + shapes + suffixe;
     }
 
     @Override
     public void visit(Triangle triangle) {
-        this.representation ="{\n"
+        if(shapes!= ""){
+            shapes+=",";
+        }
+        this.shapes += "{\n"
                 + "        \"type\": \"triangle\",\n"
                 + "        \"x\": " + triangle.getX() + ",\n"
                 + "        \"y\": " + triangle.getY() + "\n"
                 + "}";
+
+        this.representation = prefixe + shapes + suffixe;
     }
 
     /**
