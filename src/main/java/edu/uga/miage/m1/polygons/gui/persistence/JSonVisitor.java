@@ -20,7 +20,7 @@ public class JSonVisitor implements Visitor {
 
     @Override
     public void visit(Circle circle) {
-        if(shapes!= ""){
+        if(!shapes.equals("")){
             shapes+=",";
         }
 
@@ -36,7 +36,7 @@ public class JSonVisitor implements Visitor {
 
     @Override
     public void visit(Square square) {
-        if(shapes!= ""){
+        if(!shapes.equals("")){
             shapes+=",";
         }
         this.shapes += "{\n"
@@ -51,7 +51,7 @@ public class JSonVisitor implements Visitor {
 
     @Override
     public void visit(Triangle triangle) {
-        if(shapes!= ""){
+        if(!shapes.equals("")){
             shapes+=",";
         }
         this.shapes += "{\n"

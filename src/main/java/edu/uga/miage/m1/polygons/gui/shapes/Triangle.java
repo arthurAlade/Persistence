@@ -51,12 +51,12 @@ public class Triangle implements SimpleShape, Visitable {
      */
     public void draw(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        GradientPaint gradient = new GradientPaint(m_x, m_y, Color.GREEN, m_x + 50, m_y, Color.WHITE);
+        GradientPaint gradient = new GradientPaint((float) m_x, (float) m_y, Color.GREEN, (float) m_x + 50, (float) m_y, Color.WHITE);
         g2.setPaint(gradient);
         int[] xcoords = { m_x + 25, m_x, m_x + 50 };
         int[] ycoords = { m_y, m_y + 50, m_y + 50 };
         GeneralPath polygon = new GeneralPath(GeneralPath.WIND_EVEN_ODD, xcoords.length);
-        polygon.moveTo(m_x + 25, m_y);
+        polygon.moveTo( (float) m_x + 25, (float) m_y);
         for (int i = 0; i < xcoords.length; i++) {
             polygon.lineTo(xcoords[i], ycoords[i]);
         }
