@@ -17,36 +17,34 @@ public class XMLVisitor implements Visitor {
     public XMLVisitor() {
     }
 
+    private String getTemplateFormat(String shape, int pos_x, int pos_y){
+        String template = "<shape>"
+                + "<type>"+ shape +"</type>"
+                + "<x>"+pos_x+"</x>"
+                + "<y>"+pos_y+"</y>"
+                + "</shape>";
+
+        return template;
+    }
+
     @Override
     public void visit(Circle circle) {
-        this.shapes += "<shape>"
-                + "<type>circle</type>"
-                + "<x>"+circle.getX()+"</x>"
-                + "<y>"+circle.getY()+"</y>"
-                + "</shape>";
+
+        this.shapes += getTemplateFormat("circle", circle.getX(), circle.getY());
         this.representation = prefixe + shapes + suffixe;
         System.out.println(this.getRepresentation());
     }
 
     @Override
     public void visit(Square square) {
-        this.shapes += "<shape>"
-                + "<type>square</type>"
-                + "<x>"+square.getX()+"</x>"
-                + "<y>"+square.getY()+"</y>"
-                + "</shape>";
-
+        this.shapes += getTemplateFormat("square", square.getX(), square.getY());
         this.representation = prefixe + shapes + suffixe;
         System.out.println(this.getRepresentation());
     }
 
     @Override
     public void visit(Triangle triangle) {
-        this.shapes += "<shape>"
-                + "<type>triangle</type>"
-                + "<x>"+triangle.getX()+"</x>"
-                + "<y>"+triangle.getY()+"</y>"
-                + "</shape>";
+        this.shapes += getTemplateFormat("triangle", triangle.getX(), triangle.getY());
         this.representation = prefixe + shapes + suffixe;
         System.out.println(this.getRepresentation());
     }

@@ -9,13 +9,27 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  */
 public class JSonVisitor implements Visitor {
 
-    private String prefixe = "{\"shapes\":[";
-    private String representation = "";
-    private String suffixe = "]}";
+    private String prefixe;
+    private String representation;
+    private String suffixe;
 
-    private String shapes = "";
+    private String shapes;
 
     public JSonVisitor() {
+        this.shapes = "";
+        this.prefixe =  "{\"shapes\":[";
+        this.representation = "";
+        this.suffixe = "]}";
+    }
+
+    private String getTemplateFormat(String shape, int pos_x, int pos_y){
+        String template = "{\n"
+                + "        \"type\": \"" + shape +  "\",\n"
+                + "        \"x\": " + pos_x + ",\n"
+                + "        \"y\": " + pos_y + "\n"
+                + "}";
+
+        return template;
     }
 
     @Override
@@ -24,11 +38,7 @@ public class JSonVisitor implements Visitor {
             shapes+=",";
         }
 
-        this.shapes += "{\n"
-                + "        \"type\": \"circle\",\n"
-                + "        \"x\": " + circle.getX() + ",\n"
-                + "        \"y\": " + circle.getY() + "\n"
-                + "}";
+        this.shapes += this.getTemplateFormat("circle", circle.getX(), circle.getY());
 
         this.representation = prefixe + shapes + suffixe;
         System.out.println(this.getRepresentation());
@@ -39,11 +49,7 @@ public class JSonVisitor implements Visitor {
         if(!shapes.equals("")){
             shapes+=",";
         }
-        this.shapes += "{\n"
-                + "        \"type\": \"square\",\n"
-                + "        \"x\": " + square.getX() + ",\n"
-                + "        \"y\": " + square.getY() + "\n"
-                + "}";
+        this.shapes += this.getTemplateFormat("square", square.getX(), square.getY());
 
         this.representation = prefixe + shapes + suffixe;
         System.out.println(this.getRepresentation());
@@ -54,11 +60,7 @@ public class JSonVisitor implements Visitor {
         if(!shapes.equals("")){
             shapes+=",";
         }
-        this.shapes += "{\n"
-                + "        \"type\": \"triangle\",\n"
-                + "        \"x\": " + triangle.getX() + ",\n"
-                + "        \"y\": " + triangle.getY() + "\n"
-                + "}";
+        this.shapes += this.getTemplateFormat("triangle", triangle.getX(), triangle.getY());
 
         this.representation = prefixe + shapes + suffixe;
         System.out.println(this.getRepresentation());
