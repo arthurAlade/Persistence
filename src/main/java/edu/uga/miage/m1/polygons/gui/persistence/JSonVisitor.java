@@ -23,13 +23,13 @@ public class JSonVisitor implements Visitor {
     }
 
     private String getTemplateFormat(String shape, int pos_x, int pos_y){
-        String template = "{\n"
+   
+
+        return "{\n"
                 + "        \"type\": \"" + shape +  "\",\n"
                 + "        \"x\": " + pos_x + ",\n"
                 + "        \"y\": " + pos_y + "\n"
                 + "}";
-
-        return template;
     }
 
     @Override

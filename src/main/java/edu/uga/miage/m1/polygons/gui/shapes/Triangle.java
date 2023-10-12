@@ -24,6 +24,7 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
@@ -55,7 +56,7 @@ public class Triangle implements SimpleShape, Visitable {
         g2.setPaint(gradient);
         int[] xcoords = { m_x + 25, m_x, m_x + 50 };
         int[] ycoords = { m_y, m_y + 50, m_y + 50 };
-        GeneralPath polygon = new GeneralPath(GeneralPath.WIND_EVEN_ODD, xcoords.length);
+        GeneralPath polygon = new GeneralPath(Path2D.WIND_EVEN_ODD, xcoords.length);
         polygon.moveTo( (float) m_x + 25, (float) m_y);
         for (int i = 0; i < xcoords.length; i++) {
             polygon.lineTo(xcoords[i], ycoords[i]);

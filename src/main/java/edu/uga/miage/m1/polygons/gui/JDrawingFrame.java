@@ -18,11 +18,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  * This class represents the main application class, which is a JFrame subclass
@@ -47,11 +51,11 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private JLabel m_label;
 
-    private ActionListener m_reusableActionListener = new ShapeActionListener();
+    private transient ActionListener m_reusableActionListener = new ShapeActionListener();
 
-    private XMLVisitor xmlVisitor ;
-    private JSonVisitor jsonVisitor;
-
+    private transient XMLVisitor xmlVisitor ;
+    private transient JSonVisitor jsonVisitor;
+    private transient final Logger logger;
     /**
      * Tracks buttons to manage the background.
      */
@@ -63,6 +67,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      */
     public JDrawingFrame(String frameName) {
         super(frameName);
+        // initialize logger
+        logger = Logger.getLogger(JDrawingFrame.class.getName()); 
         // Instantiates components
         m_toolbar = new JToolBar("Toolbar");
         m_panel = new JPanel();
@@ -71,7 +77,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         m_panel.setMinimumSize(new Dimension(400, 400));
         m_panel.addMouseListener(this);
         m_panel.addMouseMotionListener(this);
-        m_label = new JLabel(" ", JLabel.LEFT);
+        m_label = new JLabel(" ", SwingConstants.LEFT);
         // Fills the panel
         setLayout(new BorderLayout());
         add(m_toolbar, BorderLayout.NORTH);
@@ -138,7 +144,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                     
                     break;
                 default:
-                    System.out.println("No shape named " + m_selected);
+                    logger.log(Level.SEVERE, "Something went wrong: {0} ", "No shape named " + m_selected); 
+                
 
                 
             }
@@ -150,6 +157,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mouseEntered(MouseEvent evt) {
+        // empty because it is been like this and it works perfectly
     }
 
     /**
@@ -167,6 +175,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mousePressed(MouseEvent evt) {
+        // empty because it is been like this and it works perfectly
     }
 
     /**
@@ -175,6 +184,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mouseReleased(MouseEvent evt) {
+        // empty because it is been like this and it works perfectly
     }
 
     /**
@@ -183,6 +193,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mouseDragged(MouseEvent evt) {
+        // empty because it is been like this and it works perfectly
     }
 
     /**

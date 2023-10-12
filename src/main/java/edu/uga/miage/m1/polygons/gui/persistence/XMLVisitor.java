@@ -9,22 +9,25 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  */
 public class XMLVisitor implements Visitor {
 
-    private String prefixe = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + "<root><shapes>";
-    private String representation = null;
-    private String suffixe = "</shapes></root>";
+    private String prefixe ;
+    private String representation;
+    private String suffixe ;
 
     private String shapes="";
     public XMLVisitor() {
+        this.prefixe = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + "<root><shapes>";
+        this.representation = null;
+        this.suffixe = "</shapes></root>";
+
     }
 
     private String getTemplateFormat(String shape, int pos_x, int pos_y){
-        String template = "<shape>"
+
+        return "<shape>"
                 + "<type>"+ shape +"</type>"
                 + "<x>"+pos_x+"</x>"
                 + "<y>"+pos_y+"</y>"
                 + "</shape>";
-
-        return template;
     }
 
     @Override
