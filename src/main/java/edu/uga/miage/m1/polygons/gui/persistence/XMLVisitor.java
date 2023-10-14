@@ -1,6 +1,7 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
+import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 
@@ -9,47 +10,36 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  */
 public class XMLVisitor implements Visitor {
 
-    private String prefixe ;
-    private String representation;
-    private String suffixe ;
+    private String representation = null;
 
-    private String shapes="";
     public XMLVisitor() {
-        this.prefixe = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + "<root><shapes>";
-        this.representation = null;
-        this.suffixe = "</shapes></root>";
-
-    }
-
-    private String getTemplateFormat(String shape, int pos_x, int pos_y){
-
-        return "<shape>"
-                + "<type>"+ shape +"</type>"
-                + "<x>"+pos_x+"</x>"
-                + "<y>"+pos_y+"</y>"
-                + "</shape>";
     }
 
     @Override
     public void visit(Circle circle) {
-
-        this.shapes += getTemplateFormat("circle", circle.getX(), circle.getY());
-        this.representation = prefixe + shapes + suffixe;
-        System.out.println(this.getRepresentation());
+        this.representation = "<shape>"
+                + "<type>circle</type>"
+                + "<x>"+circle.getX()+"</x>"
+                + "<y>"+circle.getY()+"</y>"
+                + "</shape>";
     }
 
     @Override
     public void visit(Square square) {
-        this.shapes += getTemplateFormat("square", square.getX(), square.getY());
-        this.representation = prefixe + shapes + suffixe;
-        System.out.println(this.getRepresentation());
+        this.representation = "<shape>"
+                + "<type>square</type>"
+                + "<x>"+square.getX()+"</x>"
+                + "<y>"+square.getY()+"</y>"
+                + "</shape>";
     }
 
     @Override
     public void visit(Triangle triangle) {
-        this.shapes += getTemplateFormat("triangle", triangle.getX(), triangle.getY());
-        this.representation = prefixe + shapes + suffixe;
-        System.out.println(this.getRepresentation());
+        this.representation = "<shape>"
+                + "<type>triangle</type>"
+                + "<x>"+triangle.getX()+"</x>"
+                + "<y>"+triangle.getY()+"</y>"
+                + "</shape>";
     }
 
     /**
