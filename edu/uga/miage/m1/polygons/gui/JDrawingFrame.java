@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.desktop.SystemEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -18,7 +20,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+
+import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
+import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
+import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
+import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 
@@ -47,6 +54,11 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private ActionListener m_reusableActionListener = new ShapeActionListener();
 
+    private JButton m_xmlButton;
+    private JButton m_jsonButton;
+    private ArrayList<Circle> m_shapes_circles = new ArrayList<>();
+    private ArrayList<Square> m_shapes_squares = new ArrayList<>();
+    private ArrayList<Triangle> m_shapes_triangles = new ArrayList<>();
     /**
      * Tracks buttons to manage the background.
      */
@@ -67,6 +79,24 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         m_panel.addMouseListener(this);
         m_panel.addMouseMotionListener(this);
         m_label = new JLabel(" ", JLabel.LEFT);
+
+        m_xmlButton = new JButton("XML");
+        m_jsonButton = new JButton("JSON");
+
+        // Adds action listeners
+        m_xmlButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                XMLSaver xmlSaver = new XMLSaver( m_shapes_circles, m_shapes_squares, m_shapes_triangles);
+                xmlSaver.addShapes();
+                xmlSaver.saveXML();
+            }
+        });
+        m_jsonButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                System.out.println("JSON");
+            }
+        });
+
         // Fills the panel
         setLayout(new BorderLayout());
         add(m_toolbar, BorderLayout.NORTH);
@@ -76,7 +106,16 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         addShape(Shapes.SQUARE, new ImageIcon(getClass().getResource("images/square.png")));
         addShape(Shapes.TRIANGLE, new ImageIcon(getClass().getResource("images/triangle.png")));
         addShape(Shapes.CIRCLE, new ImageIcon(getClass().getResource("images/circle.png")));
+
+        addButtonToToolbar(m_xmlButton);
+        addButtonToToolbar(m_jsonButton);
         setPreferredSize(new Dimension(400, 400));
+    }
+
+    private void addButtonToToolbar(JButton button) {
+        m_toolbar.add(button);
+        m_toolbar.validate();
+        repaint();
     }
 
     /**
@@ -108,13 +147,19 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             Graphics2D g2 = (Graphics2D) m_panel.getGraphics();
             switch(m_selected) {
                 case CIRCLE:
-                    new Circle(evt.getX(), evt.getY()).draw(g2);
+                    Circle circle = new Circle(evt.getX(), evt.getY());
+                    circle.draw(g2);
+                    m_shapes_circles.add(circle);
                     break;
                 case TRIANGLE:
-                    new Triangle(evt.getX(), evt.getY()).draw(g2);
+                    Triangle triangle = new Triangle(evt.getX(), evt.getY());
+                    triangle.draw(g2);
+                    m_shapes_triangles.add(triangle);
                     break;
                 case SQUARE:
-                    new Square(evt.getX(), evt.getY()).draw(g2);
+                    Square square = new Square(evt.getX(), evt.getY());
+                    square.draw(g2);
+                    m_shapes_squares.add(square);
                     break;
                 default:
                     System.out.println("No shape named " + m_selected);
