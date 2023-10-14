@@ -7,43 +7,44 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+
+import java.util.List;
 import java.util.logging.Logger;
 
 public class JSONSaver {
-    private StringBuilder save = new StringBuilder("");
-    private ArrayList<Circle> m_shapes_circles ;
-    private ArrayList<Square> m_shapes_squares ;
-    private ArrayList<Triangle> m_shapes_triangles ;
+    private final StringBuilder save = new StringBuilder();
+    private final List<Circle> circleArrayList;
+    private final List<Square> squareArrayList;
+    private final List<Triangle> triangleArrayList;
     private final Logger logger = Logger.getLogger(JSONSaver.class.getName());
 
-    public JSONSaver(ArrayList<Circle> m_shapes_circles, ArrayList<Square> m_shapes_squares, ArrayList<Triangle> m_shapes_triangles) {
-        this.m_shapes_circles = m_shapes_circles;
-        this.m_shapes_squares = m_shapes_squares;
-        this.m_shapes_triangles = m_shapes_triangles;
+    public JSONSaver(List<Circle> circleArrayList, List<Square> squareArrayList, List<Triangle> triangleArrayList) {
+        this.circleArrayList = circleArrayList;
+        this.squareArrayList = squareArrayList;
+        this.triangleArrayList = triangleArrayList;
     }
 
     public void addShapes(){
         save.append("{\"shapes\":[\n");
-        m_shapes_circles.forEach(element -> {
+        circleArrayList.forEach(element -> {
             JSonVisitor jSonVisitor = new JSonVisitor();
             jSonVisitor.visit(element);
             save.append(jSonVisitor.getRepresentation());
             save.append(",\n");
         });
 
-        m_shapes_squares.forEach(element -> {
+        squareArrayList.forEach(element -> {
             JSonVisitor jsonVisitor = new JSonVisitor();
             jsonVisitor.visit(element);
             save.append(jsonVisitor.getRepresentation());
             save.append(",\n");
         });
 
-        m_shapes_triangles.forEach(element -> {
+        triangleArrayList.forEach(element -> {
             JSonVisitor jsonVisitor = new JSonVisitor();
             jsonVisitor.visit(element);
             save.append(jsonVisitor.getRepresentation());
-            if (m_shapes_triangles.indexOf(element) != m_shapes_triangles.size()-1){
+            if (triangleArrayList.indexOf(element) != triangleArrayList.size()-1){
                 save.append(",\n");
             }
             else {
