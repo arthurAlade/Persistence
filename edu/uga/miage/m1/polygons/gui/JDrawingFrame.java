@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
+import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
@@ -93,7 +94,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         });
         m_jsonButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                System.out.println("JSON");
+                JSONSaver jsonSaver = new JSONSaver( m_shapes_circles, m_shapes_squares, m_shapes_triangles );
+                jsonSaver.addShapes();
+                jsonSaver.saveJSON();
             }
         });
 

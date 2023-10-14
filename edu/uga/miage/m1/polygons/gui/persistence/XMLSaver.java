@@ -50,8 +50,6 @@ public class XMLSaver {
     public void saveXML(){
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("save.xml"));
-            System.out.println(save);
-
             writer.write(String.valueOf(save));
             writer.close();
         } catch (IOException e) {
