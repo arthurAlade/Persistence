@@ -23,17 +23,24 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Path2D;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
-public class Circle implements SimpleShape, Visitable {
+/**
+ * This inner class implements the triangle <tt>SimpleShape</tt> service.
+ * It simply provides a <tt>draw()</tt> that paints a triangle.
+ *
+ * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
+ */
+public class Triangle implements SimpleShape, Visitable {
 
     int m_x;
 
     int m_y;
 
-    public Circle(int x, int y) {
+    public Triangle(int x, int y) {
         m_x = x - 25;
         m_y = y - 25;
     }
@@ -45,25 +52,34 @@ public class Circle implements SimpleShape, Visitable {
      */
     public void draw(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        GradientPaint gradient = new GradientPaint(m_x, m_y, Color.RED, m_x + 50, m_y, Color.WHITE);
+        GradientPaint gradient = new GradientPaint((float) m_x, (float) m_y, Color.GREEN, (float) m_x + 50, (float) m_y, Color.WHITE);
         g2.setPaint(gradient);
-        g2.fill(new Ellipse2D.Double(m_x, m_y, 50, 50));
+        int[] xcoords = { m_x + 25, m_x, m_x + 50 };
+        int[] ycoords = { m_y, m_y + 50, m_y + 50 };
+        GeneralPath polygon = new GeneralPath(Path2D.WIND_EVEN_ODD, xcoords.length);
+        polygon.moveTo( (float) m_x + 25, (float) m_y);
+        for (int i = 0; i < xcoords.length; i++) {
+            polygon.lineTo(xcoords[i], ycoords[i]);
+        }
+        polygon.closePath();
+        g2.fill(polygon);
         BasicStroke wideStroke = new BasicStroke(2.0f);
         g2.setColor(Color.black);
         g2.setStroke(wideStroke);
-        g2.draw(new Ellipse2D.Double(m_x, m_y, 50, 50));
+        g2.draw(polygon);
     }
 
     @Override
-    // Accepte un visiteur
     public void accept(Visitor visitor) {
-        visitor.visit(this);        
+        visitor.visit(this);
     }
 
+    @Override
     public int getX() {
         return m_x;
     }
 
+    @Override
     public int getY() {
         return m_y;
     }

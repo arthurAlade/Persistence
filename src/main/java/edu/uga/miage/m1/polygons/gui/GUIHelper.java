@@ -9,10 +9,15 @@ import javax.swing.JFrame;
  */
 public class GUIHelper {
 
+    private GUIHelper() {
+        throw new IllegalStateException("Utility class");
+      }
+
     public static void showOnFrame(String frameName) {
         JFrame frame = new JDrawingFrame(frameName);
         WindowAdapter wa = new WindowAdapter() {
 
+            @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }
