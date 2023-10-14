@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 
 public class XMLSaver {
@@ -15,6 +16,7 @@ public class XMLSaver {
     private ArrayList<Circle> m_shapes_circles ;
     private ArrayList<Square> m_shapes_squares ;
     private ArrayList<Triangle> m_shapes_triangles ;
+    private final Logger logger = Logger.getLogger(XMLSaver.class.getName());
 
     public XMLSaver(ArrayList<Circle> m_shapes_circles, ArrayList<Square> m_shapes_squares, ArrayList<Triangle> m_shapes_triangles) {
         this.m_shapes_circles = m_shapes_circles;
@@ -48,12 +50,12 @@ public class XMLSaver {
         save.append("</shapes>");
     }
     public void saveXML(){
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("save.xml"));
+
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("save.xml"))) {
             writer.write(String.valueOf(save));
-            writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(java.util.logging.Level.SEVERE, "Error while saving XML file", e);
         }
+
     }
 }
