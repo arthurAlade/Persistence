@@ -15,4 +15,6 @@ public interface Visitor {
     public void visit(Square square);
 
     public void visit(Triangle triangle);
+
+    public String getRepresentation();
 }

@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * This class represents the main application class, which is a JFrame subclass
@@ -46,6 +47,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      */
     private final Map<Shapes, JButton> mButtons = new HashMap<>();
 
+    private final Logger logger = Logger.getLogger(JDrawingFrame.class.getName());
+
     /**
      * Default constructor that populates the main window.
      * @param frameName
@@ -68,12 +71,12 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
             XMLSaver xmlSaver = new XMLSaver(mShapesCircles, mShapesSquares, mShapesTriangles);
-            xmlSaver.addShapes();
+            xmlSaver.saveShapes();
             xmlSaver.saveXML();
         });
         mJsonButton.addActionListener(e -> {
             JSONSaver jsonSaver = new JSONSaver(mShapesCircles, mShapesSquares, mShapesTriangles);
-            jsonSaver.addShapes();
+            jsonSaver.saveShapes();
             jsonSaver.saveJSON();
         });
 
@@ -142,7 +145,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                     mShapesSquares.add(square);
                     break;
                 default:
-                    System.out.println("No shape named " + mSelected);
+                    logger.severe("No shape named " + mSelected);
             }
         }
     }
