@@ -1,6 +1,7 @@
 package edu.uga.miage.m1.polygons.gui;
 
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
+import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
@@ -39,9 +40,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private final JButton mXmlButton;
     private final JButton mJsonButton;
-    private final ArrayList<Circle> mShapesCircles = new ArrayList<>();
-    private final ArrayList<Square> mShapesSquares = new ArrayList<>();
-    private final ArrayList<Triangle> mShapesTriangles = new ArrayList<>();
+
+    private final ArrayList<Visitable> mVisitablesList = new ArrayList<>();
     /**
      * Tracks buttons to manage the background.
      */
@@ -70,12 +70,12 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
-            XMLSaver xmlSaver = new XMLSaver(mShapesCircles, mShapesSquares, mShapesTriangles);
+            XMLSaver xmlSaver = new XMLSaver(mVisitablesList);
             xmlSaver.saveShapes();
             xmlSaver.saveXML();
         });
         mJsonButton.addActionListener(e -> {
-            JSONSaver jsonSaver = new JSONSaver(mShapesCircles, mShapesSquares, mShapesTriangles);
+            JSONSaver jsonSaver = new JSONSaver(mVisitablesList);
             jsonSaver.saveShapes();
             jsonSaver.saveJSON();
         });
@@ -132,17 +132,17 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                 case CIRCLE:
                     Circle circle = new Circle(evt.getX(), evt.getY());
                     circle.draw(g2);
-                    mShapesCircles.add(circle);
+                    mVisitablesList.add(circle);
                     break;
                 case TRIANGLE:
                     Triangle triangle = new Triangle(evt.getX(), evt.getY());
                     triangle.draw(g2);
-                    mShapesTriangles.add(triangle);
+                    mVisitablesList.add(triangle);
                     break;
                 case SQUARE:
                     Square square = new Square(evt.getX(), evt.getY());
                     square.draw(g2);
-                    mShapesSquares.add(square);
+                    mVisitablesList.add(square);
                     break;
                 default:
                     logger.severe("No shape named " + mSelected);
