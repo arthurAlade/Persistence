@@ -3,10 +3,12 @@ package edu.uga.miage.m1.polygons.gui;
 import edu.uga.miage.m1.polygons.gui.command.AddCommand;
 import edu.uga.miage.m1.polygons.gui.command.Command;
 import edu.uga.miage.m1.polygons.gui.command.CommandList;
+import edu.uga.miage.m1.polygons.gui.command.RemoveCommand;
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
+import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 
@@ -44,8 +46,10 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private final JButton mXmlButton;
     private final JButton mJsonButton;
+    private final JButton mRemoveButton;
 
     private final ArrayList<Visitable> mVisitablesList = new ArrayList<>();
+    private final ArrayList<SimpleShape> mShapesList = new ArrayList<>();
     private final Logger logger = Logger.getLogger(JDrawingFrame.class.getName());
 
     /**
@@ -73,6 +77,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         mXmlButton = new JButton("XML");
         mJsonButton = new JButton("JSON");
+        mRemoveButton = new JButton("Remove - Crtl + Z");
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
@@ -84,6 +89,11 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             JSONSaver jsonSaver = new JSONSaver(mVisitablesList);
             jsonSaver.saveShapes();
             jsonSaver.saveJSON();
+        });
+
+        mRemoveButton.addActionListener(e -> {
+            commandList.add(new RemoveCommand(this));
+            commandList.executeLastCommand();
         });
 
         // Fills the panel
@@ -98,6 +108,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
+        addButtonToToolbar(mRemoveButton);
         setPreferredSize(new Dimension(400, 400));
     }
 
@@ -140,24 +151,38 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                     commandList.add(new AddCommand(circle, g2));
                     commandList.executeLastCommand();
                     mVisitablesList.add(circle);
+                    mShapesList.add(circle);
                     break;
                 case TRIANGLE:
                     Triangle triangle = new Triangle(evt.getX(), evt.getY());
                     commandList.add(new AddCommand(triangle, g2));
                     commandList.executeLastCommand();
                     mVisitablesList.add(triangle);
+                    mShapesList.add(triangle);
                     break;
                 case SQUARE:
                     Square square = new Square(evt.getX(), evt.getY());
                     commandList.add(new AddCommand(square, g2));
                     commandList.executeLastCommand();
                     mVisitablesList.add(square);
+                    mShapesList.add(square);
                     break;
                 default:
                     logger.severe("No shape named " + mSelected);
             }
         }
     }
+
+    public void removeLastShape() {
+        if (!mVisitablesList.isEmpty()) {
+            mVisitablesList.remove(mVisitablesList.size() - 1);
+            SimpleShape shape = mShapesList.remove(mShapesList.size() - 1);
+            Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
+            shape.erase(g2);
+
+        }
+    }
+
 
     /**
      * Implements an empty method for the <tt>MouseListener</tt> interface.

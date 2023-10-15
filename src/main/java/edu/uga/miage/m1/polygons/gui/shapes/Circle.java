@@ -43,7 +43,7 @@ public class Circle implements SimpleShape, Visitable {
      * the shape.
      * @param g2 The graphics object used for painting.
      */
-    public void draw(Graphics2D g2) {
+    public void draw(Graphics2D g2){
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         GradientPaint gradient = new GradientPaint( x, y, Color.RED,  (x + 50), y, Color.WHITE);
         g2.setPaint(gradient);
@@ -52,6 +52,10 @@ public class Circle implements SimpleShape, Visitable {
         g2.setColor(Color.black);
         g2.setStroke(wideStroke);
         g2.draw(new Ellipse2D.Double(x, y, 50, 50));
+    }
+
+    public void erase(Graphics2D g2){
+        //TODO
     }
 
     @Override

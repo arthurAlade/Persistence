@@ -50,16 +50,31 @@ public class Square implements SimpleShape, Visitable {
      * @param g2 The graphics object used for painting.
      */
     public void draw(Graphics2D g2) {
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        GradientPaint gradient = new GradientPaint( x, y, Color.BLUE,  (x + 50), y, Color.WHITE);
-        g2.setPaint(gradient);
-        g2.fill(new Rectangle2D.Double(x, y, 50, 50));
-        BasicStroke wideStroke = new BasicStroke(2.0f);
-        g2.setColor(Color.black);
-        g2.setStroke(wideStroke);
-        g2.draw(new Rectangle2D.Double(x, y, 50, 50));
+        drawOrErase(g2, false);
     }
 
+    public void erase(Graphics2D g2) {
+        drawOrErase(g2, true);
+    }
+
+    private void drawOrErase(Graphics2D g2, boolean remove) {
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        if (remove) {
+            g2.setColor(Color.WHITE);
+        } else {
+            GradientPaint gradient = new GradientPaint( x, y, Color.BLUE,  (x + 50), y, Color.WHITE);
+            g2.setPaint(gradient);
+        }
+        g2.fill(new Rectangle2D.Double(x, y, 50, 50));
+        if (remove) {
+            g2.setColor(Color.WHITE);
+        } else {
+            g2.setColor(Color.black);
+            BasicStroke wideStroke = new BasicStroke(2.0f);
+            g2.setStroke(wideStroke);
+        }
+        g2.draw(new Rectangle2D.Double(x, y, 50, 50));
+    }
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);
