@@ -36,13 +36,13 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
  */
 public class Triangle implements SimpleShape, Visitable {
 
-    int m_x;
+    int x;
 
-    int m_y;
+    int y;
 
     public Triangle(int x, int y) {
-        m_x = x - 25;
-        m_y = y - 25;
+        this.x = x - 25;
+        this.y = y - 25;
     }
 
     /**
@@ -52,14 +52,14 @@ public class Triangle implements SimpleShape, Visitable {
      */
     public void draw(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        GradientPaint gradient = new GradientPaint((float) m_x, (float) m_y, Color.GREEN, (float) m_x + 50, (float) m_y, Color.WHITE);
+        GradientPaint gradient = new GradientPaint( x,  y, Color.GREEN,  (x + 50), y, Color.WHITE);
         g2.setPaint(gradient);
-        int[] xcoords = { m_x + 25, m_x, m_x + 50 };
-        int[] ycoords = { m_y, m_y + 50, m_y + 50 };
-        GeneralPath polygon = new GeneralPath(Path2D.WIND_EVEN_ODD, xcoords.length);
-        polygon.moveTo( (float) m_x + 25, (float) m_y);
-        for (int i = 0; i < xcoords.length; i++) {
-            polygon.lineTo(xcoords[i], ycoords[i]);
+        int[] xCoords = { x + 25, x, x + 50 };
+        int[] yCoords = { y, y + 50, y + 50 };
+        GeneralPath polygon = new GeneralPath(Path2D.WIND_EVEN_ODD, xCoords.length);
+        polygon.moveTo(  (x + 25),  y);
+        for (int i = 0; i < xCoords.length; i++) {
+            polygon.lineTo(xCoords[i], yCoords[i]);
         }
         polygon.closePath();
         g2.fill(polygon);
@@ -76,11 +76,11 @@ public class Triangle implements SimpleShape, Visitable {
 
     @Override
     public int getX() {
-        return m_x;
+        return x;
     }
 
     @Override
     public int getY() {
-        return m_y;
+        return y;
     }
 }
