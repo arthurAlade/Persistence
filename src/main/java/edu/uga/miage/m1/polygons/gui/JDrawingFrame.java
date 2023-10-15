@@ -103,7 +103,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     /**
      * Injects an available <tt>SimpleShape</tt> into the drawing frame.
-     * @param name The name of the injected <tt>SimpleShape</tt>.
+     * @param shape The shape to inject.
      * @param icon The icon associated with the injected <tt>SimpleShape</tt>.
      */
     private void addShape(Shapes shape, ImageIcon icon) {
