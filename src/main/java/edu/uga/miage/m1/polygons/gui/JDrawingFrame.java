@@ -1,5 +1,8 @@
 package edu.uga.miage.m1.polygons.gui;
 
+import edu.uga.miage.m1.polygons.gui.command.AddCommand;
+import edu.uga.miage.m1.polygons.gui.command.Command;
+import edu.uga.miage.m1.polygons.gui.command.CommandList;
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
@@ -11,6 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -42,12 +46,14 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     private final JButton mJsonButton;
 
     private final ArrayList<Visitable> mVisitablesList = new ArrayList<>();
+    private final Logger logger = Logger.getLogger(JDrawingFrame.class.getName());
+
     /**
      * Tracks buttons to manage the background.
      */
     private final Map<Shapes, JButton> mButtons = new HashMap<>();
 
-    private final Logger logger = Logger.getLogger(JDrawingFrame.class.getName());
+    private final CommandList commandList = new CommandList();
 
     /**
      * Default constructor that populates the main window.
@@ -131,17 +137,20 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             switch(mSelected) {
                 case CIRCLE:
                     Circle circle = new Circle(evt.getX(), evt.getY());
-                    circle.draw(g2);
+                    commandList.add(new AddCommand(circle, g2));
+                    commandList.executeLastCommand();
                     mVisitablesList.add(circle);
                     break;
                 case TRIANGLE:
                     Triangle triangle = new Triangle(evt.getX(), evt.getY());
-                    triangle.draw(g2);
+                    commandList.add(new AddCommand(triangle, g2));
+                    commandList.executeLastCommand();
                     mVisitablesList.add(triangle);
                     break;
                 case SQUARE:
                     Square square = new Square(evt.getX(), evt.getY());
-                    square.draw(g2);
+                    commandList.add(new AddCommand(square, g2));
+                    commandList.executeLastCommand();
                     mVisitablesList.add(square);
                     break;
                 default:
