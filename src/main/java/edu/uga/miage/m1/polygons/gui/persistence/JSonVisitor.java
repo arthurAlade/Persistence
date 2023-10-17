@@ -9,17 +9,18 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  */
 public class JSonVisitor implements Visitor {
 
-    private String representation = null;
+    private String representation;
 
     public JSonVisitor() {
+        this.representation = null;
     }
 
     @Override
     public void visit(Circle circle) {
         this.representation = "{\n"
-                + "        \"type\": \"circle\",\n"
-                + "        \"x\": " + circle.getX() + ",\n"
-                + "        \"y\": " + circle.getY() + "\n"
+                + "\"type\": \"circle\",\n"
+                + "\"x\": " + circle.getX() + ",\n"
+                + "\"y\": " + circle.getY() + "\n"
                 + "}";
 
     }
@@ -27,18 +28,18 @@ public class JSonVisitor implements Visitor {
     @Override
     public void visit(Square square) {
         this.representation = "{\n"
-                + "        \"type\": \"square\",\n"
-                + "        \"x\": " + square.getX() + ",\n"
-                + "        \"y\": " + square.getY() + "\n"
+                + "\"type\": \"square\",\n"
+                + "\"x\": " + square.getX() + ",\n"
+                + "\"y\": " + square.getY() + "\n"
                 + "}";
     }
 
     @Override
     public void visit(Triangle triangle) {
         this.representation ="{\n"
-                + "        \"type\": \"triangle\",\n"
-                + "        \"x\": " + triangle.getX() + ",\n"
-                + "        \"y\": " + triangle.getY() + "\n"
+                + "\"type\": \"triangle\",\n"
+                + "\"x\": " + triangle.getX() + ",\n"
+                + "\"y\": " + triangle.getY() + "\n"
                 + "}";
     }
 

@@ -25,11 +25,10 @@ public class CommandList {
     public void executeLastCommand() {
         if( (!commands.isEmpty()) && (commandStatusList.get(commandStatusList.size() - 1) == CommandStatus.WAITING)  ) {
             Command commandToExecute = commands.get(commands.size() - 1);
-            commandToExecute.execute();
             if(commandToExecute instanceof RemoveCommand){
                 undoneLastCommand();
-                rerunCommands();
             }
+            commandToExecute.execute();
             commandStatusList.set(commandStatusList.size()-1, CommandStatus.DONE);
         }
         else {
@@ -40,19 +39,13 @@ public class CommandList {
     public void undoneLastCommand(){
         if(commands.size() == 1) {
             throw new IndexOutOfBoundsException("No command to undo");
-        }else {
-            commandStatusList.set(commandStatusList.size()-2, CommandStatus.UNDONE);
+        }
+        Command commandToUndo = commands.get(commands.size() - 2);
+        CommandStatus commandToUndoStatus = commandStatusList.get(commandStatusList.size() - 2);
+        if((commandToUndoStatus == CommandStatus.DONE) && !(commandToUndo instanceof RemoveCommand) ) {
+            commandStatusList.set(commandStatusList.size() - 2, CommandStatus.UNDONE);
         }
     }
 
-    private void rerunCommands(){
-        for(int i = 0; i < commands.size() - 1; i++){
-            Command commandToExecute = commands.get(i);
-            CommandStatus commandToExecuteStatus = commandStatusList.get(i);
-            System.out.println(commandToExecute.getClass().getName() + ' ' + commandToExecuteStatus);
-            if(commandToExecuteStatus==CommandStatus.DONE){
-                commandToExecute.execute();
-            }
-        }
-    }
+
 }

@@ -36,9 +36,9 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
  */
 public class Triangle implements SimpleShape, Visitable {
 
-    int x;
+    private final int x;
 
-    int y;
+    private final int y;
 
     public Triangle(int x, int y) {
         this.x = x - 25;
@@ -69,9 +69,6 @@ public class Triangle implements SimpleShape, Visitable {
         g2.draw(polygon);
     }
 
-    public void erase(Graphics2D g2) {
-        // TODO
-    }
 
     @Override
     public void accept(Visitor visitor) {

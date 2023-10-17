@@ -29,9 +29,9 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
 public class Circle implements SimpleShape, Visitable {
 
-    int x;
+    private final int x;
 
-    int y;
+    private final int y;
 
     public Circle(int x, int y) {
         this.x = x - 25;
@@ -54,14 +54,11 @@ public class Circle implements SimpleShape, Visitable {
         g2.draw(new Ellipse2D.Double(x, y, 50, 50));
     }
 
-    public void erase(Graphics2D g2){
-        //TODO
-    }
 
     @Override
     // Accepte un visiteur
     public void accept(Visitor visitor) {
-        visitor.visit(this);        
+        visitor.visit(this);
     }
 
     public int getX() {

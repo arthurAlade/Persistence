@@ -9,9 +9,10 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  */
 public class XMLVisitor implements Visitor {
 
-    private String representation = null;
+    private String representation;
 
     public XMLVisitor() {
+        this.representation = null;
     }
 
     @Override

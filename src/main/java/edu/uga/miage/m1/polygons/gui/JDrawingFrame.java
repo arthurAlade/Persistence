@@ -176,10 +176,10 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     public void removeLastShape() {
         if (!mVisitablesList.isEmpty()) {
             mVisitablesList.remove(mVisitablesList.size() - 1);
-            SimpleShape shape = mShapesList.remove(mShapesList.size() - 1);
+            mShapesList.remove(mShapesList.size() - 1);
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
-            shape.erase(g2);
-
+            g2.clearRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
+            mShapesList.forEach(shape -> shape.draw(g2));
         }
     }
 

@@ -16,7 +16,6 @@ public interface SimpleShape {
      */
     void draw(Graphics2D g2);
 
-    void erase(Graphics2D g2);
 
     int getX();
 
