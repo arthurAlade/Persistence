@@ -29,9 +29,9 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
 public class Circle implements SimpleShape, Visitable {
 
-    int x;
+    private final int x;
 
-    int y;
+    private final int y;
 
     public Circle(int x, int y) {
         this.x = x - 25;
@@ -43,7 +43,7 @@ public class Circle implements SimpleShape, Visitable {
      * the shape.
      * @param g2 The graphics object used for painting.
      */
-    public void draw(Graphics2D g2) {
+    public void draw(Graphics2D g2){
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         GradientPaint gradient = new GradientPaint( x, y, Color.RED,  (x + 50), y, Color.WHITE);
         g2.setPaint(gradient);
@@ -54,10 +54,11 @@ public class Circle implements SimpleShape, Visitable {
         g2.draw(new Ellipse2D.Double(x, y, 50, 50));
     }
 
+
     @Override
     // Accepte un visiteur
     public void accept(Visitor visitor) {
-        visitor.visit(this);        
+        visitor.visit(this);
     }
 
     public int getX() {

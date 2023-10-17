@@ -17,4 +17,6 @@ public interface Visitor {
     public void visit(Triangle triangle);
 
     public String getRepresentation();
+
+    public String getSchema(int x, int y, String type);
 }

@@ -9,37 +9,29 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  */
 public class JSonVisitor implements Visitor {
 
-    private String representation = null;
+    private String representation;
 
     public JSonVisitor() {
+        this.representation = null;
     }
 
+    public String getSchema(int x, int y, String type) {
+        return "{\n\"type\": \"" + type + "\",\n\"x\": " + x + ",\n\"y\": " + y + "\n}";
+    }
     @Override
     public void visit(Circle circle) {
-        this.representation = "{\n"
-                + "        \"type\": \"circle\",\n"
-                + "        \"x\": " + circle.getX() + ",\n"
-                + "        \"y\": " + circle.getY() + "\n"
-                + "}";
+        this.representation = getSchema(circle.getX(), circle.getY(), "circle");
 
     }
 
     @Override
     public void visit(Square square) {
-        this.representation = "{\n"
-                + "        \"type\": \"square\",\n"
-                + "        \"x\": " + square.getX() + ",\n"
-                + "        \"y\": " + square.getY() + "\n"
-                + "}";
+        this.representation = getSchema(square.getX(), square.getY(), "square");
     }
 
     @Override
     public void visit(Triangle triangle) {
-        this.representation ="{\n"
-                + "        \"type\": \"triangle\",\n"
-                + "        \"x\": " + triangle.getX() + ",\n"
-                + "        \"y\": " + triangle.getY() + "\n"
-                + "}";
+        this.representation = getSchema(triangle.getX(), triangle.getY(), "triangle");
     }
 
     /**

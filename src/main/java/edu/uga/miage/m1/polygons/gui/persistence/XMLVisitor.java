@@ -9,36 +9,28 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  */
 public class XMLVisitor implements Visitor {
 
-    private String representation = null;
+    private String representation;
 
     public XMLVisitor() {
+        this.representation = null;
     }
 
+    public String getSchema(int x, int y, String type) {
+        return "<shape><type>" + type + "</type><x>" + x + "</x><y>" + y + "</y></shape>";
+    }
     @Override
     public void visit(Circle circle) {
-        this.representation = "<shape>"
-                + "<type>circle</type>"
-                + "<x>"+circle.getX()+"</x>"
-                + "<y>"+circle.getY()+"</y>"
-                + "</shape>";
+        this.representation = getSchema(circle.getX(), circle.getY(), "circle");
     }
 
     @Override
     public void visit(Square square) {
-        this.representation = "<shape>"
-                + "<type>square</type>"
-                + "<x>"+square.getX()+"</x>"
-                + "<y>"+square.getY()+"</y>"
-                + "</shape>";
+        this.representation = getSchema(square.getX(), square.getY(), "square");
     }
 
     @Override
     public void visit(Triangle triangle) {
-        this.representation = "<shape>"
-                + "<type>triangle</type>"
-                + "<x>"+triangle.getX()+"</x>"
-                + "<y>"+triangle.getY()+"</y>"
-                + "</shape>";
+        this.representation = getSchema(triangle.getX(), triangle.getY(), "triangle");
     }
 
     /**

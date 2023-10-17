@@ -27,6 +27,8 @@ import java.awt.geom.Rectangle2D;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
+import javax.swing.border.StrokeBorder;
+
 /**
  * This class implements the square <tt>SimpleShape</tt> extension.
  * It simply provides a <tt>draw()</tt> that paints a square.
@@ -35,9 +37,9 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
  */
 public class Square implements SimpleShape, Visitable {
 
-    int x;
+    private final int x;
 
-    int y;
+    private final int y;
 
     public Square(int x, int y) {
         this.x = x - 25;
@@ -47,18 +49,21 @@ public class Square implements SimpleShape, Visitable {
     /**
      * Implements the <tt>SimpleShape.draw()</tt> method for painting
      * the shape.
+     *
      * @param g2 The graphics object used for painting.
      */
     public void draw(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        GradientPaint gradient = new GradientPaint( x, y, Color.BLUE,  (x + 50), y, Color.WHITE);
+        GradientPaint gradient = new GradientPaint(x, y, Color.BLUE, (x + 50), y, Color.WHITE);
         g2.setPaint(gradient);
         g2.fill(new Rectangle2D.Double(x, y, 50, 50));
-        BasicStroke wideStroke = new BasicStroke(2.0f);
         g2.setColor(Color.black);
+        BasicStroke wideStroke = new BasicStroke(2.0f);
         g2.setStroke(wideStroke);
         g2.draw(new Rectangle2D.Double(x, y, 50, 50));
     }
+
+
 
     @Override
     public void accept(Visitor visitor) {
