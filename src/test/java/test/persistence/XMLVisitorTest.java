@@ -6,6 +6,7 @@ import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +28,7 @@ class XMLVisitorTest {
     }
 
     @Test
+    @DisplayName("Test the XML schema")
     void getSchema() {
         result = xmlVisitor.getSchema(100, 50, "test");
         expected = "<shape><type>test</type><x>100</x><y>50</y></shape>";
@@ -34,6 +36,7 @@ class XMLVisitorTest {
     }
 
     @Test
+    @DisplayName("Test XMLVisitor visit(circle)")
     void visitCircle() {
         expected = "<shape><type>circle</type><x>100</x><y>5</y></shape>";
         xmlVisitor.visit(circle);
@@ -42,6 +45,7 @@ class XMLVisitorTest {
     }
 
     @Test
+    @DisplayName("Test XMLVisitor visit(square)")
     void visitSquare(){
         expected = "<shape><type>square</type><x>175</x><y>0</y></shape>";
         xmlVisitor.visit(square);
@@ -50,6 +54,7 @@ class XMLVisitorTest {
     }
 
     @Test
+    @DisplayName("Test XMLVisitor visit(triangle)")
     void visitTriangle(){
         expected = "<shape><type>triangle</type><x>275</x><y>20</y></shape>";
         xmlVisitor.visit(triangle);

@@ -5,6 +5,7 @@ import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,14 +27,16 @@ class JSonVisitorTest {
     }
 
     @Test
-    void getSchema() {
+    @DisplayName("Test the JSON schema")
+    void getSchemaTest() {
         result = jSonVisitor.getSchema(100, 50, "test");
         expected = "{\n\"type\": \"test\",\n\"x\": 100,\n\"y\": 50\n}";
         assertEquals(expected, result);
     }
 
     @Test
-    void visitCircle() {
+    @DisplayName("Test JSONVisitor visit(circle)")
+    void visitCircleTest() {
         expected = "{\n\"type\": \"circle\",\n\"x\": 100,\n\"y\": 5\n}";
         jSonVisitor.visit(circle);
         result = jSonVisitor.getRepresentation();
@@ -41,7 +44,8 @@ class JSonVisitorTest {
     }
 
     @Test
-    void visitSquare(){
+    @DisplayName("Test JSONVisitor visit(square)")
+    void visitSquareTest(){
         expected = "{\n\"type\": \"square\",\n\"x\": 175,\n\"y\": 0\n}";
         jSonVisitor.visit(square);
         result = jSonVisitor.getRepresentation();
@@ -49,7 +53,8 @@ class JSonVisitorTest {
     }
 
     @Test
-    void visitTriangle(){
+    @DisplayName("Test JSONVisitor visit(triangle)")
+    void visitTriangleTest(){
         expected = "{\n\"type\": \"triangle\",\n\"x\": 275,\n\"y\": 20\n}";
         jSonVisitor.visit(triangle);
         result = jSonVisitor.getRepresentation();
