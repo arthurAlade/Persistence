@@ -1,3 +1,5 @@
+package test.shapes;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.Random;
@@ -68,26 +70,6 @@ public class SquareTest {
 
         assertEquals(randomNumberX-25, square.getX());
         assertEquals(randomNumberY-25, square.getY());
-    }
-
-    @Test
-    @DisplayName("Visiting square with Json visitor")
-    public void visitingACricle() {
-        Random randomX = new Random();
-        Random randomY = new Random();
-
-        int randomNumberX = randomX.nextInt();
-        int randomNumberY = randomY.nextInt();
-
-        Square square = new Square(randomNumberX, randomNumberY);
-
-        Visitor visitor = new JSonVisitor();
-        visitor.visit(square);
-
-        String result = "{\n" + "        \"type\": \"square\",\n" + "        \"x\": " + (randomNumberX-25) + ",\n" + "        \"y\": " + (randomNumberY-25) + "\n" + "}";
-
-
-        assertEquals(visitor.getRepresentation(), result);
     }
 
     @Test

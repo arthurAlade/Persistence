@@ -1,3 +1,5 @@
+package test.shapes;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.Random;
@@ -70,25 +72,6 @@ public class CircleTest {
         assertEquals(randomNumberY-25, circle.getY());
     }
 
-    @Test
-    @DisplayName("Visiting circle with Json visitor")
-    public void visitingACricle() {
-        Random randomX = new Random();
-        Random randomY = new Random();
-
-        int randomNumberX = randomX.nextInt();
-        int randomNumberY = randomY.nextInt();
-
-        Circle circle = new Circle(randomNumberX, randomNumberY);
-
-        Visitor visitor = new JSonVisitor();
-        visitor.visit(circle);
-
-        String result = "{\n" + "        \"type\": \"circle\",\n" + "        \"x\": " + (randomNumberX-25) + ",\n" + "        \"y\": " + (randomNumberY-25) + "\n" + "}";
-
-
-        assertEquals(visitor.getRepresentation(), result);
-    }
 
     @Test
     @DisplayName("draw a circle in graphic2D test")

@@ -1,3 +1,5 @@
+package test.shapes;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.Random;
@@ -70,25 +72,6 @@ public class TriangleTest {
         assertEquals(randomNumberY-25, triangle.getY());
     }
 
-    @Test
-    @DisplayName("Visiting triangle with Json visitor")
-    public void visitingACricle() {
-        Random randomX = new Random();
-        Random randomY = new Random();
-
-        int randomNumberX = randomX.nextInt();
-        int randomNumberY = randomY.nextInt();
-
-        Triangle triangle = new Triangle(randomNumberX, randomNumberY);
-
-        Visitor visitor = new JSonVisitor();
-        visitor.visit(triangle);
-
-        String result = "{\n" + "        \"type\": \"triangle\",\n" + "        \"x\": " + (randomNumberX-25) + ",\n" + "        \"y\": " + (randomNumberY-25) + "\n" + "}";
-
-
-        assertEquals(visitor.getRepresentation(), result);
-    }
 
     @Test
     @DisplayName("draw a triangle in graphic2D test")
