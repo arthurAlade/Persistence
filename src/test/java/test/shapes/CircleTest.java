@@ -3,16 +3,17 @@ package test.shapes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.Random;
+
+import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
+import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
-import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 
-public class CircleTest {
+class CircleTest {
     @Test
     @DisplayName("Create circle with min int value")
-    public void createCircleMinInt() {
+    void createCircleMinInt() {
         int coord = Integer.MIN_VALUE;
         Circle circle = new Circle(coord, coord);
 
@@ -22,7 +23,7 @@ public class CircleTest {
     }
 
     @Test
-    public void testCreateNewCircle() {
+    void testCreateNewCircle() {
         // Create a new Circle object with the x and y coordinates set to 100.
         Circle circle = new Circle(100, 100);
 
@@ -36,7 +37,7 @@ public class CircleTest {
 
     @Test
     @DisplayName("Create circle with 0 value")
-    public void createCircleZeroCoords() {
+    void createCircleZeroCoords() {
         int coord = 0;
         Circle circle = new Circle(coord, coord);
 
@@ -48,7 +49,7 @@ public class CircleTest {
 
     @Test
     @DisplayName("Create circle with max int value")
-    public void createCircleMaxInt() {
+    void createCircleMaxInt() {
         int coord = Integer.MAX_VALUE;
         Circle circle = new Circle(coord, coord);
 
@@ -59,7 +60,7 @@ public class CircleTest {
 
     @Test
     @DisplayName("Create circle with random coord")
-    public void createCircleRandoomCoord() {
+    void createCircleRandoomCoord() {
         Random randomX = new Random();
         Random randomY = new Random();
 
@@ -72,12 +73,20 @@ public class CircleTest {
         assertEquals(randomNumberY-25, circle.getY());
     }
 
-
     @Test
-    @DisplayName("draw a circle in graphic2D test")
-    public void drawTest() {
+    @DisplayName("Test circle accept visitor")
+    void testCircleAcceptVisitor() {
+        Circle circle = new Circle(100, 100);
+        XMLVisitor xmlVisitor = new XMLVisitor();
+        circle.accept(xmlVisitor);
+        String result = xmlVisitor.getRepresentation();
+        String expected = "<shape><type>circle</type><x>75</x><y>75</y></shape>";
+        assertEquals(expected, result);
 
-
-
+        JSonVisitor jSonVisitor = new JSonVisitor();
+        circle.accept(jSonVisitor);
+        result = jSonVisitor.getRepresentation();
+        expected = "{\n\"type\": \"circle\",\n\"x\": 75,\n\"y\": 75\n}";
+        assertEquals(expected, result);
     }
 }
