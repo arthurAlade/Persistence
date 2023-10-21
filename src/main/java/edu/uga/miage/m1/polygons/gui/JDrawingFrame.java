@@ -264,4 +264,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             }
         }
     }
+
+    public Graphics2D getGraphics2D() {
+        return (Graphics2D) mPanel.getGraphics();
+    }
 }

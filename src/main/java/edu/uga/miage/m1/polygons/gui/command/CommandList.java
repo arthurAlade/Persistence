@@ -11,40 +11,51 @@ public class CommandList {
     - UNDONE : executed and reversed (Ctrl - Z)
      */
 
-    private final List<CommandStatus> commandStatusList;
     public CommandList() {
         this.commands = new ArrayList<>();
-        this.commandStatusList = new ArrayList<>();
     }
 
     public void add(Command command) {
         commands.add(command);
-        commandStatusList.add(CommandStatus.WAITING);
     }
 
     public void executeLastCommand() {
-        if( (!commands.isEmpty()) && (commandStatusList.get(commandStatusList.size() - 1) == CommandStatus.WAITING)  ) {
-            Command commandToExecute = commands.get(commands.size() - 1);
-            if(commandToExecute instanceof RemoveCommand){
-                undoneLastCommand();
+        if (commands.isEmpty()){
+            throw new IndexOutOfBoundsException("No command to execute");
+        }
+        Command commandToExecute = commands.get(commands.size() - 1);
+        if(commandToExecute.getStatus() == CommandStatus.WAITING) {
+            if (commandToExecute instanceof RemoveCommand && commands.size() > 1) {
+                undoneCommandByIndex(commands.size() - 2);
             }
             commandToExecute.execute();
-            commandStatusList.set(commandStatusList.size()-1, CommandStatus.DONE);
+            commandToExecute.setStatus(CommandStatus.DONE);
         }
-        else {
+        else{
             throw new IndexOutOfBoundsException("No command to execute");
         }
     }
 
-    public void undoneLastCommand(){
-        if(commands.size() == 1) {
+    public void undoneCommandByIndex(int index){
+        if(index < 0 || index >= commands.size()) {
             throw new IndexOutOfBoundsException("No command to undo");
         }
-        Command commandToUndo = commands.get(commands.size() - 2);
-        CommandStatus commandToUndoStatus = commandStatusList.get(commandStatusList.size() - 2);
-        if((commandToUndoStatus == CommandStatus.DONE) && !(commandToUndo instanceof RemoveCommand) ) {
-            commandStatusList.set(commandStatusList.size() - 2, CommandStatus.UNDONE);
+        Command commandToUndo = commands.get(index);
+        if(commandToUndo.getStatus() == CommandStatus.DONE) {
+            if (!(commandToUndo instanceof RemoveCommand)) {
+                commandToUndo.setStatus(CommandStatus.UNDONE);
+            }
+            else {
+                undoneCommandByIndex(index - 1);
+            }
         }
+        else if (commandToUndo.getStatus() == CommandStatus.UNDONE){
+            undoneCommandByIndex(index - 1);
+        }
+    }
+
+    public Command getCommand(int index){
+        return commands.get(index);
     }
 
 
