@@ -18,16 +18,11 @@
  */
 package edu.uga.miage.m1.polygons.gui.shapes;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.Rectangle2D;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
-import javax.swing.border.StrokeBorder;
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 /**
  * This class implements the square <tt>SimpleShape</tt> extension.
@@ -35,11 +30,7 @@ import javax.swing.border.StrokeBorder;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class Square implements SimpleShape, Visitable {
-
-    private final int x;
-
-    private final int y;
+public record Square(int x, int y) implements SimpleShape, Visitable {
 
     public Square(int x, int y) {
         this.x = x - 25;
@@ -64,19 +55,8 @@ public class Square implements SimpleShape, Visitable {
     }
 
 
-
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);
-    }
-
-    @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
-    public int getY() {
-        return y;
     }
 }

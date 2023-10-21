@@ -10,13 +10,13 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  */
 public interface Visitor {
 
-    public void visit(Circle circle);
+    void visit(Circle circle);
 
-    public void visit(Square square);
+    void visit(Square square);
 
-    public void visit(Triangle triangle);
+    void visit(Triangle triangle);
 
-    public String getRepresentation();
+    String getRepresentation();
 
-    public String getSchema(int x, int y, String type);
+    String getSchema(int x, int y, String type);
 }

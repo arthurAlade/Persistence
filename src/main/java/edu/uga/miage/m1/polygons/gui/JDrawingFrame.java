@@ -1,7 +1,6 @@
 package edu.uga.miage.m1.polygons.gui;
 
 import edu.uga.miage.m1.polygons.gui.command.AddCommand;
-import edu.uga.miage.m1.polygons.gui.command.Command;
 import edu.uga.miage.m1.polygons.gui.command.CommandList;
 import edu.uga.miage.m1.polygons.gui.command.RemoveCommand;
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
@@ -15,9 +14,8 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.Serial;
 import java.util.*;
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * This class represents the main application class, which is a JFrame subclass
@@ -32,6 +30,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         SQUARE, TRIANGLE, CIRCLE
     }
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final JToolBar mToolbar;
@@ -42,26 +41,20 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private final JLabel mLabel;
 
-    private final ActionListener mReusableActionListener = new ShapeActionListener();
-
-    private final JButton mXmlButton;
-    private final JButton mJsonButton;
-    private final JButton mRemoveButton;
+    private final transient ActionListener mReusableActionListener = new ShapeActionListener();
 
     private final ArrayList<Visitable> mVisitablesList = new ArrayList<>();
     private final ArrayList<SimpleShape> mShapesList = new ArrayList<>();
-    private final Logger logger = Logger.getLogger(JDrawingFrame.class.getName());
 
     /**
      * Tracks buttons to manage the background.
      */
     private final Map<Shapes, JButton> mButtons = new HashMap<>();
 
-    private final CommandList commandList = new CommandList();
+    private final transient CommandList commandList = new CommandList();
 
     /**
      * Default constructor that populates the main window.
-     * @param frameName
      */
     public JDrawingFrame(String frameName) {
         super(frameName);
@@ -75,9 +68,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         mPanel.addMouseMotionListener(this);
         mLabel = new JLabel(" ", SwingConstants.LEFT);
 
-        mXmlButton = new JButton("XML");
-        mJsonButton = new JButton("JSON");
-        mRemoveButton = new JButton("Remove - Crtl + Z");
+        JButton mXmlButton = new JButton("XML");
+        JButton mJsonButton = new JButton("JSON");
+        JButton mRemoveButton = new JButton("Remove - Crtl + Z");
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
@@ -168,7 +161,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                     mShapesList.add(square);
                     break;
                 default:
-                    logger.severe("No shape named " + mSelected);
+                    throw new IllegalStateException("Unexpected value: " + mSelected);
             }
         }
     }
@@ -250,13 +243,11 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         public void actionPerformed(ActionEvent evt) {
             // Itère sur tous les boutons
-            Iterator<Shapes> keys = mButtons.keySet().iterator();
-            while (keys.hasNext()) {
-                Shapes shape = keys.next();
-                JButton btn = mButtons.get(shape);
+            for (Map.Entry<Shapes, JButton> shape : mButtons.entrySet()) {
+                JButton btn = mButtons.get(shape.getKey());
                 if (evt.getActionCommand().equals(shape.toString())) {
                     btn.setBorderPainted(true);
-                    mSelected = shape;
+                    mSelected = shape.getKey();
                 } else {
                     btn.setBorderPainted(false);
                 }
@@ -265,7 +256,4 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
 
-    public Graphics2D getGraphics2D() {
-        return (Graphics2D) mPanel.getGraphics();
-    }
 }

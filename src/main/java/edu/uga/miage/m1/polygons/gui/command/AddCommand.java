@@ -5,8 +5,8 @@ import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 import java.awt.*;
 
 public class AddCommand implements Command{
-    private SimpleShape shape;
-    private Graphics2D g2;
+    private final SimpleShape shape;
+    private final Graphics2D g2;
     private CommandStatus status;
 
     public AddCommand(SimpleShape shape, Graphics2D g2){

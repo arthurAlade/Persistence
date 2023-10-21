@@ -1,16 +1,11 @@
 package test.command;
 
-import edu.uga.miage.m1.polygons.gui.JDrawingFrame;
 import edu.uga.miage.m1.polygons.gui.command.AddCommand;
 import edu.uga.miage.m1.polygons.gui.command.CommandList;
 import edu.uga.miage.m1.polygons.gui.command.CommandStatus;
 import edu.uga.miage.m1.polygons.gui.command.RemoveCommand;
-import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import javax.swing.*;
-import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,9 +30,7 @@ class CommandListTest {
     @Test
     void undoneCommandByIndexThrowsErrorIfIndexIs0(){
         CommandList commandEmptyList = new CommandList();
-         assertThrows(IndexOutOfBoundsException.class, () -> {
-            commandEmptyList.undoneCommandByIndex(-1);
-        });
+         assertThrows(IndexOutOfBoundsException.class, () -> commandEmptyList.undoneCommandByIndex(-1));
     }
 
     @Test
@@ -45,9 +38,7 @@ class CommandListTest {
         CommandList commandListError = new CommandList();
         commandListError.add(addCommandDoned);
 
-         assertThrows(IndexOutOfBoundsException.class, () -> {
-            commandListError.undoneCommandByIndex(1);
-        });
+         assertThrows(IndexOutOfBoundsException.class, () -> commandListError.undoneCommandByIndex(1));
     }
 
     @Test

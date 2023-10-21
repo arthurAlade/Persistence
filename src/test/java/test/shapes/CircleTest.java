@@ -18,8 +18,8 @@ class CircleTest {
         Circle circle = new Circle(coord, coord);
 
 
-        assertEquals(coord-25, circle.getX());
-        assertEquals(coord-25, circle.getY());
+        assertEquals(coord-25, circle.x());
+        assertEquals(coord-25, circle.y());
     }
 
     @Test
@@ -31,8 +31,8 @@ class CircleTest {
         assertNotNull(circle);
 
         // Assert that the Circle object has the correct x and y coordinates.
-        assertEquals(100-25, circle.getX());
-        assertEquals(100-25, circle.getY());
+        assertEquals(100-25, circle.x());
+        assertEquals(100-25, circle.y());
     }
 
     @Test
@@ -42,8 +42,8 @@ class CircleTest {
         Circle circle = new Circle(coord, coord);
 
 
-        assertEquals((circle.getX()), coord-25);
-        assertEquals((circle.getY()), coord-25);
+        assertEquals((circle.x()), coord-25);
+        assertEquals((circle.y()), coord-25);
     }
 
 
@@ -54,8 +54,8 @@ class CircleTest {
         Circle circle = new Circle(coord, coord);
 
 
-        assertEquals(coord-25, circle.getX());
-        assertEquals(coord-25, circle.getY());
+        assertEquals(coord-25, circle.x());
+        assertEquals(coord-25, circle.y());
     }
 
     @Test
@@ -69,8 +69,8 @@ class CircleTest {
 
         Circle circle = new Circle(randomNumberX, randomNumberY);
 
-        assertEquals(randomNumberX-25, circle.getX());
-        assertEquals(randomNumberY-25, circle.getY());
+        assertEquals(randomNumberX-25, circle.x());
+        assertEquals(randomNumberY-25, circle.y());
     }
 
     @Test

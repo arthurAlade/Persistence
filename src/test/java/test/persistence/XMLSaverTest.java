@@ -38,9 +38,5 @@ class XMLSaverTest {
         assertEquals(expected, result);
     }
 
-    @Test
-    void saveJSON() {
-    //TODO
-    }
 }
 

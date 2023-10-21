@@ -27,11 +27,7 @@ import java.awt.geom.Ellipse2D;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
-public class Circle implements SimpleShape, Visitable {
-
-    private final int x;
-
-    private final int y;
+public record Circle(int x, int y) implements SimpleShape, Visitable {
 
     public Circle(int x, int y) {
         this.x = x - 25;
@@ -41,11 +37,12 @@ public class Circle implements SimpleShape, Visitable {
     /**
      * Implements the <tt>SimpleShape.draw()</tt> method for painting
      * the shape.
+     *
      * @param g2 The graphics object used for painting.
      */
-    public void draw(Graphics2D g2){
+    public void draw(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        GradientPaint gradient = new GradientPaint( x, y, Color.RED,  (x + 50), y, Color.WHITE);
+        GradientPaint gradient = new GradientPaint(x, y, Color.RED, (x + 50), y, Color.WHITE);
         g2.setPaint(gradient);
         g2.fill(new Ellipse2D.Double(x, y, 50, 50));
         BasicStroke wideStroke = new BasicStroke(2.0f);
@@ -59,13 +56,5 @@ public class Circle implements SimpleShape, Visitable {
     // Accepte un visiteur
     public void accept(Visitor visitor) {
         visitor.visit(this);
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 }

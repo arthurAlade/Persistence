@@ -41,8 +41,4 @@ class JSONSaverTest {
         assertEquals(expected, result);
     }
 
-    @Test
-    void saveJSON() {
-    //TODO
-    }
 }
