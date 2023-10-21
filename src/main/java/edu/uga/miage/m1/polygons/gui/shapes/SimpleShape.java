@@ -17,7 +17,7 @@ public interface SimpleShape {
     void draw(Graphics2D g2);
 
 
-    int getX();
+    int x();
 
-    int getY();
+    int y();
 }
