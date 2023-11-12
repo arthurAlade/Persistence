@@ -243,11 +243,12 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         public void actionPerformed(ActionEvent evt) {
             // Itère sur tous les boutons
-            for (Map.Entry<Shapes, JButton> shape : mButtons.entrySet()) {
-                JButton btn = mButtons.get(shape.getKey());
+            for (Map.Entry<Shapes, JButton> shapesJButtonEntry : mButtons.entrySet()) {
+                Shapes shape = shapesJButtonEntry.getKey();
+                JButton btn = mButtons.get(shape);
                 if (evt.getActionCommand().equals(shape.toString())) {
                     btn.setBorderPainted(true);
-                    mSelected = shape.getKey();
+                    mSelected = shape;
                 } else {
                     btn.setBorderPainted(false);
                 }
