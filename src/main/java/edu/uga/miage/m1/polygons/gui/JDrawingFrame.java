@@ -70,7 +70,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         JButton mXmlButton = new JButton("XML");
         JButton mJsonButton = new JButton("JSON");
-        JButton mRemoveButton = new JButton("Undo");
+        JButton mUndoButton = new JButton("Undo");
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
@@ -94,7 +94,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             }
         });
 
-        mRemoveButton.addActionListener(e -> {
+        mUndoButton.addActionListener(e -> {
             commandList.add(new RemoveCommand(this));
             commandList.executeLastCommand();
         });
@@ -111,7 +111,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
-        addButtonToToolbar(mRemoveButton);
+        addButtonToToolbar(mUndoButton);
         setPreferredSize(new Dimension(400, 400));
     }
 
