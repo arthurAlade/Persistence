@@ -19,12 +19,14 @@ public class JSONSaver extends Saver {
         addToSave(new StringBuilder("]}"));
     }
 
-    public void saveJSON() {
+    public boolean saveJSON() {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("save.json"))) {
             writer.write(String.valueOf(getSave()));
         } catch (IOException e) {
             logger.log(java.util.logging.Level.SEVERE, "Error while saving JSON file", e);
+            return false;
         }
+        return true;
     }
 }

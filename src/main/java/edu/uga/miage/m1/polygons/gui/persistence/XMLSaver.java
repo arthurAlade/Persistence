@@ -19,13 +19,14 @@ public class XMLSaver extends Saver{
         addShapes(true);
         addToSave(new StringBuilder("</shapes>"));
     }
-    public void saveXML(){
+    public boolean saveXML(){
 
         try(BufferedWriter writer = new BufferedWriter(new FileWriter("save.xml"))) {
             writer.write(String.valueOf(getSave()));
         } catch (IOException e) {
             logger.log(java.util.logging.Level.SEVERE, "Error while saving XML file", e);
+            return false;
         }
-
+        return true;
     }
 }

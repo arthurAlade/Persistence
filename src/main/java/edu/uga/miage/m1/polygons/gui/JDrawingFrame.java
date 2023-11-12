@@ -70,18 +70,28 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         JButton mXmlButton = new JButton("XML");
         JButton mJsonButton = new JButton("JSON");
-        JButton mRemoveButton = new JButton("Remove - Crtl + Z");
+        JButton mRemoveButton = new JButton("Undo");
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
             XMLSaver xmlSaver = new XMLSaver(mVisitablesList);
             xmlSaver.saveShapes();
-            xmlSaver.saveXML();
+            boolean isSaved = xmlSaver.saveXML();
+            if (isSaved) {
+                JOptionPane.showMessageDialog(this, "File saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error while saving file", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
         mJsonButton.addActionListener(e -> {
             JSONSaver jsonSaver = new JSONSaver(mVisitablesList);
             jsonSaver.saveShapes();
-            jsonSaver.saveJSON();
+            boolean isSaved = jsonSaver.saveJSON();
+            if (isSaved) {
+                JOptionPane.showMessageDialog(this, "File saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error while saving file", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         mRemoveButton.addActionListener(e -> {
