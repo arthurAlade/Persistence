@@ -14,7 +14,7 @@ public class RemoveCommand implements Command{
 
     @Override
     public void execute() {
-        frame.removeLastShape();
+        frame.removeShape(frame.getShapesListSize()-1);
     }
 
     public CommandStatus getStatus(){

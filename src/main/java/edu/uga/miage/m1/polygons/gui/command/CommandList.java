@@ -23,15 +23,24 @@ public class CommandList {
         if (commands.isEmpty()){
             throw new IndexOutOfBoundsException("No command to execute");
         }
+
         Command commandToExecute = commands.get(commands.size() - 1);
         if(commandToExecute.getStatus() == CommandStatus.WAITING) {
             if (commandToExecute instanceof RemoveCommand && commands.size() > 1) {
                 undoneCommandByIndex(commands.size() - 2);
             }
+
+            commandToExecute.execute();
+
+            if (commandToExecute instanceof MoveCommand){
+                commandToExecute.setStatus(CommandStatus.PENDING);
+            }else{
+                commandToExecute.setStatus(CommandStatus.DONE);
+            }
+        } else if (commandToExecute.getStatus() == CommandStatus.PENDING) {
             commandToExecute.execute();
             commandToExecute.setStatus(CommandStatus.DONE);
-        }
-        else{
+        } else{
             throw new IndexOutOfBoundsException("No command to execute");
         }
     }
@@ -56,6 +65,10 @@ public class CommandList {
 
     public Command getCommand(int index){
         return commands.get(index);
+    }
+
+    public int size(){
+        return commands.size();
     }
 
 

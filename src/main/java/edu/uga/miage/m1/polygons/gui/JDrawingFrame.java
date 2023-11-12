@@ -1,8 +1,6 @@
 package edu.uga.miage.m1.polygons.gui;
 
-import edu.uga.miage.m1.polygons.gui.command.AddCommand;
-import edu.uga.miage.m1.polygons.gui.command.CommandList;
-import edu.uga.miage.m1.polygons.gui.command.RemoveCommand;
+import edu.uga.miage.m1.polygons.gui.command.*;
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
@@ -25,9 +23,9 @@ import java.util.*;
  */
 public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionListener {
 
-    private enum Shapes {
+    private enum EditButton {
 
-        SQUARE, TRIANGLE, CIRCLE
+        SQUARE, TRIANGLE, CIRCLE, MOVE
     }
 
     @Serial
@@ -35,7 +33,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private final JToolBar mToolbar;
 
-    private Shapes mSelected;
+    private EditButton mSelected;
 
     private final JPanel mPanel;
 
@@ -49,9 +47,11 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     /**
      * Tracks buttons to manage the background.
      */
-    private final Map<Shapes, JButton> mButtons = new HashMap<>();
+    private final Map<EditButton, JButton> mButtons = new HashMap<>();
 
     private final transient CommandList commandList = new CommandList();
+
+    private SimpleShape shapeToMove;
 
     /**
      * Default constructor that populates the main window.
@@ -105,9 +105,10 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         add(mPanel, BorderLayout.CENTER);
         add(mLabel, BorderLayout.SOUTH);
         // Add shapes in the menu
-        addShape(Shapes.SQUARE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/square.png"))));
-        addShape(Shapes.TRIANGLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/triangle.png"))));
-        addShape(Shapes.CIRCLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/circle.png"))));
+        addShape(EditButton.SQUARE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/square.png"))));
+        addShape(EditButton.TRIANGLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/triangle.png"))));
+        addShape(EditButton.CIRCLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/circle.png"))));
+        addShape(EditButton.MOVE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/move.png"))));
 
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
@@ -126,7 +127,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param shape The shape to inject.
      * @param icon The icon associated with the injected <tt>SimpleShape</tt>.
      */
-    private void addShape(Shapes shape, ImageIcon icon) {
+    private void addShape(EditButton shape, ImageIcon icon) {
         JButton button = new JButton(icon);
         button.setBorderPainted(false);
         mButtons.put(shape, button);
@@ -151,24 +152,18 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             switch(mSelected) {
                 case CIRCLE:
                     Circle circle = new Circle(evt.getX(), evt.getY());
-                    commandList.add(new AddCommand(circle, g2));
-                    commandList.executeLastCommand();
-                    mVisitablesList.add(circle);
-                    mShapesList.add(circle);
+                    addShape(circle, g2);
                     break;
                 case TRIANGLE:
                     Triangle triangle = new Triangle(evt.getX(), evt.getY());
-                    commandList.add(new AddCommand(triangle, g2));
-                    commandList.executeLastCommand();
-                    mVisitablesList.add(triangle);
-                    mShapesList.add(triangle);
+                    addShape(triangle, g2);
                     break;
                 case SQUARE:
                     Square square = new Square(evt.getX(), evt.getY());
-                    commandList.add(new AddCommand(square, g2));
-                    commandList.executeLastCommand();
-                    mVisitablesList.add(square);
-                    mShapesList.add(square);
+                    addShape(square, g2);
+                    break;
+                case MOVE:
+                    moveShape(evt, g2);
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + mSelected);
@@ -176,14 +171,62 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
 
-    public void removeLastShape() {
+    private void addShape(SimpleShape shape, Graphics2D g2) {
+        commandList.add(new AddCommand(shape, g2));
+        commandList.executeLastCommand();
+        mVisitablesList.add((Visitable) shape);
+        mShapesList.add(shape);
+    }
+
+    private void moveShape(MouseEvent evt, Graphics2D g2) {
+        if(shapeToMove == null) {
+            boolean isShapeSelected = false;
+            for (SimpleShape shape : mShapesList) {
+                int x = evt.getX() - shape.getX();
+                int y = evt.getY() - shape.getY();
+                if (x >= 0 && x <= 50 && y >= 0 && y <= 50) {
+                    shapeToMove = shape;
+                    isShapeSelected = true;
+                    break;
+                }
+            }
+            if (isShapeSelected) {
+                commandList.add(new MoveCommand(shapeToMove, g2, this));
+                commandList.executeLastCommand();
+            }
+        }
+        else{
+            shapeToMove.setX(evt.getX()-25);
+            shapeToMove.setY(evt.getY()-25);
+            Command command = commandList.getCommand(commandList.size() - 1);
+            if (command instanceof MoveCommand){
+                ((MoveCommand) command).setShape(shapeToMove);
+            }
+            commandList.executeLastCommand();
+            mVisitablesList.add((Visitable) shapeToMove);
+            mShapesList.add(shapeToMove);
+            shapeToMove = null;
+        }
+    }
+
+    public void removeShape(int index) {
         if (!mVisitablesList.isEmpty()) {
-            mVisitablesList.remove(mVisitablesList.size() - 1);
-            mShapesList.remove(mShapesList.size() - 1);
+            mVisitablesList.remove(index);
+            mShapesList.remove(index);
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
             g2.clearRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
+            g2.setColor(Color.WHITE);
+            g2.fillRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
             mShapesList.forEach(shape -> shape.draw(g2));
         }
+    }
+
+    public int getShapesListSize() {
+        return mShapesList.size();
+    }
+
+    public int getShapesListIndex(SimpleShape shape) {
+        return mShapesList.indexOf(shape);
     }
 
 
@@ -253,8 +296,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         public void actionPerformed(ActionEvent evt) {
             // Itère sur tous les boutons
-            for (Map.Entry<Shapes, JButton> shapesJButtonEntry : mButtons.entrySet()) {
-                Shapes shape = shapesJButtonEntry.getKey();
+            for (Map.Entry<EditButton, JButton> shapesJButtonEntry : mButtons.entrySet()) {
+                EditButton shape = shapesJButtonEntry.getKey();
                 JButton btn = mButtons.get(shape);
                 if (evt.getActionCommand().equals(shape.toString())) {
                     btn.setBorderPainted(true);
