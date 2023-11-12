@@ -30,7 +30,9 @@ import java.awt.geom.Rectangle2D;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public record Square(int x, int y) implements SimpleShape, Visitable {
+public class Square implements SimpleShape, Visitable {
+    private int x;
+    private int y;
 
     public Square(int x, int y) {
         this.x = x - 25;
@@ -58,5 +60,21 @@ public record Square(int x, int y) implements SimpleShape, Visitable {
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 }

@@ -20,18 +20,18 @@ public class JSonVisitor implements Visitor {
     }
     @Override
     public void visit(Circle circle) {
-        this.representation = getSchema(circle.x(), circle.y(), "circle");
+        this.representation = getSchema(circle.getX(), circle.getY(), "circle");
 
     }
 
     @Override
     public void visit(Square square) {
-        this.representation = getSchema(square.x(), square.y(), "square");
+        this.representation = getSchema(square.getX(), square.getY(), "square");
     }
 
     @Override
     public void visit(Triangle triangle) {
-        this.representation = getSchema(triangle.x(), triangle.y(), "triangle");
+        this.representation = getSchema(triangle.getX(), triangle.getY(), "triangle");
     }
 
     /**
