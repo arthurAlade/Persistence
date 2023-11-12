@@ -18,8 +18,8 @@ class SquareTest {
         Square square = new Square(coord, coord);
 
 
-        assertEquals(coord-25, square.x());
-        assertEquals(coord-25, square.y());
+        assertEquals(coord-25, square.getX());
+        assertEquals(coord-25, square.getY());
     }
 
     @Test
@@ -31,8 +31,8 @@ class SquareTest {
         assertNotNull(square);
 
         // Assert that the Square object has the correct x and y coordinates.
-        assertEquals(100-25, square.x());
-        assertEquals(100-25, square.y());
+        assertEquals(100-25, square.getX());
+        assertEquals(100-25, square.getY());
     }
 
     @Test
@@ -42,8 +42,8 @@ class SquareTest {
         Square square = new Square(coord, coord);
 
 
-        assertEquals((square.x()), coord-25);
-        assertEquals((square.y()), coord-25);
+        assertEquals((square.getX()), coord-25);
+        assertEquals((square.getY()), coord-25);
     }
 
 
@@ -54,8 +54,8 @@ class SquareTest {
         Square square = new Square(coord, coord);
 
 
-        assertEquals(coord-25, square.x());
-        assertEquals(coord-25, square.y());
+        assertEquals(coord-25, square.getX());
+        assertEquals(coord-25, square.getY());
     }
 
     @Test
@@ -69,8 +69,8 @@ class SquareTest {
 
         Square square = new Square(randomNumberX, randomNumberY);
 
-        assertEquals(randomNumberX-25, square.x());
-        assertEquals(randomNumberY-25, square.y());
+        assertEquals(randomNumberX-25, square.getX());
+        assertEquals(randomNumberY-25, square.getY());
     }
 
     @Test
