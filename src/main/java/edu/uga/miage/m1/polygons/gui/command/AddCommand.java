@@ -32,7 +32,7 @@ public class AddCommand implements Command{
     @Override
     public boolean undo() {
         try{
-            frame.removeShape(frame.getShapesListSize()-1);
+            frame.removeShape(frame.getShapesListIndex(shape));
         }catch (Exception e){
             return false;
         }

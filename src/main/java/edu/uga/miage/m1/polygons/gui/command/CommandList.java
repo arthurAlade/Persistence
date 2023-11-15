@@ -66,6 +66,7 @@ public class CommandList {
             default:
                 throw new IllegalStateException("Unexpected value: " + status);
         }
+
     }
 
     public Command getCommand(int index){

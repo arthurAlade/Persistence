@@ -14,11 +14,18 @@ public class MoveCommand implements Command{
     private final Graphics2D g2;
     private final JDrawingFrame frame;
 
+    private final int xFrom, yFrom;
+    private int xTo, yTo;
+
     public MoveCommand(SimpleShape shape, Graphics2D g2, JDrawingFrame frame){
         this.shape = shape;
         this.g2 = g2;
         this.frame = frame;
         this.status = CommandStatus.WAITING;
+        this.xFrom = shape.getX();
+        this.yFrom = shape.getY();
+        this.xTo = 0;
+        this.yTo = 0;
     }
 
 
@@ -26,11 +33,16 @@ public class MoveCommand implements Command{
     @Override
     public boolean execute() {
         try{
+            frame.printList("Start move");
             if (status == CommandStatus.PENDING){
+                this.xTo = shape.getX();
+                this.yTo = shape.getY();
                 shape.draw(g2);
+                frame.addShapeToList(shape);
             }else {
                 frame.removeShape(frame.getShapesListIndex(shape));
             }
+            frame.printList("End move");
         }catch (Exception e){
             return false;
         }
@@ -40,7 +52,11 @@ public class MoveCommand implements Command{
     @Override
     public boolean undo() {
         try{
-            //TODO
+            shape.setX(xFrom);
+            shape.setY(yFrom);
+            frame.removeShape(frame.getShapesListIndex(shape));
+            shape.draw(g2);
+            frame.addShapeToList(shape);
         }catch (Exception e){
             return false;
         }

@@ -170,9 +170,13 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
 
-    private void addShape(SimpleShape shape, Graphics2D g2) {
+    public void addShape(SimpleShape shape, Graphics2D g2) {
         commandList.add(new AddCommand(shape, g2, this));
         commandList.executeLastCommand();
+        addShapeToList(shape);
+    }
+
+    public void addShapeToList(SimpleShape shape) {
         mVisitablesList.add((Visitable) shape);
         mShapesList.add(shape);
     }
@@ -202,8 +206,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                 ((MoveCommand) command).setShape(shapeToMove);
             }
             commandList.executeLastCommand();
-            mVisitablesList.add((Visitable) shapeToMove);
-            mShapesList.add(shapeToMove);
             shapeToMove = null;
         }
     }
@@ -218,6 +220,11 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             g2.fillRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
             mShapesList.forEach(shape -> shape.draw(g2));
         }
+    }
+
+    public void printList(String a){
+        System.out.println("Liste des formes "+a+", size :"+mShapesList.size());
+        mShapesList.forEach(shape -> System.out.println(shape.toString()));
     }
 
     public int getShapesListSize() {
