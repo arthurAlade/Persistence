@@ -8,14 +8,12 @@ import java.awt.*;
 public class MoveCommand implements Command{
     private CommandStatus status;
 
-
-
     private SimpleShape shape;
     private final Graphics2D g2;
     private final JDrawingFrame frame;
 
     private final int xFrom, yFrom;
-    private int xTo, yTo;
+
 
     public MoveCommand(SimpleShape shape, Graphics2D g2, JDrawingFrame frame){
         this.shape = shape;
@@ -24,8 +22,6 @@ public class MoveCommand implements Command{
         this.status = CommandStatus.WAITING;
         this.xFrom = shape.getX();
         this.yFrom = shape.getY();
-        this.xTo = 0;
-        this.yTo = 0;
     }
 
 
@@ -35,8 +31,6 @@ public class MoveCommand implements Command{
         try{
             frame.printList("Start move");
             if (status == CommandStatus.PENDING){
-                this.xTo = shape.getX();
-                this.yTo = shape.getY();
                 shape.draw(g2);
                 frame.addShapeToList(shape);
             }else {
