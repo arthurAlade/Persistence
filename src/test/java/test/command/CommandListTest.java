@@ -3,7 +3,8 @@ package test.command;
 import edu.uga.miage.m1.polygons.gui.command.AddCommand;
 import edu.uga.miage.m1.polygons.gui.command.CommandList;
 import edu.uga.miage.m1.polygons.gui.command.CommandStatus;
-import edu.uga.miage.m1.polygons.gui.command.RemoveCommand;
+import edu.uga.miage.m1.polygons.gui.command.MoveCommand;
+import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,17 +15,20 @@ class CommandListTest {
     CommandList commandList;
     AddCommand addCommandDoned;
     AddCommand addCommandUndoned;
-    RemoveCommand removeCommand;
+
+    MoveCommand moveCommand;
+
 
     @BeforeEach
     void setUp() {
         commandList = new CommandList();
-        addCommandDoned = new AddCommand(null, null, frame);
+        addCommandDoned = new AddCommand(null, null, null);
         addCommandDoned.setStatus(CommandStatus.DONE);
-        removeCommand = new RemoveCommand(null);
 
-        addCommandUndoned = new AddCommand(null, null, frame);
+        addCommandUndoned = new AddCommand(null, null, null);
         addCommandUndoned.setStatus(CommandStatus.UNDONE);
+
+        moveCommand = new MoveCommand(new Circle(0, 0), null, null);
     }
 
     @Test
@@ -44,7 +48,6 @@ class CommandListTest {
     @Test
     void undoneCommandByIndex(){
         commandList.add(addCommandDoned);
-        commandList.add(removeCommand);
 
         commandList.undoneCommandByIndex(0);
         assertEquals(CommandStatus.UNDONE, commandList.getCommand(0).getStatus());
@@ -54,12 +57,8 @@ class CommandListTest {
     void undoneCommandByIndexRecursive(){
         commandList.add(addCommandDoned);
         commandList.add(addCommandUndoned);
-        removeCommand.setStatus(CommandStatus.DONE);
-        commandList.add(removeCommand);
 
-        RemoveCommand remove = new RemoveCommand(null);
-        commandList.add(remove);
-        commandList.undoneCommandByIndex(2);
+        commandList.undoneLastCommand();
 
         assertEquals(CommandStatus.UNDONE, commandList.getCommand(0).getStatus());
     }
@@ -76,9 +75,20 @@ class CommandListTest {
         assertThrows(IndexOutOfBoundsException.class, commandList::executeLastCommand);
     }
 
+    @Test
+    void executeMoveCommand(){
+        commandList.add(moveCommand);
+        commandList.executeLastCommand();
+        assertEquals(CommandStatus.PENDING, commandList.getCommand(0).getStatus());
+        commandList.executeLastCommand();
+        assertEquals(CommandStatus.DONE, commandList.getCommand(0).getStatus());
+    }
 
 
-    
+
+
+
+
 
 
 
