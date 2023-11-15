@@ -95,8 +95,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         });
 
         mUndoButton.addActionListener(e -> {
-            commandList.add(new RemoveCommand(this));
-            commandList.executeLastCommand();
+            commandList.undoneLastCommand();
         });
 
         // Fills the panel
@@ -172,7 +171,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     private void addShape(SimpleShape shape, Graphics2D g2) {
-        commandList.add(new AddCommand(shape, g2));
+        commandList.add(new AddCommand(shape, g2, this));
         commandList.executeLastCommand();
         mVisitablesList.add((Visitable) shape);
         mShapesList.add(shape);

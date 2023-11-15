@@ -19,11 +19,11 @@ class CommandListTest {
     @BeforeEach
     void setUp() {
         commandList = new CommandList();
-        addCommandDoned = new AddCommand(null, null);
+        addCommandDoned = new AddCommand(null, null, frame);
         addCommandDoned.setStatus(CommandStatus.DONE);
         removeCommand = new RemoveCommand(null);
 
-        addCommandUndoned = new AddCommand(null, null);
+        addCommandUndoned = new AddCommand(null, null, frame);
         addCommandUndoned.setStatus(CommandStatus.UNDONE);
     }
 

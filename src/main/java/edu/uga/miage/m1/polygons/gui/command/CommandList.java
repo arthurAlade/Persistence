@@ -9,6 +9,7 @@ public class CommandList {
     - WAITING : insert in commands but not executed
     - DONE : executed
     - UNDONE : executed and reversed (Ctrl - Z)
+    - PENDING : command is started but not finished
      */
 
     public CommandList() {
@@ -26,9 +27,6 @@ public class CommandList {
 
         Command commandToExecute = commands.get(commands.size() - 1);
         if(commandToExecute.getStatus() == CommandStatus.WAITING) {
-            if (commandToExecute instanceof RemoveCommand && commands.size() > 1) {
-                undoneCommandByIndex(commands.size() - 2);
-            }
 
             commandToExecute.execute();
 
@@ -45,21 +43,28 @@ public class CommandList {
         }
     }
 
+    public void undoneLastCommand(){
+        undoneCommandByIndex(commands.size() - 1);
+    }
+
     public void undoneCommandByIndex(int index){
         if(index < 0 || index >= commands.size()) {
             throw new IndexOutOfBoundsException("No command to undo");
         }
         Command commandToUndo = commands.get(index);
-        if(commandToUndo.getStatus() == CommandStatus.DONE) {
-            if (!(commandToUndo instanceof RemoveCommand)) {
+        CommandStatus status = commandToUndo.getStatus();
+        switch (status){
+            case DONE, PENDING:
+                commandToUndo.undo();
                 commandToUndo.setStatus(CommandStatus.UNDONE);
-            }
-            else {
+                break;
+            case UNDONE:
                 undoneCommandByIndex(index - 1);
-            }
-        }
-        else if (commandToUndo.getStatus() == CommandStatus.UNDONE){
-            undoneCommandByIndex(index - 1);
+                break;
+            case WAITING:
+                throw new IndexOutOfBoundsException("No command to undo");
+            default:
+                throw new IllegalStateException("Unexpected value: " + status);
         }
     }
 

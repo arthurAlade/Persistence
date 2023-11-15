@@ -24,12 +24,27 @@ public class MoveCommand implements Command{
 
 
     @Override
-    public void execute() {
-        if (status == CommandStatus.PENDING){
-            shape.draw(g2);
-        }else {
-            frame.removeShape(frame.getShapesListIndex(shape));
+    public boolean execute() {
+        try{
+            if (status == CommandStatus.PENDING){
+                shape.draw(g2);
+            }else {
+                frame.removeShape(frame.getShapesListIndex(shape));
+            }
+        }catch (Exception e){
+            return false;
         }
+        return true;
+    }
+
+    @Override
+    public boolean undo() {
+        try{
+            //TODO
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     @Override
