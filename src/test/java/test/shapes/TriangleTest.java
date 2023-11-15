@@ -18,8 +18,8 @@ class TriangleTest {
         Triangle triangle = new Triangle(coord, coord);
 
 
-        assertEquals(coord-25, triangle.x());
-        assertEquals(coord-25, triangle.y());
+        assertEquals(coord-25, triangle.getX());
+        assertEquals(coord-25, triangle.getY());
     }
 
     @Test
@@ -31,8 +31,8 @@ class TriangleTest {
         assertNotNull(triangle);
 
         // Assert that the Triangle object has the correct x and y coordinates.
-        assertEquals(100-25, triangle.x());
-        assertEquals(100-25, triangle.y());
+        assertEquals(100-25, triangle.getX());
+        assertEquals(100-25, triangle.getY());
     }
 
     @Test
@@ -42,8 +42,8 @@ class TriangleTest {
         Triangle triangle = new Triangle(coord, coord);
 
 
-        assertEquals((triangle.x()), coord-25);
-        assertEquals((triangle.y()), coord-25);
+        assertEquals((triangle.getX()), coord-25);
+        assertEquals((triangle.getY()), coord-25);
     }
 
 
@@ -54,8 +54,8 @@ class TriangleTest {
         Triangle triangle = new Triangle(coord, coord);
 
 
-        assertEquals(coord-25, triangle.x());
-        assertEquals(coord-25, triangle.y());
+        assertEquals(coord-25, triangle.getX());
+        assertEquals(coord-25, triangle.getY());
     }
 
     @Test
@@ -69,8 +69,8 @@ class TriangleTest {
 
         Triangle triangle = new Triangle(randomNumberX, randomNumberY);
 
-        assertEquals(randomNumberX-25, triangle.x());
-        assertEquals(randomNumberY-25, triangle.y());
+        assertEquals(randomNumberX-25, triangle.getX());
+        assertEquals(randomNumberY-25, triangle.getY());
     }
 
     @Test
