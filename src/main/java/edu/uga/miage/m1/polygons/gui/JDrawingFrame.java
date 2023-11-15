@@ -201,10 +201,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         else{
             shapeToMove.setX(evt.getX()-25);
             shapeToMove.setY(evt.getY()-25);
-            Command command = commandList.getCommand(commandList.size() - 1);
-            if (command instanceof MoveCommand){
-                ((MoveCommand) command).setShape(shapeToMove);
-            }
+
             commandList.executeLastCommand();
             shapeToMove = null;
         }
