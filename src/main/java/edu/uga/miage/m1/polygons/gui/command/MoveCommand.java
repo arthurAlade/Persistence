@@ -8,7 +8,7 @@ import java.awt.*;
 public class MoveCommand implements Command{
     private CommandStatus status;
 
-    private SimpleShape shape;
+    private final SimpleShape shape;
     private final Graphics2D g2;
     private final JDrawingFrame frame;
 
@@ -67,8 +67,5 @@ public class MoveCommand implements Command{
         this.status = status;
     }
 
-    public void setShape(SimpleShape shape) {
-        this.shape = shape;
-    }
 
 }
