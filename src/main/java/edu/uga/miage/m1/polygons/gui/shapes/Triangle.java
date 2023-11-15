@@ -34,13 +34,11 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class Triangle implements SimpleShape, Visitable {
-    private int x;
-    private int y;
+public class Triangle extends Shape{
+
 
     public Triangle(int x, int y) {
-        this.x = x - 25;
-        this.y = y - 25;
+        super(x, y);
     }
 
     /**
@@ -51,12 +49,12 @@ public class Triangle implements SimpleShape, Visitable {
      */
     public void draw(Graphics2D g2) {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        GradientPaint gradient = new GradientPaint(x, y, Color.GREEN, (x + 50), y, Color.WHITE);
+        GradientPaint gradient = new GradientPaint(getX(), getY(), Color.GREEN, (getX() + 50), getY(), Color.WHITE);
         g2.setPaint(gradient);
-        int[] xCoords = {x + 25, x, x + 50};
-        int[] yCoords = {y, y + 50, y + 50};
+        int[] xCoords = {getX() + 25, getX(), getX() + 50};
+        int[] yCoords = {getY(), getY() + 50, getY() + 50};
         GeneralPath polygon = new GeneralPath(Path2D.WIND_EVEN_ODD, xCoords.length);
-        polygon.moveTo((x + 25), y);
+        polygon.moveTo((getX() + 25), getY());
         for (int i = 0; i < xCoords.length; i++) {
             polygon.lineTo(xCoords[i], yCoords[i]);
         }
@@ -74,19 +72,4 @@ public class Triangle implements SimpleShape, Visitable {
         visitor.visit(this);
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
 }
