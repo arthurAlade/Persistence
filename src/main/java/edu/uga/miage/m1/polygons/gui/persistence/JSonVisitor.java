@@ -1,38 +1,29 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
+import edu.uga.miage.m1.polygons.gui.shapes.GroupShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 
 /**
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class JSonVisitor implements Visitor {
+public class JSonVisitor extends Visitor {
 
-    private String representation;
 
     public JSonVisitor() {
-        this.representation = null;
+        super();
     }
 
     public String getSchema(int x, int y, String type) {
+
         return "{\n\"type\": \"" + type + "\",\n\"x\": " + x + ",\n\"y\": " + y + "\n}";
     }
-    @Override
-    public void visit(Circle circle) {
-        this.representation = getSchema(circle.getX(), circle.getY(), "circle");
 
+    public String getSchema(int xStart, int yStart, int xEnd, int yEnd, String type){
+            return "{\n\"type\": \"" + type + "\",\n\"xStart\": " + xStart + ",\n\"yStart\": " + yStart + "\",\n\"xEnd\": " + xEnd + ",\n\"yEnd\": " + yEnd +  ",\n\"shapes\": [\n";
     }
 
-    @Override
-    public void visit(Square square) {
-        this.representation = getSchema(square.getX(), square.getY(), "square");
-    }
-
-    @Override
-    public void visit(Triangle triangle) {
-        this.representation = getSchema(triangle.getX(), triangle.getY(), "triangle");
-    }
 
     /**
      * @return the representation in JSon example for a Circle
@@ -49,7 +40,5 @@ public class JSonVisitor implements Visitor {
      * }
      *         </pre>
      */
-    public String getRepresentation() {
-        return representation;
-    }
+
 }

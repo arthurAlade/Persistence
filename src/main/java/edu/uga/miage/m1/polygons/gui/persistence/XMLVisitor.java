@@ -7,30 +7,15 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 /**
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class XMLVisitor implements Visitor {
+public class XMLVisitor extends Visitor {
 
-    private String representation;
 
     public XMLVisitor() {
-        this.representation = null;
+        super();
     }
 
     public String getSchema(int x, int y, String type) {
         return "<shape><type>" + type + "</type><x>" + x + "</x><y>" + y + "</y></shape>";
-    }
-    @Override
-    public void visit(Circle circle) {
-        this.representation = getSchema(circle.getX(), circle.getY(), "circle");
-    }
-
-    @Override
-    public void visit(Square square) {
-        this.representation = getSchema(square.getX(), square.getY(), "square");
-    }
-
-    @Override
-    public void visit(Triangle triangle) {
-        this.representation = getSchema(triangle.getX(), triangle.getY(), "triangle");
     }
 
     /**
@@ -46,7 +31,5 @@ public class XMLVisitor implements Visitor {
      * }
      * </pre>
      */
-    public String getRepresentation() {
-        return representation;
-    }
+
 }

@@ -1,6 +1,7 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
+import edu.uga.miage.m1.polygons.gui.shapes.GroupShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 
@@ -8,15 +9,37 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
  * You must define a method for each type of Visitable.
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public interface Visitor {
+public abstract class Visitor {
+    private String representation;
 
-    void visit(Circle circle);
+    public Visitor() {
+        this.representation = null;
+    }
 
-    void visit(Square square);
+    public void visit(Circle circle) {
+        this.representation = getSchema(circle.getX(), circle.getY(), "circle");
 
-    void visit(Triangle triangle);
+    }
 
-    String getRepresentation();
+    public void visit(Square square) {
+        this.representation = getSchema(square.getX(), square.getY(), "square");
+    }
 
-    String getSchema(int x, int y, String type);
+
+    public void visit(Triangle triangle) {
+        representation = getSchema(triangle.getX(), triangle.getY(), "triangle");
+    }
+
+    public void visit(GroupShape group) {
+        this.representation = getSchema(group.getX(), group.getY(), group.getxEnd(), group.getyEnd(), "groupShape");
+        group.getShapes().forEach(shape -> shape.accept(this));
+
+    }
+
+    public String getRepresentation() {
+        return representation;
+    }
+
+    abstract String getSchema(int x, int y, String type);
+    abstract String getSchema(int xStart, int yStart, int xEnd, int yEnd, String type);
 }

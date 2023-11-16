@@ -4,10 +4,7 @@ import edu.uga.miage.m1.polygons.gui.command.*;
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
-import edu.uga.miage.m1.polygons.gui.shapes.Circle;
-import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
-import edu.uga.miage.m1.polygons.gui.shapes.Square;
-import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
+import edu.uga.miage.m1.polygons.gui.shapes.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +22,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private enum EditButton {
 
-        SQUARE, TRIANGLE, CIRCLE, MOVE
+        SQUARE, TRIANGLE, CIRCLE, MOVE, GROUP
     }
 
     @Serial
@@ -42,7 +39,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     private final transient ActionListener mReusableActionListener = new ShapeActionListener();
 
     private final ArrayList<Visitable> mVisitablesList = new ArrayList<>();
-    private final ArrayList<SimpleShape> mShapesList = new ArrayList<>();
+    private final ArrayList<AbstractShape> mShapesList = new ArrayList<>();
 
     /**
      * Tracks buttons to manage the background.
@@ -51,7 +48,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private final CommandList commandList = new CommandList();
 
-    private SimpleShape shapeToMove;
+    private AbstractShape shapeToMove;
+    private GroupShape groupShapeToDo;
 
     /**
      * Default constructor that populates the main window.
@@ -108,6 +106,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         addShape(EditButton.TRIANGLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/triangle.png"))));
         addShape(EditButton.CIRCLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/circle.png"))));
         addShape(EditButton.MOVE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/move.png"))));
+        addShape(EditButton.GROUP, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/link.png"))));
 
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
@@ -122,9 +121,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     /**
-     * Injects an available <tt>SimpleShape</tt> into the drawing frame.
+     * Injects an available <tt>AbstractShape</tt> into the drawing frame.
      * @param shape The shape to inject.
-     * @param icon The icon associated with the injected <tt>SimpleShape</tt>.
+     * @param icon The icon associated with the injected <tt>AbstractShape</tt>.
      */
     private void addShape(EditButton shape, ImageIcon icon) {
         JButton button = new JButton(icon);
@@ -170,13 +169,13 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
 
-    public void addShape(SimpleShape shape, Graphics2D g2) {
+    public void addShape(AbstractShape shape, Graphics2D g2) {
         commandList.add(new AddCommand(shape, g2, this));
         commandList.executeLastCommand();
         addShapeToList(shape);
     }
 
-    public void addShapeToList(SimpleShape shape) {
+    public void addShapeToList(AbstractShape shape) {
         mVisitablesList.add((Visitable) shape);
         mShapesList.add(shape);
     }
@@ -184,7 +183,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     private void moveShape(MouseEvent evt, Graphics2D g2) {
         if(shapeToMove == null) {
             boolean isShapeSelected = false;
-            for (SimpleShape shape : mShapesList) {
+            for (AbstractShape shape : mShapesList) {
                 int x = evt.getX() - shape.getX();
                 int y = evt.getY() - shape.getY();
                 if (x >= 0 && x <= 50 && y >= 0 && y <= 50) {
@@ -220,7 +219,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     public void printList(String a){
-        System.out.println("Liste des formes "+a+", size :"+mShapesList.size());
         mShapesList.forEach(shape -> System.out.println(shape.toString()));
     }
 
@@ -228,7 +226,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         return mShapesList.size();
     }
 
-    public int getShapesListIndex(SimpleShape shape) {
+    public int getShapesListIndex(AbstractShape shape) {
         return mShapesList.indexOf(shape);
     }
 
@@ -256,7 +254,14 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mousePressed(MouseEvent evt) {
-        // Method not used
+        if (mPanel.contains(evt.getX(), evt.getY())) {
+            Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
+            if (mSelected == EditButton.GROUP) {
+                GroupShape groupShape = new GroupShape(evt.getX()+25, evt.getY()+25);
+                addShape(groupShape, g2);
+                groupShapeToDo = groupShape;
+            }
+        }
     }
 
     /**
@@ -265,7 +270,22 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mouseReleased(MouseEvent evt) {
-      // Method not used
+        if (mSelected == EditButton.GROUP) {
+            ArrayList<AbstractShape> shapesToGroup = new ArrayList<>();
+            mShapesList.forEach(shape -> {
+                if((shape != groupShapeToDo) && (shape.getX()>= groupShapeToDo.getX()) && (shape.getX() <= groupShapeToDo.getxEnd()) && (shape.getY()>= groupShapeToDo.getY()) && (shape.getY() <= groupShapeToDo.getyEnd())){
+                    shapesToGroup.add(shape);
+                }
+            });
+            groupShapeToDo.setShapes(shapesToGroup);
+            groupShapeToDo.setGrouped(true);
+            System.out.println("Grouped");
+            System.out.println(groupShapeToDo.getShapes().size());
+            groupShapeToDo = null;
+
+        }
+
+
     }
 
     /**
