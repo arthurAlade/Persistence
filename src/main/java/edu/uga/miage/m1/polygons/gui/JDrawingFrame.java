@@ -210,7 +210,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     public void removeShape(int index) {
         if (!mShapesList.isEmpty()) {
-            mShapesList.remove(index);
             AbstractShape abstractShape =  mShapesList.remove(index);
             if (abstractShape instanceof GroupShape groupShape) {
                 mShapesList.addAll(groupShape.getShapes());
