@@ -49,7 +49,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      */
     private final Map<EditButton, JButton> mButtons = new HashMap<>();
 
-    private final transient CommandList commandList = new CommandList();
+    private final CommandList commandList = new CommandList();
 
     private SimpleShape shapeToMove;
 

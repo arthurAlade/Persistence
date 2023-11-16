@@ -25,7 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Path2D;
-import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
+
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
 /**
@@ -34,7 +34,7 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class Triangle extends Shape{
+public class Triangle extends AbstractShape {
 
 
     public Triangle(int x, int y) {

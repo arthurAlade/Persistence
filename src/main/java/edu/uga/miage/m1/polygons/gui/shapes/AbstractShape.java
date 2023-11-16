@@ -5,11 +5,11 @@ import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
 import java.awt.*;
 
-public abstract class Shape implements SimpleShape, Visitable {
+public abstract class AbstractShape implements SimpleShape, Visitable {
     private int x;
     private int y;
 
-    public Shape(int x, int y) {
+    public AbstractShape(int x, int y) {
         this.x = x -25;
         this.y = y -25;
     }

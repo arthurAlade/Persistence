@@ -24,10 +24,10 @@ import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
-import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
+
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
-public class Circle extends Shape {
+public class Circle extends AbstractShape {
     public Circle(int x, int y) {
         super(x, y);
     }

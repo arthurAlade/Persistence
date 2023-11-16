@@ -18,7 +18,6 @@
  */
 package edu.uga.miage.m1.polygons.gui.shapes;
 
-import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
 import java.awt.*;
@@ -30,7 +29,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class Square extends Shape {
+public class Square extends AbstractShape {
 
     public Square(int x, int y) {
         super(x, y);
