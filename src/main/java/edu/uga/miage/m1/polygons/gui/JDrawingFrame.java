@@ -38,7 +38,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private final transient ActionListener mReusableActionListener = new ShapeActionListener();
 
-    private final ArrayList<Visitable> mVisitablesList = new ArrayList<>();
+//    private final ArrayList<Visitable> mVisitablesList = new ArrayList<>();
     private final ArrayList<AbstractShape> mShapesList = new ArrayList<>();
 
     /**
@@ -72,7 +72,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
-            XMLSaver xmlSaver = new XMLSaver(mVisitablesList);
+//            XMLSaver xmlSaver = new XMLSaver(mVisitablesList);
+            XMLSaver xmlSaver = new XMLSaver(mShapesList);
             xmlSaver.saveShapes();
             boolean isSaved = xmlSaver.saveXML();
             if (isSaved) {
@@ -82,7 +83,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             }
         });
         mJsonButton.addActionListener(e -> {
-            JSONSaver jsonSaver = new JSONSaver(mVisitablesList);
+            JSONSaver jsonSaver = new JSONSaver(mShapesList);
+//            JSONSaver jsonSaver = new JSONSaver(mVisitablesList);
             jsonSaver.saveShapes();
             boolean isSaved = jsonSaver.saveJSON();
             if (isSaved) {
@@ -176,7 +178,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     public void addShapeToList(AbstractShape shape) {
-        mVisitablesList.add((Visitable) shape);
+//        mVisitablesList.add(shape);
         mShapesList.add(shape);
     }
 
@@ -207,20 +209,26 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     public void removeShape(int index) {
-        if (!mVisitablesList.isEmpty()) {
-            mVisitablesList.remove(index);
+        if (!mShapesList.isEmpty()) {
             mShapesList.remove(index);
+            AbstractShape abstractShape =  mShapesList.remove(index);
+            if (abstractShape instanceof GroupShape groupShape) {
+                mShapesList.addAll(groupShape.getShapes());
+            }
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
             g2.clearRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
             g2.setColor(Color.WHITE);
             g2.fillRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
-            mShapesList.forEach(shape -> shape.draw(g2));
+            mShapesList.forEach(shape -> {
+                shape.draw(g2);
+                if (shape instanceof GroupShape groupShape) {
+                    groupShape.getShapes().forEach(shape1 -> shape1.draw(g2));
+                }
+            });
         }
     }
 
-    public void printList(String a){
-        mShapesList.forEach(shape -> System.out.println(shape.toString()));
-    }
+
 
     public int getShapesListSize() {
         return mShapesList.size();
@@ -271,6 +279,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      */
     public void mouseReleased(MouseEvent evt) {
         if (mSelected == EditButton.GROUP) {
+            groupShapeToDo.setxEnd(evt.getX());
+            groupShapeToDo.setyEnd(evt.getY());
             ArrayList<AbstractShape> shapesToGroup = new ArrayList<>();
             mShapesList.forEach(shape -> {
                 if((shape != groupShapeToDo) && (shape.getX()>= groupShapeToDo.getX()) && (shape.getX() <= groupShapeToDo.getxEnd()) && (shape.getY()>= groupShapeToDo.getY()) && (shape.getY() <= groupShapeToDo.getyEnd())){
@@ -279,10 +289,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             });
             groupShapeToDo.setShapes(shapesToGroup);
             groupShapeToDo.setGrouped(true);
-            System.out.println("Grouped");
-            System.out.println(groupShapeToDo.getShapes().size());
+            mShapesList.removeAll(shapesToGroup);
+            groupShapeToDo.draw((Graphics2D) mPanel.getGraphics());
             groupShapeToDo = null;
-
         }
 
 

@@ -21,7 +21,7 @@ public class JSonVisitor extends Visitor {
     }
 
     public String getSchema(int xStart, int yStart, int xEnd, int yEnd, String type){
-            return "{\n\"type\": \"" + type + "\",\n\"xStart\": " + xStart + ",\n\"yStart\": " + yStart + "\",\n\"xEnd\": " + xEnd + ",\n\"yEnd\": " + yEnd +  ",\n\"shapes\": [\n";
+            return "{\n\"type\": \"" + type + "\",\n\"x\": " + xStart + ",\n\"y\": " + yStart + ",\n\"xEnd\": " + xEnd + ",\n\"yEnd\": " + yEnd +  ",\n\"shapes\": [\n";
     }
 
 

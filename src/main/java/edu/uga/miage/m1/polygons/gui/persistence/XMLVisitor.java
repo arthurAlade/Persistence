@@ -18,6 +18,11 @@ public class XMLVisitor extends Visitor {
         return "<shape><type>" + type + "</type><x>" + x + "</x><y>" + y + "</y></shape>";
     }
 
+    @Override
+    String getSchema(int xStart, int yStart, int xEnd, int yEnd, String type) {
+        return "<shape><type>" + type + "</type><x>" + xStart + "</x><y>" + yStart + "</y><xEnd>" + xEnd + "</xEnd><yEnd>" + yEnd + "</yEnd><shapes>";
+    }
+
     /**
      * @return the representation in JSon example for a Triangle:
      *

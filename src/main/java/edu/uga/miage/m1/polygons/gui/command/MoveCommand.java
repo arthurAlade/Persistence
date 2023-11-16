@@ -30,14 +30,12 @@ public class MoveCommand implements Command{
     @Override
     public boolean execute() {
         try{
-            frame.printList("Start move");
             if (status == CommandStatus.PENDING){
                 shape.draw(g2);
                 frame.addShapeToList(shape);
             }else {
                 frame.removeShape(frame.getShapesListIndex(shape));
             }
-            frame.printList("End move");
         }catch (Exception e){
             return false;
         }

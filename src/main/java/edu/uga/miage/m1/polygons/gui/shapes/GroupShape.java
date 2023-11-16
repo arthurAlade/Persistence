@@ -2,6 +2,7 @@ package edu.uga.miage.m1.polygons.gui.shapes;
 
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
+import javax.swing.border.StrokeBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,12 @@ public class GroupShape extends AbstractShape {
 
     @Override
     public void draw(Graphics2D g2) {
-
+        float[] dashPattern = {5, 5}; // Pattern pour la bordure en trait
+        BasicStroke dashedStroke = new BasicStroke(1, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND, 1.0f, dashPattern, 0);
+        g2.setStroke(dashedStroke);
+        int width = xEnd - getX();
+        int height = yEnd - getY();
+        g2.draw(new Rectangle(getX(), getY(), width, height));
     }
 
     @Override
