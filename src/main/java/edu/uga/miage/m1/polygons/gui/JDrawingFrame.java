@@ -5,6 +5,7 @@ import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
+import edu.uga.miage.m1.polygons.gui.shapes.Cube;
 import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
@@ -166,9 +167,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                     moveShape(evt, g2);
                     break;
                 case CUBE:
-                    CubePanel cube = new CubePanel(100,evt.getX(),evt.getY());
-                    cube.paintComponent(g2);
-                    
+                    Cube cube = new Cube(evt.getX(), evt.getY());
+                    addShape(cube, g2);
+
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + mSelected);
