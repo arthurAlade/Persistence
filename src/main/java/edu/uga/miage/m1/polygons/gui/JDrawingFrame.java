@@ -2,18 +2,15 @@ package edu.uga.miage.m1.polygons.gui;
 
 import edu.uga.miage.m1.polygons.gui.command.*;
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
-import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
-import edu.uga.miage.m1.polygons.gui.shapes.Circle;
-import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
-import edu.uga.miage.m1.polygons.gui.shapes.Square;
-import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
+import edu.uga.miage.m1.polygons.gui.shapes.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serial;
 import java.util.*;
+import java.util.List;
 
 /**
  * This class represents the main application class, which is a JFrame subclass
@@ -25,7 +22,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private enum EditButton {
 
-        SQUARE, TRIANGLE, CIRCLE, MOVE
+        SQUARE, TRIANGLE, CIRCLE, MOVE, GROUP
     }
 
     @Serial
@@ -41,17 +38,17 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private final transient ActionListener mReusableActionListener = new ShapeActionListener();
 
-    private final ArrayList<Visitable> mVisitablesList = new ArrayList<>();
-    private final ArrayList<SimpleShape> mShapesList = new ArrayList<>();
+    private final transient ArrayList<AbstractShape> mShapesList = new ArrayList<>();
 
     /**
      * Tracks buttons to manage the background.
      */
-    private final Map<EditButton, JButton> mButtons = new HashMap<>();
+    private final Map<EditButton, JButton> mButtons = new EnumMap<>(EditButton.class);
 
     private final transient CommandList commandList = new CommandList();
 
-    private SimpleShape shapeToMove;
+    private transient AbstractShape shapeToMove;
+    private transient GroupShape groupShapeToDo;
 
     /**
      * Default constructor that populates the main window.
@@ -74,7 +71,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
-            XMLSaver xmlSaver = new XMLSaver(mVisitablesList);
+            XMLSaver xmlSaver = new XMLSaver(mShapesList);
             xmlSaver.saveShapes();
             boolean isSaved = xmlSaver.saveXML();
             if (isSaved) {
@@ -84,7 +81,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             }
         });
         mJsonButton.addActionListener(e -> {
-            JSONSaver jsonSaver = new JSONSaver(mVisitablesList);
+            JSONSaver jsonSaver = new JSONSaver(mShapesList);
             jsonSaver.saveShapes();
             boolean isSaved = jsonSaver.saveJSON();
             if (isSaved) {
@@ -94,9 +91,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             }
         });
 
-        mUndoButton.addActionListener(e -> {
-            commandList.undoneLastCommand();
-        });
+        mUndoButton.addActionListener(e -> commandList.undoneLastCommand());
 
         // Fills the panel
         setLayout(new BorderLayout());
@@ -108,6 +103,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         addShape(EditButton.TRIANGLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/triangle.png"))));
         addShape(EditButton.CIRCLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/circle.png"))));
         addShape(EditButton.MOVE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/move.png"))));
+        addShape(EditButton.GROUP, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/link.png"))));
 
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
@@ -122,9 +118,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     /**
-     * Injects an available <tt>SimpleShape</tt> into the drawing frame.
+     * Injects an available <tt>AbstractShape</tt> into the drawing frame.
      * @param shape The shape to inject.
-     * @param icon The icon associated with the injected <tt>SimpleShape</tt>.
+     * @param icon The icon associated with the injected <tt>AbstractShape</tt>.
      */
     private void addShape(EditButton shape, ImageIcon icon) {
         JButton button = new JButton(icon);
@@ -170,27 +166,28 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
 
-    public void addShape(SimpleShape shape, Graphics2D g2) {
+    public void addShape(AbstractShape shape, Graphics2D g2) {
         commandList.add(new AddCommand(shape, g2, this));
         commandList.executeLastCommand();
         addShapeToList(shape);
     }
 
-    public void addShapeToList(SimpleShape shape) {
-        mVisitablesList.add((Visitable) shape);
+    public void addShapeToList(AbstractShape shape) {
         mShapesList.add(shape);
     }
 
     private void moveShape(MouseEvent evt, Graphics2D g2) {
         if(shapeToMove == null) {
             boolean isShapeSelected = false;
-            for (SimpleShape shape : mShapesList) {
+            for (AbstractShape shape : mShapesList) {
                 int x = evt.getX() - shape.getX();
                 int y = evt.getY() - shape.getY();
-                if (x >= 0 && x <= 50 && y >= 0 && y <= 50) {
-                    shapeToMove = shape;
-                    isShapeSelected = true;
-                    break;
+                if (!(shape instanceof GroupShape)){
+                    if (x >= 0 && x <= 50 && y >= 0 && y <= 50) {
+                        shapeToMove = shape;
+                        isShapeSelected = true;
+                        break;
+                    }
                 }
             }
             if (isShapeSelected) {
@@ -207,28 +204,36 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
 
+    public void removeShapeList(List<AbstractShape> shapeList){
+        shapeList.forEach(shape -> removeShape(shapeList.indexOf(shape)));
+    }
+
     public void removeShape(int index) {
-        if (!mVisitablesList.isEmpty()) {
-            mVisitablesList.remove(index);
-            mShapesList.remove(index);
+        if (!mShapesList.isEmpty()) {
+            AbstractShape abstractShape =  mShapesList.remove(index);
+            if (abstractShape instanceof GroupShape groupShape) {
+                mShapesList.addAll(groupShape.getShapes());
+            }
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
             g2.clearRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
             g2.setColor(Color.WHITE);
             g2.fillRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
-            mShapesList.forEach(shape -> shape.draw(g2));
+            mShapesList.forEach(shape -> {
+                shape.draw(g2);
+                if (shape instanceof GroupShape groupShape) {
+                    groupShape.getShapes().forEach(shape1 -> shape1.draw(g2));
+                }
+            });
         }
     }
 
-    public void printList(String a){
-        System.out.println("Liste des formes "+a+", size :"+mShapesList.size());
-        mShapesList.forEach(shape -> System.out.println(shape.toString()));
-    }
+
 
     public int getShapesListSize() {
         return mShapesList.size();
     }
 
-    public int getShapesListIndex(SimpleShape shape) {
+    public int getShapesListIndex(AbstractShape shape) {
         return mShapesList.indexOf(shape);
     }
 
@@ -256,7 +261,14 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mousePressed(MouseEvent evt) {
-        // Method not used
+        if (mPanel.contains(evt.getX(), evt.getY())) {
+            Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
+            if (mSelected == EditButton.GROUP) {
+                GroupShape groupShape = new GroupShape(evt.getX()+25, evt.getY()+25);
+                addShape(groupShape, g2);
+                groupShapeToDo = groupShape;
+            }
+        }
     }
 
     /**
@@ -265,7 +277,24 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
      * @param evt The associated mouse event.
      */
     public void mouseReleased(MouseEvent evt) {
-      // Method not used
+        if (mSelected == EditButton.GROUP) {
+            groupShapeToDo.setxEnd(evt.getX());
+            groupShapeToDo.setyEnd(evt.getY());
+            ArrayList<AbstractShape> shapesToGroup = new ArrayList<>();
+            mShapesList.forEach(shape -> {
+                if((shape != groupShapeToDo) && (shape.getX()>= groupShapeToDo.getX()) && (shape.getX() <= groupShapeToDo.getxEnd()) && (shape.getY()>= groupShapeToDo.getY()) && (shape.getY() <= groupShapeToDo.getyEnd())){
+                    shapesToGroup.add(shape);
+                }
+            });
+            removeShapeList(shapesToGroup);
+            groupShapeToDo.setShapes(shapesToGroup);
+            groupShapeToDo.setGrouped(true);
+
+            groupShapeToDo.draw((Graphics2D) mPanel.getGraphics());
+            groupShapeToDo = null;
+        }
+
+
     }
 
     /**

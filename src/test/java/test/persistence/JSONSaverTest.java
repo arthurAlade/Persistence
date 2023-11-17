@@ -2,6 +2,7 @@ package test.persistence;
 
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
+import edu.uga.miage.m1.polygons.gui.shapes.AbstractShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class JSONSaverTest {
     Circle circle;
     JSONSaver jsonSaver;
-    List<Visitable> visitableList;
+    List<AbstractShape> visitableList;
     String result;
     String expected;
 
