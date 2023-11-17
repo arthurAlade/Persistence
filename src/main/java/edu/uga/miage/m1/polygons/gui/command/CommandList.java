@@ -59,7 +59,8 @@ public class CommandList {
                 commandToUndo.setStatus(CommandStatus.UNDONE);
                 break;
             case UNDONE:
-                undoneCommandByIndex(index - 1);
+                if(index>0) undoneCommandByIndex(index - 1);  
+                 
                 break;
             case WAITING:
                 throw new IndexOutOfBoundsException("No command to undo");
