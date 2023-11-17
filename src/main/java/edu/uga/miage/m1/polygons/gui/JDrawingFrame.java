@@ -74,7 +74,6 @@ public class JDrawingFrame extends JFrame
         
         JButton mXmlButton = new JButton("XML");
         JButton mJsonButton = new JButton("JSON");
-        JButton mUndoButton = new JButton("Undo");
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
@@ -102,9 +101,6 @@ public class JDrawingFrame extends JFrame
             }
         });
 
-        mUndoButton.addActionListener(e -> {
-            commandList.undoneLastCommand();
-        });
 
         // Fills the panel
         setLayout(new BorderLayout());
@@ -123,7 +119,7 @@ public class JDrawingFrame extends JFrame
 
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
-        addButtonToToolbar(mUndoButton);
+        
         setPreferredSize(new Dimension(400, 400));
 
         mPanel.requestFocus();
@@ -256,7 +252,6 @@ public class JDrawingFrame extends JFrame
      * @param evt The associated mouse event.
      */
     public void mouseEntered(MouseEvent evt) {
-        // Method not used
         mPanel.requestFocus();
     }
 
@@ -335,18 +330,19 @@ public class JDrawingFrame extends JFrame
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.isMetaDown() || e.isControlDown()) {
-            if((e.getKeyChar() == 'z' || e.getKeyChar() == 'Z' )){
-                commandList.undoneLastCommand();
-            }
-        }
+    public void keyTyped(KeyEvent e) {
+        // Do nothing
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyPressed(KeyEvent e) {
+        if ((e.isMetaDown() || e.isControlDown()) && (e.getKeyChar() == 'z' || e.getKeyChar() == 'Z' )) {
+            commandList.undoneLastCommand();
+        }
+    }
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // Do nothing
+    }
 
 }
