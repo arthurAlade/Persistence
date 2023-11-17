@@ -5,10 +5,10 @@ import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
+import edu.uga.miage.m1.polygons.gui.shapes.Cube;
 import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -26,7 +26,7 @@ public class JDrawingFrame extends JFrame
 
     private enum EditButton {
 
-        SQUARE, TRIANGLE, CIRCLE, MOVE
+        SQUARE, TRIANGLE, CIRCLE, MOVE, CUBE
     }
 
     @Serial
@@ -116,6 +116,7 @@ public class JDrawingFrame extends JFrame
                 new ImageIcon(Objects.requireNonNull(getClass().getResource("images/circle.png"))));
         addShape(EditButton.MOVE,
                 new ImageIcon(Objects.requireNonNull(getClass().getResource("images/move.png"))));
+        addShape(EditButton.CUBE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/underc.png"))));
 
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
@@ -175,6 +176,11 @@ public class JDrawingFrame extends JFrame
                     break;
                 case MOVE:
                     moveShape(evt, g2);
+                    break;
+                case CUBE:
+                    Cube cube = new Cube(evt.getX(), evt.getY());
+                    addShape(cube, g2);
+
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + mSelected);

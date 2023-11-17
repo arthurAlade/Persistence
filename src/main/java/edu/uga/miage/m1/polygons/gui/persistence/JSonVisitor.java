@@ -1,6 +1,7 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
+import edu.uga.miage.m1.polygons.gui.shapes.Cube;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 
@@ -16,6 +17,10 @@ public class JSonVisitor implements Visitor {
     }
 
     public String getSchema(int x, int y, String type) {
+        if(type=="cube"){
+                    return "{\n\"type\": \"" + type + "\",\n\"x\": " + x + ",\n\"y\": " + y + ",\n\"size\": 100"+"\n}";
+
+        }
         return "{\n\"type\": \"" + type + "\",\n\"x\": " + x + ",\n\"y\": " + y + "\n}";
     }
     @Override
@@ -28,6 +33,12 @@ public class JSonVisitor implements Visitor {
     public void visit(Square square) {
         this.representation = getSchema(square.getX(), square.getY(), "square");
     }
+
+    @Override
+    public void visit(Cube cube) {
+        this.representation = getSchema(cube.getX(), cube.getY(), "cube");
+    }
+
 
     @Override
     public void visit(Triangle triangle) {
