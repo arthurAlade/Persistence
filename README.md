@@ -4,8 +4,8 @@ Ce projet est réalisé dans le cadre du cours Patrons et Composants.
 Le but de ce projet est de mettre en pratique les différents patrons de conception vus en cours mais aussi la mise en place de test.
 Ces différentes pratiques sont appliquées à travers un projet d'éditeur graphique.
 
-### Patrons de conception
-#### Patron visiteur : 
+## Patrons de conception
+### Patron visiteur : 
 Pour réaliser la persistence des formes à travers des exports en XML et JSON, nous avons utlisé le patron visiteur.
 
 ![Patron Visiteur](Doc%2FVisiteur.svg)
@@ -23,7 +23,7 @@ Les forment implémentent donc la méthode `accept` qui appelle la méthode `vis
 
 Dans notre projet, c'est la classe `Saver` qui fait office de client pour le patron *Visiteur*.
 
-#### Patron composite :
+### Patron composite :
 Pour l'itération *visiteur du midi(3)*, nous devions implémenter le groupement des formes. Pour cela nous avons implémenté le patron *Composite*.
 ![Composite.svg](Doc%2FComposite.svg)
 
