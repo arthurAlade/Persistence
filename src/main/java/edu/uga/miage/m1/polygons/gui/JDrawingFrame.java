@@ -16,12 +16,13 @@ import java.io.Serial;
 import java.util.*;
 
 /**
- * This class represents the main application class, which is a JFrame subclass
- * that manages a toolbar of shapes and a drawing canvas.
+ * This class represents the main application class, which is a JFrame subclass that manages a
+ * toolbar of shapes and a drawing canvas.
  *
  * @author <a href="mailto:christophe.saint-marcel@univ-grenoble-alpes.fr">Christophe</a>
  */
-public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionListener {
+public class JDrawingFrame extends JFrame
+        implements MouseListener, MouseMotionListener, KeyListener {
 
     private enum EditButton {
 
@@ -68,6 +69,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         mPanel.addMouseMotionListener(this);
         mLabel = new JLabel(" ", SwingConstants.LEFT);
 
+        mPanel.addKeyListener(this);
+        mPanel.setFocusable(true);
+        
         JButton mXmlButton = new JButton("XML");
         JButton mJsonButton = new JButton("JSON");
         JButton mUndoButton = new JButton("Undo");
@@ -78,9 +82,11 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             xmlSaver.saveShapes();
             boolean isSaved = xmlSaver.saveXML();
             if (isSaved) {
-                JOptionPane.showMessageDialog(this, "File saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "File saved successfully", "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Error while saving file", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error while saving file", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         });
         mJsonButton.addActionListener(e -> {
@@ -88,9 +94,11 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             jsonSaver.saveShapes();
             boolean isSaved = jsonSaver.saveJSON();
             if (isSaved) {
-                JOptionPane.showMessageDialog(this, "File saved successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "File saved successfully", "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Error while saving file", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error while saving file", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -104,15 +112,21 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         add(mPanel, BorderLayout.CENTER);
         add(mLabel, BorderLayout.SOUTH);
         // Add shapes in the menu
-        addShape(EditButton.SQUARE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/square.png"))));
-        addShape(EditButton.TRIANGLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/triangle.png"))));
-        addShape(EditButton.CIRCLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/circle.png"))));
-        addShape(EditButton.MOVE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/move.png"))));
+        addShape(EditButton.SQUARE,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/square.png"))));
+        addShape(EditButton.TRIANGLE, new ImageIcon(
+                Objects.requireNonNull(getClass().getResource("images/triangle.png"))));
+        addShape(EditButton.CIRCLE,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/circle.png"))));
+        addShape(EditButton.MOVE,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/move.png"))));
 
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
         addButtonToToolbar(mUndoButton);
         setPreferredSize(new Dimension(400, 400));
+
+        mPanel.requestFocus();
     }
 
     private void addButtonToToolbar(JButton button) {
@@ -123,6 +137,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     /**
      * Injects an available <tt>SimpleShape</tt> into the drawing frame.
+     * 
      * @param shape The shape to inject.
      * @param icon The icon associated with the injected <tt>SimpleShape</tt>.
      */
@@ -141,14 +156,15 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     /**
-     * Implements method for the <tt>MouseListener</tt> interface to
-     * draw the selected shape into the drawing canvas.
+     * Implements method for the <tt>MouseListener</tt> interface to draw the selected shape into
+     * the drawing canvas.
+     * 
      * @param evt The associated mouse event.
      */
     public void mouseClicked(MouseEvent evt) {
         if (mPanel.contains(evt.getX(), evt.getY())) {
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
-            switch(mSelected) {
+            switch (mSelected) {
                 case CIRCLE:
                     Circle circle = new Circle(evt.getX(), evt.getY());
                     addShape(circle, g2);
@@ -168,6 +184,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                     throw new IllegalStateException("Unexpected value: " + mSelected);
             }
         }
+        mPanel.requestFocus();
+        mPanel.setFocusable(true);
     }
 
     public void addShape(SimpleShape shape, Graphics2D g2) {
@@ -182,7 +200,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     private void moveShape(MouseEvent evt, Graphics2D g2) {
-        if(shapeToMove == null) {
+        if (shapeToMove == null) {
             boolean isShapeSelected = false;
             for (SimpleShape shape : mShapesList) {
                 int x = evt.getX() - shape.getX();
@@ -197,10 +215,9 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                 commandList.add(new MoveCommand(shapeToMove, g2, this));
                 commandList.executeLastCommand();
             }
-        }
-        else{
-            shapeToMove.setX(evt.getX()-25);
-            shapeToMove.setY(evt.getY()-25);
+        } else {
+            shapeToMove.setX(evt.getX() - 25);
+            shapeToMove.setY(evt.getY() - 25);
 
             commandList.executeLastCommand();
             shapeToMove = null;
@@ -219,8 +236,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         }
     }
 
-    public void printList(String a){
-        System.out.println("Liste des formes "+a+", size :"+mShapesList.size());
+    public void printList(String a) {
+        System.out.println("Liste des formes " + a + ", size :" + mShapesList.size());
         mShapesList.forEach(shape -> System.out.println(shape.toString()));
     }
 
@@ -235,24 +252,29 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     /**
      * Implements an empty method for the <tt>MouseListener</tt> interface.
+     * 
      * @param evt The associated mouse event.
      */
     public void mouseEntered(MouseEvent evt) {
         // Method not used
+        mPanel.requestFocus();
     }
 
     /**
      * Implements an empty method for the <tt>MouseListener</tt> interface.
+     * 
      * @param evt The associated mouse event.
      */
     public void mouseExited(MouseEvent evt) {
         mLabel.setText(" ");
         mLabel.repaint();
+        mPanel.requestFocus();
+
     }
 
     /**
-     * Implements method for the <tt>MouseListener</tt> interface to initiate
-     * shape dragging.
+     * Implements method for the <tt>MouseListener</tt> interface to initiate shape dragging.
+     * 
      * @param evt The associated mouse event.
      */
     public void mousePressed(MouseEvent evt) {
@@ -260,17 +282,17 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     /**
-     * Implements method for the <tt>MouseListener</tt> interface to complete
-     * shape dragging.
+     * Implements method for the <tt>MouseListener</tt> interface to complete shape dragging.
+     * 
      * @param evt The associated mouse event.
      */
     public void mouseReleased(MouseEvent evt) {
-      // Method not used
+        // Method not used
     }
 
     /**
-     * Implements method for the <tt>MouseMotionListener</tt> interface to
-     * move a dragged shape.
+     * Implements method for the <tt>MouseMotionListener</tt> interface to move a dragged shape.
+     * 
      * @param evt The associated mouse event.
      */
     public void mouseDragged(MouseEvent evt) {
@@ -278,8 +300,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     /**
-     * Implements an empty method for the <tt>MouseMotionListener</tt>
-     * interface.
+     * Implements an empty method for the <tt>MouseMotionListener</tt> interface.
+     * 
      * @param evt The associated mouse event.
      */
     public void mouseMoved(MouseEvent evt) {
@@ -291,9 +313,8 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     /**
-     * Simple action listener for shape tool bar buttons that sets
-     * the drawing frame's currently selected shape when receiving
-     * an action event.
+     * Simple action listener for shape tool bar buttons that sets the drawing frame's currently
+     * selected shape when receiving an action event.
      */
     private class ShapeActionListener implements ActionListener {
 
@@ -312,5 +333,20 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             }
         }
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.isMetaDown() || e.isControlDown()) {
+            if((e.getKeyChar() == 'z' || e.getKeyChar() == 'Z' )){
+                commandList.undoneLastCommand();
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 
 }
