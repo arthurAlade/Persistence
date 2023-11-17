@@ -5,3 +5,5 @@
 /target/
 save.json
 save.xml
+/Doc/*.vpp.bak*
+/Doc/.ProjetPersistence.vpp.lck
