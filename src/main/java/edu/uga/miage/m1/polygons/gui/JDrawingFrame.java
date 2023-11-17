@@ -9,7 +9,6 @@ import edu.uga.miage.m1.polygons.gui.shapes.Cube;
 import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
-import edu.uga.singleshape.CubePanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
