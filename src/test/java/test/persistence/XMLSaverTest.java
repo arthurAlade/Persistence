@@ -2,6 +2,7 @@ package test.persistence;
 
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
+import edu.uga.miage.m1.polygons.gui.shapes.AbstractShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,16 +15,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class XMLSaverTest {
     Circle circle;
     XMLSaver xmlSaver;
-    List<Visitable> visitableList;
+    List<AbstractShape> abstractShapes;
     String result;
     String expected;
 
     @BeforeEach
     void setUp() {
         circle = new Circle(125,30);//x - 25, y -25
-        visitableList = new ArrayList<>();
-        visitableList.add(circle);
-        xmlSaver = new XMLSaver(visitableList);
+        abstractShapes = new ArrayList<>();
+        abstractShapes.add(circle);
+        xmlSaver = new XMLSaver(abstractShapes);
     }
 
     @Test

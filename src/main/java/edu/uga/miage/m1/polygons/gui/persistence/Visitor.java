@@ -12,7 +12,7 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 public abstract class Visitor {
     private String representation;
 
-    public Visitor() {
+    protected Visitor() {
         this.representation = null;
     }
 

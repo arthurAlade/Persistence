@@ -2,7 +2,7 @@ package edu.uga.miage.m1.polygons.gui.command;
 
 import edu.uga.miage.m1.polygons.gui.JDrawingFrame;
 import edu.uga.miage.m1.polygons.gui.shapes.AbstractShape;
-import edu.uga.miage.m1.polygons.gui.shapes.SimpleShape;
+import edu.uga.miage.m1.polygons.gui.shapes.GroupShape;
 
 import java.awt.*;
 
@@ -13,7 +13,8 @@ public class MoveCommand implements Command{
     private final Graphics2D g2;
     private final JDrawingFrame frame;
 
-    private final int xFrom, yFrom;
+    private final int xFrom;
+    private final int yFrom;
 
 
     public MoveCommand(AbstractShape shape, Graphics2D g2, JDrawingFrame frame){
@@ -32,6 +33,9 @@ public class MoveCommand implements Command{
         try{
             if (status == CommandStatus.PENDING){
                 shape.draw(g2);
+                if (shape instanceof GroupShape groupShape){
+                    groupShape.getShapes().forEach(shape1 -> shape1.draw(g2) );
+                }
                 frame.addShapeToList(shape);
             }else {
                 frame.removeShape(frame.getShapesListIndex(shape));

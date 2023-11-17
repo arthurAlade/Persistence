@@ -2,7 +2,6 @@ package edu.uga.miage.m1.polygons.gui;
 
 import edu.uga.miage.m1.polygons.gui.command.*;
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
-import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
 import edu.uga.miage.m1.polygons.gui.shapes.*;
 
@@ -11,6 +10,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.Serial;
 import java.util.*;
+import java.util.List;
 
 /**
  * This class represents the main application class, which is a JFrame subclass
@@ -38,18 +38,17 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
     private final transient ActionListener mReusableActionListener = new ShapeActionListener();
 
-//    private final ArrayList<Visitable> mVisitablesList = new ArrayList<>();
-    private final ArrayList<AbstractShape> mShapesList = new ArrayList<>();
+    private final transient ArrayList<AbstractShape> mShapesList = new ArrayList<>();
 
     /**
      * Tracks buttons to manage the background.
      */
-    private final Map<EditButton, JButton> mButtons = new HashMap<>();
+    private final Map<EditButton, JButton> mButtons = new EnumMap<>(EditButton.class);
 
-    private final CommandList commandList = new CommandList();
+    private final transient CommandList commandList = new CommandList();
 
-    private AbstractShape shapeToMove;
-    private GroupShape groupShapeToDo;
+    private transient AbstractShape shapeToMove;
+    private transient GroupShape groupShapeToDo;
 
     /**
      * Default constructor that populates the main window.
@@ -72,7 +71,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
-//            XMLSaver xmlSaver = new XMLSaver(mVisitablesList);
             XMLSaver xmlSaver = new XMLSaver(mShapesList);
             xmlSaver.saveShapes();
             boolean isSaved = xmlSaver.saveXML();
@@ -84,7 +82,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
         });
         mJsonButton.addActionListener(e -> {
             JSONSaver jsonSaver = new JSONSaver(mShapesList);
-//            JSONSaver jsonSaver = new JSONSaver(mVisitablesList);
             jsonSaver.saveShapes();
             boolean isSaved = jsonSaver.saveJSON();
             if (isSaved) {
@@ -94,9 +91,7 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             }
         });
 
-        mUndoButton.addActionListener(e -> {
-            commandList.undoneLastCommand();
-        });
+        mUndoButton.addActionListener(e -> commandList.undoneLastCommand());
 
         // Fills the panel
         setLayout(new BorderLayout());
@@ -178,7 +173,6 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
     }
 
     public void addShapeToList(AbstractShape shape) {
-//        mVisitablesList.add(shape);
         mShapesList.add(shape);
     }
 
@@ -188,10 +182,12 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             for (AbstractShape shape : mShapesList) {
                 int x = evt.getX() - shape.getX();
                 int y = evt.getY() - shape.getY();
-                if (x >= 0 && x <= 50 && y >= 0 && y <= 50) {
-                    shapeToMove = shape;
-                    isShapeSelected = true;
-                    break;
+                if (!(shape instanceof GroupShape)){
+                    if (x >= 0 && x <= 50 && y >= 0 && y <= 50) {
+                        shapeToMove = shape;
+                        isShapeSelected = true;
+                        break;
+                    }
                 }
             }
             if (isShapeSelected) {
@@ -206,6 +202,10 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
             commandList.executeLastCommand();
             shapeToMove = null;
         }
+    }
+
+    public void removeShapeList(List<AbstractShape> shapeList){
+        shapeList.forEach(shape -> removeShape(shapeList.indexOf(shape)));
     }
 
     public void removeShape(int index) {
@@ -286,9 +286,10 @@ public class JDrawingFrame extends JFrame implements MouseListener, MouseMotionL
                     shapesToGroup.add(shape);
                 }
             });
+            removeShapeList(shapesToGroup);
             groupShapeToDo.setShapes(shapesToGroup);
             groupShapeToDo.setGrouped(true);
-            mShapesList.removeAll(shapesToGroup);
+
             groupShapeToDo.draw((Graphics2D) mPanel.getGraphics());
             groupShapeToDo = null;
         }

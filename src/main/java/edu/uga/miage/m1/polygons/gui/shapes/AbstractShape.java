@@ -1,21 +1,15 @@
 package edu.uga.miage.m1.polygons.gui.shapes;
 
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
-import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
-
-import java.awt.*;
 
 public abstract class AbstractShape implements SimpleShape, Visitable {
     private int x;
     private int y;
 
-    public AbstractShape(int x, int y) {
+    protected AbstractShape(int x, int y) {
         this.x = x -25;
         this.y = y -25;
     }
-
-    public abstract void draw(Graphics2D g2);
-    public abstract void accept(Visitor visitor);
 
     public int getX() { return x; }
     public int getY() { return y; }

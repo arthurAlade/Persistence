@@ -22,9 +22,9 @@ public class Saver {
     }
 
     private void extractGroupShape(boolean xml, Visitable shape, Visitor visitor) {
-        if (shape instanceof GroupShape) {
+        if (shape instanceof GroupShape groupShape) {
             addShapeFromList(shape, visitor);
-            List<AbstractShape> list = ((GroupShape) shape).getShapes();
+            List<AbstractShape> list = groupShape.getShapes();
             list.forEach(shape1 -> {
                 extractGroupShape(xml, shape1, visitor);
                 save.append(getEndShape(list.indexOf(shape1), list.size()));

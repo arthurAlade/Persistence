@@ -2,14 +2,14 @@ package edu.uga.miage.m1.polygons.gui.shapes;
 
 import edu.uga.miage.m1.polygons.gui.persistence.Visitor;
 
-import javax.swing.border.StrokeBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GroupShape extends AbstractShape {
     private  List<AbstractShape> shapes;
-    private int xEnd, yEnd;
+    private int xEnd;
+    private int yEnd;
     private boolean isGrouped;
     public GroupShape(int x, int y) {
         super(x, y);
@@ -27,6 +27,7 @@ public class GroupShape extends AbstractShape {
         int width = xEnd - getX();
         int height = yEnd - getY();
         g2.draw(new Rectangle(getX(), getY(), width, height));
+        shapes.forEach(shape -> shape.draw(g2));
     }
 
     @Override
