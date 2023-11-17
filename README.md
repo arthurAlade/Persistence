@@ -24,3 +24,10 @@ Les forment implémentent donc la méthode `accept` qui appelle la méthode `vis
 Dans notre projet, c'est la classe `Saver` qui fait office de client pour le patron *Visiteur*.
 
 #### Patron composite :
+Pour l'itération *visiteur du midi(3)*, nous devions implémenter le groupement des formes. Pour cela nous avons implémenté le patron *Composite*.
+![Composite.svg](Doc%2FComposite.svg)
+
+Nous avons alors ajouté une nouvelle forme de type `GroupShape` qui hérite de `AbstractShape` et qui est composée d'une liste d'`AbstractShape`.
+Ainsi, `GroupShape` possède une liste de formes qui peuvent être des `Circle`, `Rectangle`, `Triangle` ou `GroupShape`.
+`GroupShape` est donc le *composite* du patron *Composite* et `AbstractShape` est le *composant*.
+Les classes `Circle`, `Rectangle` et `Triangle` sont quant à elles les *feuilles* du patron *Composite*.
