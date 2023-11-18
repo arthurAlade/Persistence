@@ -1,5 +1,7 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
+import edu.uga.miage.m1.polygons.gui.shapes.AbstractShape;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,7 +13,7 @@ public class XMLSaver extends Saver{
 
     private final Logger logger = Logger.getLogger(XMLSaver.class.getName());
 
-    public XMLSaver(List<Visitable> visitablesList) {
+    public XMLSaver(List<AbstractShape> visitablesList) {
         super(visitablesList);
     }
     public void saveShapes(){

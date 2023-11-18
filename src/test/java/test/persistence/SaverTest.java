@@ -2,6 +2,7 @@ package test.persistence;
 
 import edu.uga.miage.m1.polygons.gui.persistence.Saver;
 import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
+import edu.uga.miage.m1.polygons.gui.shapes.AbstractShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
@@ -21,7 +22,7 @@ class SaverTest {
     String result;
     String expected;
     Saver saver;
-    List<Visitable> visitablesList;
+    List<AbstractShape> visitablesList;
 
     @BeforeEach
     void setUp() {

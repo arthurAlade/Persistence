@@ -1,5 +1,7 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
+import edu.uga.miage.m1.polygons.gui.shapes.AbstractShape;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,7 +11,7 @@ import java.util.logging.Logger;
 public class JSONSaver extends Saver {
     private final Logger logger = Logger.getLogger(JSONSaver.class.getName());
 
-    public JSONSaver(List<Visitable> visitablesList) {
+    public JSONSaver(List<AbstractShape> visitablesList) {
         super(visitablesList);
     }
 
@@ -20,7 +22,6 @@ public class JSONSaver extends Saver {
     }
 
     public boolean saveJSON() {
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("save.json"))) {
             writer.write(String.valueOf(getSave()));
         } catch (IOException e) {

@@ -165,12 +165,12 @@ public class e2e {
 
 
 
-        String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"triangle\",\n"
-                + "\"x\": " + cube.getX() + ",\n" + "\"y\": " + cube.getY() + "\n" + "}\n" + "]}";
+        String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"cube\",\n"
+                + "\"x\": " + cube.getX() + ",\n" + "\"y\": " + cube.getY() + ",\n"+ "\"size\": "+ "100\n" + "}\n" + "]}";
 
         String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
-                + "<shape><type>triangle</type><x>" + cube.getX() + "</x><y>" + cube.getY()
-                + "</y></shape>\n" + "</shapes>";
+                + "<shape><type>cube</type><x>" + cube.getX() + "</x><y>" + cube.getY()
+                + "</y><size>100</size></shape>\n" + "</shapes>";
 
 
         String actualJsonContent = readFromFile("./save.json");
