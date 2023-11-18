@@ -8,14 +8,13 @@ import edu.uga.singleshape.CubePanel;
 public class Cube implements SimpleShape, Visitable{
     private int x,y;    
 
-    
     public Cube(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.x = x-25;
+        this.y = y-25;
     }
 
     public void draw(Graphics2D g2){
-        CubePanel cube = new CubePanel(100,x,y);
+        CubePanel cube = new CubePanel(100,x+25,y+25);
         cube.paintComponent(g2);               
     }
 

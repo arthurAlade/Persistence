@@ -207,9 +207,12 @@ public class JDrawingFrame extends JFrame
         if (shapeToMove == null) {
             boolean isShapeSelected = false;
             for (SimpleShape shape : mShapesList) {
+                System.out.println("Shape : " + shape.toString()+", x : "+shape.getX()+", y : "+shape.getY());
                 int x = evt.getX() - shape.getX();
                 int y = evt.getY() - shape.getY();
+                System.out.println("x : "+x+", y : "+y);
                 if (x >= 0 && x <= 50 && y >= 0 && y <= 50) {
+                    System.out.println("Shape selected");
                     shapeToMove = shape;
                     isShapeSelected = true;
                     break;
