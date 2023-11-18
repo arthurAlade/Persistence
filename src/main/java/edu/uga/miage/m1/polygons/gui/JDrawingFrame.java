@@ -36,7 +36,7 @@ public class JDrawingFrame extends JFrame
 
     private EditButton mSelected;
 
-    private final JPanel mPanel;
+    public final JPanel mPanel;
 
     private final JLabel mLabel;
 
@@ -51,6 +51,8 @@ public class JDrawingFrame extends JFrame
     private final Map<EditButton, JButton> mButtons = new HashMap<>();
 
     private final transient CommandList commandList = new CommandList();
+    public JButton mXmlButton;
+    public JButton mJsonButton;
 
     private SimpleShape shapeToMove;
 
@@ -72,8 +74,8 @@ public class JDrawingFrame extends JFrame
         mPanel.addKeyListener(this);
         mPanel.setFocusable(true);
         
-        JButton mXmlButton = new JButton("XML");
-        JButton mJsonButton = new JButton("JSON");
+        mXmlButton = new JButton("XML");
+        mJsonButton = new JButton("JSON");
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
