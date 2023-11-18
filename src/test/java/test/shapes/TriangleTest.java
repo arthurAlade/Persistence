@@ -2,12 +2,13 @@ package test.shapes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Random;
-
-import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
-import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
+import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
+import edu.uga.miage.m1.polygons.gui.shapes.AbstractShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 
 class TriangleTest {
@@ -18,8 +19,8 @@ class TriangleTest {
         Triangle triangle = new Triangle(coord, coord);
 
 
-        assertEquals(coord-25, triangle.getX());
-        assertEquals(coord-25, triangle.getY());
+        assertEquals(coord - 25, triangle.getX());
+        assertEquals(coord - 25, triangle.getY());
     }
 
     @Test
@@ -31,8 +32,8 @@ class TriangleTest {
         assertNotNull(triangle);
 
         // Assert that the Triangle object has the correct x and y coordinates.
-        assertEquals(100-25, triangle.getX());
-        assertEquals(100-25, triangle.getY());
+        assertEquals(100 - 25, triangle.getX());
+        assertEquals(100 - 25, triangle.getY());
     }
 
     @Test
@@ -42,8 +43,8 @@ class TriangleTest {
         Triangle triangle = new Triangle(coord, coord);
 
 
-        assertEquals((triangle.getX()), coord-25);
-        assertEquals((triangle.getY()), coord-25);
+        assertEquals((triangle.getX()), coord - 25);
+        assertEquals((triangle.getY()), coord - 25);
     }
 
 
@@ -54,8 +55,8 @@ class TriangleTest {
         Triangle triangle = new Triangle(coord, coord);
 
 
-        assertEquals(coord-25, triangle.getX());
-        assertEquals(coord-25, triangle.getY());
+        assertEquals(coord - 25, triangle.getX());
+        assertEquals(coord - 25, triangle.getY());
     }
 
     @Test
@@ -69,8 +70,8 @@ class TriangleTest {
 
         Triangle triangle = new Triangle(randomNumberX, randomNumberY);
 
-        assertEquals(randomNumberX-25, triangle.getX());
-        assertEquals(randomNumberY-25, triangle.getY());
+        assertEquals(randomNumberX - 25, triangle.getX());
+        assertEquals(randomNumberY - 25, triangle.getY());
     }
 
     @Test
@@ -88,5 +89,12 @@ class TriangleTest {
         result = jSonVisitor.getRepresentation();
         expected = "{\n\"type\": \"triangle\",\n\"x\": 75,\n\"y\": 75\n}";
         assertEquals(expected, result);
+    }
+
+    @Test
+    void cubeIsAbstractShape() {
+        Triangle triangle = new Triangle(50, 75);
+
+        assertTrue(triangle instanceof AbstractShape);
     }
 }

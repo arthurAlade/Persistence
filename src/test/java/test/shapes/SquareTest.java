@@ -2,12 +2,14 @@ package test.shapes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Random;
 
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import edu.uga.miage.m1.polygons.gui.shapes.AbstractShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 
 class SquareTest {
@@ -18,8 +20,8 @@ class SquareTest {
         Square square = new Square(coord, coord);
 
 
-        assertEquals(coord-25, square.getX());
-        assertEquals(coord-25, square.getY());
+        assertEquals(coord - 25, square.getX());
+        assertEquals(coord - 25, square.getY());
     }
 
     @Test
@@ -31,8 +33,8 @@ class SquareTest {
         assertNotNull(square);
 
         // Assert that the Square object has the correct x and y coordinates.
-        assertEquals(100-25, square.getX());
-        assertEquals(100-25, square.getY());
+        assertEquals(100 - 25, square.getX());
+        assertEquals(100 - 25, square.getY());
     }
 
     @Test
@@ -42,8 +44,8 @@ class SquareTest {
         Square square = new Square(coord, coord);
 
 
-        assertEquals((square.getX()), coord-25);
-        assertEquals((square.getY()), coord-25);
+        assertEquals((square.getX()), coord - 25);
+        assertEquals((square.getY()), coord - 25);
     }
 
 
@@ -54,8 +56,8 @@ class SquareTest {
         Square square = new Square(coord, coord);
 
 
-        assertEquals(coord-25, square.getX());
-        assertEquals(coord-25, square.getY());
+        assertEquals(coord - 25, square.getX());
+        assertEquals(coord - 25, square.getY());
     }
 
     @Test
@@ -69,8 +71,8 @@ class SquareTest {
 
         Square square = new Square(randomNumberX, randomNumberY);
 
-        assertEquals(randomNumberX-25, square.getX());
-        assertEquals(randomNumberY-25, square.getY());
+        assertEquals(randomNumberX - 25, square.getX());
+        assertEquals(randomNumberY - 25, square.getY());
     }
 
     @Test
@@ -88,5 +90,12 @@ class SquareTest {
         result = jSonVisitor.getRepresentation();
         expected = "{\n\"type\": \"square\",\n\"x\": 75,\n\"y\": 75\n}";
         assertEquals(expected, result);
+    }
+
+    @Test
+    void cubeIsAbstractShape() {
+        Square square = new Square(50, 75);
+
+        assertTrue(square instanceof AbstractShape);
     }
 }

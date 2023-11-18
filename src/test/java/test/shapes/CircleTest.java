@@ -2,12 +2,14 @@ package test.shapes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Random;
 
 import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import edu.uga.miage.m1.polygons.gui.shapes.AbstractShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 
 class CircleTest {
@@ -18,8 +20,8 @@ class CircleTest {
         Circle circle = new Circle(coord, coord);
 
 
-        assertEquals(coord-25, circle.getX());
-        assertEquals(coord-25, circle.getY());
+        assertEquals(coord - 25, circle.getX());
+        assertEquals(coord - 25, circle.getY());
     }
 
     @Test
@@ -31,8 +33,8 @@ class CircleTest {
         assertNotNull(circle);
 
         // Assert that the Circle object has the correct x and y coordinates.
-        assertEquals(100-25, circle.getX());
-        assertEquals(100-25, circle.getY());
+        assertEquals(100 - 25, circle.getX());
+        assertEquals(100 - 25, circle.getY());
     }
 
     @Test
@@ -42,8 +44,8 @@ class CircleTest {
         Circle circle = new Circle(coord, coord);
 
 
-        assertEquals((circle.getX()), coord-25);
-        assertEquals((circle.getY()), coord-25);
+        assertEquals((circle.getX()), coord - 25);
+        assertEquals((circle.getY()), coord - 25);
     }
 
 
@@ -54,8 +56,8 @@ class CircleTest {
         Circle circle = new Circle(coord, coord);
 
 
-        assertEquals(coord-25, circle.getX());
-        assertEquals(coord-25, circle.getY());
+        assertEquals(coord - 25, circle.getX());
+        assertEquals(coord - 25, circle.getY());
     }
 
     @Test
@@ -69,8 +71,8 @@ class CircleTest {
 
         Circle circle = new Circle(randomNumberX, randomNumberY);
 
-        assertEquals(randomNumberX-25, circle.getX());
-        assertEquals(randomNumberY-25, circle.getY());
+        assertEquals(randomNumberX - 25, circle.getX());
+        assertEquals(randomNumberY - 25, circle.getY());
     }
 
     @Test
@@ -88,5 +90,12 @@ class CircleTest {
         result = jSonVisitor.getRepresentation();
         expected = "{\n\"type\": \"circle\",\n\"x\": 75,\n\"y\": 75\n}";
         assertEquals(expected, result);
+    }
+
+    @Test
+    void cubeIsAbstractShape() {
+        Circle circle = new Circle(50, 75);
+
+        assertTrue(circle instanceof AbstractShape);
     }
 }

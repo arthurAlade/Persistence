@@ -2,13 +2,9 @@ package test.e2e;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import edu.uga.miage.m1.polygons.gui.JDrawingFrame;
-import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
-import edu.uga.miage.m1.polygons.gui.persistence.Visitable;
-import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
 import edu.uga.miage.m1.polygons.gui.shapes.Cube;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
@@ -16,8 +12,6 @@ import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.awt.AWTException;
 import java.awt.Graphics2D;
-import java.awt.Robot;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -25,16 +19,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 
 
-public class e2e {
+class e2e {
 
 
     private JDrawingFrame jFrame;
 
-    private final ArrayList<Visitable> mVisitablesList = new ArrayList<>();
 
     private enum EditButton {
 
