@@ -25,187 +25,184 @@ import java.nio.file.Paths;
 class e2e {
 
 
-    private JDrawingFrame jFrame;
+        private JDrawingFrame jFrame;
 
 
-    private enum EditButton {
 
-        SQUARE, TRIANGLE, CIRCLE, MOVE, CUBE
-    }
 
+        @BeforeEach
+        void setUp() {
+                JFrame frame = new JDrawingFrame("testing");
+                WindowAdapter wa = new WindowAdapter() {
 
-    @BeforeEach
-    void setUp() {
-        JFrame frame = new JDrawingFrame("testing");
-        WindowAdapter wa = new WindowAdapter() {
+                        @Override
+                        public void windowClosing(WindowEvent e) {
+                                System.exit(0);
+                        }
+                };
+                frame.addWindowListener(wa);
+                frame.pack();
 
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        };
-        frame.addWindowListener(wa);
-        frame.pack();
+                frame.setVisible(true);
 
-        frame.setVisible(true);
+                jFrame = new JDrawingFrame("test");
 
-        jFrame = new JDrawingFrame("test");
 
 
+        }
 
-    }
+        private String readFromFile(String filePath) throws IOException {
+                Path path = Paths.get(filePath);
+                return new String(Files.readAllBytes(path));
+        }
 
-    private String readFromFile(String filePath) throws IOException {
-        Path path = Paths.get(filePath);
-        return new String(Files.readAllBytes(path));
-    }
 
+        @Test()
+        void addASquare() throws IOException {
+                Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
+                Square square = new Square(50, 50);
+                jFrame.addShape(square, g2);
 
-    @Test()
-    void addASquare() throws IOException {
-        Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
-        Square square = new Square(50, 50);
-        jFrame.addShape(square, g2);
 
+                jFrame.getmJsonButton().doClick();
+                jFrame.getmXmlButton().doClick();
 
-        jFrame.mJsonButton.doClick();
-        jFrame.mXmlButton.doClick();
+                String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"square\",\n"
+                                + "\"x\": 25,\n" + "\"y\": 25\n" + "}\n" + "]}";
 
-        String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"square\",\n"
-                + "\"x\": 25,\n" + "\"y\": 25\n" + "}\n" + "]}";
+                String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
+                                + "<shape><type>square</type><x>25</x><y>25</y></shape>\n"
+                                + "</shapes>";
 
-        String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
-                + "<shape><type>square</type><x>25</x><y>25</y></shape>\n" + "</shapes>";
 
+                String actualJsonContent = readFromFile("./save.json");
+                String actualXMLContent = readFromFile("./save.xml");
 
-        String actualJsonContent = readFromFile("./save.json");
-        String actualXMLContent = readFromFile("./save.xml");
 
+                assertEquals(expectedJsonContent, actualJsonContent);
+                assertEquals(expectedXMLContent, actualXMLContent);
+        }
 
-        assertEquals(expectedJsonContent, actualJsonContent);
-        assertEquals(expectedXMLContent, actualXMLContent);
-    }
 
+        @Test()
+        void addACircle() throws IOException, AWTException {
+                Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
+                Circle circle = new Circle(50, 50);
+                jFrame.addShape(circle, g2);
 
-    @Test()
-    void addACircle() throws IOException, AWTException {
-        Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
-        Circle circle = new Circle(50, 50);
-        jFrame.addShape(circle, g2);
-        jFrame.mJsonButton.doClick();
+                jFrame.getmJsonButton().doClick();
+                jFrame.getmXmlButton().doClick();
 
 
-        jFrame.mXmlButton.doClick();
+                String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"circle\",\n"
+                                + "\"x\": 25,\n" + "\"y\": 25\n" + "}\n" + "]}";
 
+                String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
+                                + "<shape><type>circle</type><x>25</x><y>25</y></shape>\n"
+                                + "</shapes>";
 
 
-        String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"circle\",\n"
-                + "\"x\": 25,\n" + "\"y\": 25\n" + "}\n" + "]}";
+                String actualJsonContent = readFromFile("./save.json");
+                String actualXMLContent = readFromFile("./save.xml");
 
-        String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
-                + "<shape><type>circle</type><x>25</x><y>25</y></shape>\n" + "</shapes>";
 
+                assertEquals(expectedJsonContent, actualJsonContent);
+                assertEquals(expectedXMLContent, actualXMLContent);
+        }
 
-        String actualJsonContent = readFromFile("./save.json");
-        String actualXMLContent = readFromFile("./save.xml");
 
+        @Test()
+        void addATriangle() throws IOException {
+                Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
+                Triangle triangle = new Triangle(75, 75);
+                jFrame.addShape(triangle, g2);
+                jFrame.getmJsonButton().doClick();
 
-        assertEquals(expectedJsonContent, actualJsonContent);
-        assertEquals(expectedXMLContent, actualXMLContent);
-    }
 
+                jFrame.getmXmlButton().doClick();
 
-    @Test()
-    void addATriangle() throws IOException {
-        Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
-        Triangle triangle = new Triangle(75, 75);
-        jFrame.addShape(triangle, g2);
-        jFrame.mJsonButton.doClick();
 
 
-        jFrame.mXmlButton.doClick();
+                String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"triangle\",\n"
+                                + "\"x\": " + triangle.getX() + ",\n" + "\"y\": " + triangle.getY()
+                                + "\n" + "}\n" + "]}";
 
+                String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
+                                + "<shape><type>triangle</type><x>" + triangle.getX() + "</x><y>"
+                                + triangle.getY() + "</y></shape>\n" + "</shapes>";
 
 
-        String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"triangle\",\n"
-                + "\"x\": " + triangle.getX() + ",\n" + "\"y\": " + triangle.getY() + "\n" + "}\n"
-                + "]}";
+                String actualJsonContent = readFromFile("./save.json");
+                String actualXMLContent = readFromFile("./save.xml");
 
-        String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
-                + "<shape><type>triangle</type><x>" + triangle.getX() + "</x><y>" + triangle.getY()
-                + "</y></shape>\n" + "</shapes>";
 
+                assertEquals(expectedJsonContent, actualJsonContent);
+                assertEquals(expectedXMLContent, actualXMLContent);
+        }
 
-        String actualJsonContent = readFromFile("./save.json");
-        String actualXMLContent = readFromFile("./save.xml");
 
+        @Test()
+        void addACube() throws IOException {
+                Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
+                Cube cube = new Cube(75, 75);
+                jFrame.addShape(cube, g2);
 
-        assertEquals(expectedJsonContent, actualJsonContent);
-        assertEquals(expectedXMLContent, actualXMLContent);
-    }
 
+                jFrame.getmJsonButton().doClick();
+                jFrame.getmXmlButton().doClick();
 
-    @Test()
-    void addACube() throws IOException {
-        Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
-        Cube cube = new Cube(75, 75);
-        jFrame.addShape(cube, g2);
-        jFrame.mJsonButton.doClick();
 
 
-        jFrame.mXmlButton.doClick();
+                String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"cube\",\n"
+                                + "\"x\": " + cube.getX() + ",\n" + "\"y\": " + cube.getY() + ",\n"
+                                + "\"size\": " + "100\n" + "}\n" + "]}";
 
+                String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
+                                + "<shape><type>cube</type><x>" + cube.getX() + "</x><y>"
+                                + cube.getY() + "</y><size>100</size></shape>\n" + "</shapes>";
 
 
-        String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"cube\",\n"
-                + "\"x\": " + cube.getX() + ",\n" + "\"y\": " + cube.getY() + ",\n"+ "\"size\": "+ "100\n" + "}\n" + "]}";
+                String actualJsonContent = readFromFile("./save.json");
+                String actualXMLContent = readFromFile("./save.xml");
 
-        String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
-                + "<shape><type>cube</type><x>" + cube.getX() + "</x><y>" + cube.getY()
-                + "</y><size>100</size></shape>\n" + "</shapes>";
 
+                assertEquals(expectedJsonContent, actualJsonContent);
+                assertEquals(expectedXMLContent, actualXMLContent);
+        }
 
-        String actualJsonContent = readFromFile("./save.json");
-        String actualXMLContent = readFromFile("./save.xml");
+        @Test()
+        void addAShapeThenUndo() throws IOException {
+                Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
+                Circle circle = new Circle(75, 75);
 
 
-        assertEquals(expectedJsonContent, actualJsonContent);
-        assertEquals(expectedXMLContent, actualXMLContent);
-    }
+                jFrame.addShape(circle, g2);
 
-    @Test()
-    void addAShapeThenUndo() throws IOException {
-        Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
-        Circle circle = new Circle(75, 75);
+                // Create a KeyEvent simulating Ctrl+Z
+                KeyEvent keyEvent = new KeyEvent(new JButton(), KeyEvent.KEY_PRESSED,
+                                System.currentTimeMillis(), KeyEvent.CTRL_DOWN_MASK, KeyEvent.VK_Z,
+                                'Z');
 
+                // Call the keyPressed method with the simulated KeyEvent
+                jFrame.keyPressed(keyEvent);
 
-        jFrame.addShape(circle, g2);
+                jFrame.getmJsonButton().doClick();
 
-        // Create a KeyEvent simulating Ctrl+Z
-        KeyEvent keyEvent = new KeyEvent(new JButton(), KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(), KeyEvent.CTRL_DOWN_MASK, KeyEvent.VK_Z, 'Z');
 
-        // Call the keyPressed method with the simulated KeyEvent
-        jFrame.keyPressed(keyEvent);
+                jFrame.getmXmlButton().doClick();
 
-        jFrame.mJsonButton.doClick();
+                String expectedJsonContent = "{\"shapes\":[\n" + "]}";
 
+                String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
+                                + "</shapes>";
 
-        jFrame.mXmlButton.doClick();
+                String actualJsonContent = readFromFile("./save.json");
+                String actualXMLContent = readFromFile("./save.xml");
 
-        String expectedJsonContent =
-                "{\"shapes\":[\n"  + "]}";
+                assertEquals(expectedJsonContent, actualJsonContent);
+                assertEquals(expectedXMLContent, actualXMLContent);
 
-        String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
-                + "</shapes>";
-
-        String actualJsonContent = readFromFile("./save.json");
-        String actualXMLContent = readFromFile("./save.xml");
-
-        assertEquals(expectedJsonContent, actualJsonContent);
-        assertEquals(expectedXMLContent, actualXMLContent);
-
-    }
+        }
 
 
 }

@@ -47,8 +47,8 @@ public class JDrawingFrame extends JFrame
     private final Map<EditButton, JButton> mButtons = new EnumMap<>(EditButton.class);
 
     private final transient CommandList commandList = new CommandList();
-    public JButton mXmlButton;
-    public JButton mJsonButton;
+    private JButton mXmlButton;
+    private JButton mJsonButton;
 
     private transient AbstractShape shapeToMove;
     private transient GroupShape groupShapeToDo;
@@ -175,7 +175,6 @@ public class JDrawingFrame extends JFrame
                 case CUBE:
                     Cube cube = new Cube(evt.getX(), evt.getY());
                     addShape(cube, g2);
-
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + mSelected);
@@ -379,4 +378,10 @@ public class JDrawingFrame extends JFrame
         // Do nothing
     }
 
+    public JButton getmXmlButton() {
+        return mXmlButton;
+    }
+    public JButton getmJsonButton() {
+        return mJsonButton;
+    }
 }
