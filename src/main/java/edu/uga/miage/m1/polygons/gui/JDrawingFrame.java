@@ -33,7 +33,7 @@ public class JDrawingFrame extends JFrame
 
     private EditButton mSelected;
 
-    public final JPanel mPanel;
+    private final JPanel mPanel;
 
     private final JLabel mLabel;
 
@@ -49,6 +49,7 @@ public class JDrawingFrame extends JFrame
     private final transient CommandList commandList = new CommandList();
     private JButton mXmlButton;
     private JButton mJsonButton;
+    private JButton mUndoButton;
 
     private transient AbstractShape shapeToMove;
     private transient GroupShape groupShapeToDo;
@@ -73,6 +74,7 @@ public class JDrawingFrame extends JFrame
         
         mXmlButton = new JButton("XML");
         mJsonButton = new JButton("JSON");
+        mUndoButton = new JButton("Undo");
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
@@ -99,6 +101,9 @@ public class JDrawingFrame extends JFrame
                         JOptionPane.ERROR_MESSAGE);
             }
         });
+        mUndoButton.addActionListener(e -> {
+            commandList.undoneLastCommand();
+        });
 
 
         // Fills the panel
@@ -116,6 +121,7 @@ public class JDrawingFrame extends JFrame
 
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
+        addButtonToToolbar(mUndoButton);
         
         setPreferredSize(new Dimension(400, 400));
 
@@ -383,5 +389,8 @@ public class JDrawingFrame extends JFrame
     }
     public JButton getmJsonButton() {
         return mJsonButton;
+    }
+    public JPanel getmPanel() {
+        return mPanel;
     }
 }

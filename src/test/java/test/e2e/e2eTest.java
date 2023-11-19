@@ -59,7 +59,7 @@ class e2e {
 
         @Test()
         void addASquare() throws IOException {
-                Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
+                Graphics2D g2 = (Graphics2D) jFrame.getmPanel().getGraphics();
                 Square square = new Square(50, 50);
                 jFrame.addShape(square, g2);
 
@@ -86,7 +86,7 @@ class e2e {
 
         @Test()
         void addACircle() throws IOException, AWTException {
-                Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
+                Graphics2D g2 = (Graphics2D) jFrame.getmPanel().getGraphics();
                 Circle circle = new Circle(50, 50);
                 jFrame.addShape(circle, g2);
 
@@ -113,7 +113,7 @@ class e2e {
 
         @Test()
         void addATriangle() throws IOException {
-                Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
+                Graphics2D g2 = (Graphics2D) jFrame.getmPanel().getGraphics();
                 Triangle triangle = new Triangle(75, 75);
                 jFrame.addShape(triangle, g2);
                 jFrame.getmJsonButton().doClick();
@@ -143,7 +143,7 @@ class e2e {
 
         @Test()
         void addACube() throws IOException {
-                Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
+                Graphics2D g2 = (Graphics2D) jFrame.getmPanel().getGraphics();
                 Cube cube = new Cube(75, 75);
                 jFrame.addShape(cube, g2);
 
@@ -172,7 +172,7 @@ class e2e {
 
         @Test()
         void addAShapeThenUndo() throws IOException {
-                Graphics2D g2 = (Graphics2D) jFrame.mPanel.getGraphics();
+                Graphics2D g2 = (Graphics2D) jFrame.getmPanel().getGraphics();
                 Circle circle = new Circle(75, 75);
 
 
