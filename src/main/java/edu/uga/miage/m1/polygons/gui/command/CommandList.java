@@ -59,7 +59,7 @@ public class CommandList {
                 commandToUndo.setStatus(CommandStatus.UNDONE);
                 break;
             case UNDONE:
-                if(index>0) undoneCommandByIndex(index - 1);  
+                undoneCommandByIndex(index - 1);  
                  
                 break;
             case WAITING:
