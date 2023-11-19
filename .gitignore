@@ -6,3 +6,5 @@
 save.json
 save.xml
 .env
+/Doc/*.vpp.bak*
+/Doc/.ProjetPersistence.vpp.lck
