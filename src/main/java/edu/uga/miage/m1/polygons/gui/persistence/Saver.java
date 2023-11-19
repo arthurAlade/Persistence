@@ -16,6 +16,7 @@ public class Saver {
     public void addShapes(boolean xml){
         Visitor visitor = xml ? new XMLVisitor() : new JSonVisitor();
         visitablesList.forEach(shape -> {
+            System.out.println(shape);
             extractGroupShape(xml, shape, visitor);
             save.append(xml ? "\n" : getEndShape(visitablesList.indexOf(shape), visitablesList.size()));
         });
@@ -23,6 +24,7 @@ public class Saver {
 
     private void extractGroupShape(boolean xml, Visitable shape, Visitor visitor) {
         if (shape instanceof GroupShape groupShape) {
+            System.out.println("GroupShape");
             addShapeFromList(shape, visitor);
             List<AbstractShape> list = groupShape.getShapes();
             list.forEach(shape1 -> {
