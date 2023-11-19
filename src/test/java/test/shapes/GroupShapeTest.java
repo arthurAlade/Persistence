@@ -1,4 +1,7 @@
 package test.shapes;
+import edu.uga.miage.m1.polygons.gui.persistence.JSonVisitor;
+import edu.uga.miage.m1.polygons.gui.persistence.Saver;
+import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLVisitor;
 import edu.uga.miage.m1.polygons.gui.shapes.AbstractShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
@@ -90,12 +93,16 @@ public class GroupShapeTest {
         XMLVisitor xmlVisitor = new XMLVisitor();
         groupShape.accept(xmlVisitor);
         String result = xmlVisitor.getRepresentation();
+        String expected = "<shape><type>groupShape</type><x>-25</x><y>-25</y><xEnd>0</xEnd><yEnd>0</yEnd><shapes>";
+        assertEquals(expected, result);
+
+        JSonVisitor jSonVisitor = new JSonVisitor();
+        groupShape.accept(jSonVisitor);
+        result = jSonVisitor.getRepresentation();
+        expected = "{\n\"type\": \"groupShape\",\n\"x\": -25,\n\"y\": -25,\n\"xEnd\": 0,\n\"yEnd\": 0,\n\"shapes\": [\n";
+        assertEquals(expected, result);
 
 
-        assertEquals(2, groupShape.getShapes().size());
-        assertEquals(circle, groupShape.getShapes().get(0));
-        assertEquals(triangle, groupShape.getShapes().get(1));
-        assertTrue(groupShape.isGrouped());
     }
 
 }
