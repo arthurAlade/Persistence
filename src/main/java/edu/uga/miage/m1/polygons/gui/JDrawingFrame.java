@@ -228,7 +228,7 @@ public class JDrawingFrame extends JFrame
     }
 
     public void removeShapeList(List<AbstractShape> shapeList){
-        shapeList.forEach(shape -> removeShape(shapeList.indexOf(shape)));
+        shapeList.forEach(shape -> removeShape(mShapesList.indexOf(shape)));
     }
 
     public void removeShape(int index) {
