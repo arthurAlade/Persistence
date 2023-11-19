@@ -123,7 +123,7 @@ public class JDrawingFrame extends JFrame
         addButtonToToolbar(mJsonButton);
         addButtonToToolbar(mUndoButton);
         
-        setPreferredSize(new Dimension(400, 400));
+        setPreferredSize(new Dimension(500, 500));
 
         mPanel.requestFocus();
     }
