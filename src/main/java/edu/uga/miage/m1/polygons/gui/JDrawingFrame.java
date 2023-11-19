@@ -305,6 +305,7 @@ public class JDrawingFrame extends JFrame
      */
     public void mouseReleased(MouseEvent evt) {
         if (mSelected == EditButton.GROUP) {
+            System.out.println(mShapesList);
             groupShapeToDo.setxEnd(evt.getX());
             groupShapeToDo.setyEnd(evt.getY());
             ArrayList<AbstractShape> shapesToGroup = new ArrayList<>();
@@ -313,8 +314,10 @@ public class JDrawingFrame extends JFrame
                     shapesToGroup.add(shape);
                 }
             });
-            removeShapeList(shapesToGroup);
+            System.out.println(shapesToGroup);
             groupShapeToDo.setShapes(shapesToGroup);
+            removeShapeList(shapesToGroup);
+            System.out.println(mShapesList);
             groupShapeToDo.setGrouped(true);
 
             groupShapeToDo.draw((Graphics2D) mPanel.getGraphics());

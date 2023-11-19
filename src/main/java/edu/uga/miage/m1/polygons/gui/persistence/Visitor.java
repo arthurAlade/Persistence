@@ -35,7 +35,7 @@ public abstract class Visitor {
     }
 
     public void visit(GroupShape group) {
-        this.representation = getSchema(group.getX(), group.getY(), group.getxEnd(), group.getyEnd(), "groupShape");
+        representation = getSchema(group.getX(), group.getY(), group.getxEnd(), group.getyEnd(), "groupShape");
     }
 
     public String getRepresentation() {
