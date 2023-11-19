@@ -13,6 +13,10 @@ public class XMLVisitor extends Visitor {
     }
 
     public String getSchema(int x, int y, String type) {
+        if (type.equals("cube")){
+            return "<shape><type>" + type + "</type><x>" + x + "</x><y>" + y + "</y><size>100</size></shape>";
+    
+        }
         return "<shape><type>" + type + "</type><x>" + x + "</x><y>" + y + "</y></shape>";
     }
 

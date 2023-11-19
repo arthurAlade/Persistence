@@ -11,6 +11,10 @@ public class JSonVisitor extends Visitor {
     }
 
     public String getSchema(int x, int y, String type) {
+        if(type.equals("cube")){
+                    return "{\n\"type\": \"" + type + "\",\n\"x\": " + x + ",\n\"y\": " + y + ",\n\"size\": 100"+"\n}";
+
+        }
 
         return "{\n\"type\": \"" + type + "\",\n\"x\": " + x + ",\n\"y\": " + y + "\n}";
     }

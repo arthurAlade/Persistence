@@ -1,6 +1,7 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
 import edu.uga.miage.m1.polygons.gui.shapes.Circle;
+import edu.uga.miage.m1.polygons.gui.shapes.Cube;
 import edu.uga.miage.m1.polygons.gui.shapes.GroupShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
@@ -24,7 +25,10 @@ public abstract class Visitor {
     public void visit(Square square) {
         this.representation = getSchema(square.getX(), square.getY(), "square");
     }
-
+    
+    public void visit(Cube cube) {
+        representation = getSchema(cube.getX(), cube.getY(), "cube");
+    }
 
     public void visit(Triangle triangle) {
         representation = getSchema(triangle.getX(), triangle.getY(), "triangle");
