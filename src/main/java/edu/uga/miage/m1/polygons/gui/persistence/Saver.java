@@ -29,17 +29,32 @@ public class Saver {
         if (shape instanceof GroupShape groupShape) {
             System.out.println("GroupShape");
             addShapeFromList(shape, visitor);
+            indent++;
+            save.append("\n");
+            save.append("\t".repeat(Math.max(0, indent)));
+            save.append(xml ? "<shapes>" : "");
             save.append("\n");
             indent++;
             List<AbstractShape> list = groupShape.getShapes();
             list.forEach(shape1 -> {
                 extractGroupShape(xml, shape1, visitor);
-                save.append(getEndShape(list.indexOf(shape1), list.size()));
+                if(!xml){
+                    save.append(getEndShape(list.indexOf(shape1), list.size()));
+                }else {
+                    save.append("\n");
+                }
+
             });
             indent--;
             save.append("\t".repeat(Math.max(0, indent)));
-            save.append(xml ? "</shapes></shape>" : "/n ]}");
-
+            indent--;
+            if (xml) {
+                save.append("</shapes>\n");
+                save.append("\t".repeat(Math.max(0, indent)));
+                save.append("</shape>");
+            }else{
+                save.append("]");
+            }
         }
         else {
             addShapeFromList(shape, visitor);
