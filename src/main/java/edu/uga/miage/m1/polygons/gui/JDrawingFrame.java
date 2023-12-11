@@ -2,6 +2,7 @@ package edu.uga.miage.m1.polygons.gui;
 
 import edu.uga.miage.m1.polygons.gui.command.*;
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
+import edu.uga.miage.m1.polygons.gui.persistence.XMLImporter;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
 import edu.uga.miage.m1.polygons.gui.shapes.*;
 
@@ -47,9 +48,10 @@ public class JDrawingFrame extends JFrame
     private final Map<EditButton, JButton> mButtons = new EnumMap<>(EditButton.class);
 
     private final transient CommandList commandList = new CommandList();
-    private JButton mXmlButton;
-    private JButton mJsonButton;
-    private JButton mUndoButton;
+    private final JButton mXmlButton;
+    private final JButton mJsonButton;
+    private final JButton mUndoButton;
+    private final JButton mXmlImportButton;
 
     private transient AbstractShape shapeToMove;
     private transient GroupShape groupShapeToDo;
@@ -75,6 +77,7 @@ public class JDrawingFrame extends JFrame
         mXmlButton = new JButton("XML");
         mJsonButton = new JButton("JSON");
         mUndoButton = new JButton("Undo");
+        mXmlImportButton = new JButton("Import XML");
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
@@ -104,6 +107,17 @@ public class JDrawingFrame extends JFrame
         mUndoButton.addActionListener(e -> {
             commandList.undoneLastCommand();
         });
+        mXmlImportButton.addActionListener(e -> {
+            XMLImporter xmlImporter = new XMLImporter();
+            boolean isImported = xmlImporter.importXML();
+            if (isImported) {
+                JOptionPane.showMessageDialog(this, "File imported successfully", "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error while importing file", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
 
 
         // Fills the panel
@@ -122,6 +136,7 @@ public class JDrawingFrame extends JFrame
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
         addButtonToToolbar(mUndoButton);
+        addButtonToToolbar(mXmlImportButton);
         
         setPreferredSize(new Dimension(500, 500));
 
