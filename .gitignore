@@ -8,3 +8,4 @@ save.xml
 .env
 /Doc/*.vpp.bak*
 /Doc/.ProjetPersistence.vpp.lck
+/Persistence_g1_2/
