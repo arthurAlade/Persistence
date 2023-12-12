@@ -123,13 +123,17 @@ public class JDrawingFrame extends JFrame
 
         mXmlImportButton2.addActionListener(e -> {
             XMLImporter xmlImporter = new XMLImporter();
+            boolean isImported = xmlImporter.importXML("save.xml",(Graphics2D) mPanel.getGraphics());
             xmlImporter.importAbstractShape("save.xml");
-            for (AbstractShape shape : xmlImporter.importAbstractShape("save.xml")) {
-                addShape(shape, (Graphics2D) mPanel.getGraphics());
-                if ((Graphics2D) mPanel.getGraphics() == null) {
-                    System.out.println("null");
-                }
+
+            if (isImported) {
+                JOptionPane.showMessageDialog(this, "File imported successfully", "Success",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error while importing file", "Error",
+                        JOptionPane.ERROR_MESSAGE);
             }
+           
         });
 
 
@@ -157,7 +161,7 @@ public class JDrawingFrame extends JFrame
         addButtonToToolbar(mUndoButton);
         addButtonToToolbar(mXmlImportButton);
         addButtonToToolbar(mXmlImportButton2);
-        setPreferredSize(new Dimension(500, 500));
+        setPreferredSize(new Dimension(1200, 500));
 
         mPanel.requestFocus();
     }

@@ -1,5 +1,6 @@
 package edu.uga.miage.m1.polygons.gui.persistence;
 
+import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -37,6 +38,19 @@ public class XMLImporter {
 
         return shape;
     }
+    // this method also draw the shapes
+    public boolean importXML(String filename, Graphics2D g2){
+        boolean status = true;
+        List<AbstractShape> listShape = importAbstractShape("save.xml");
+
+        if(listShape == null) status = false;
+
+        for(AbstractShape shape : listShape){
+            shape.draw(g2);
+        }
+
+        return status;
+    }
 
     public List<AbstractShape> importAbstractShape(String filename){
         List<AbstractShape> listShape = new ArrayList<AbstractShape>();
@@ -57,8 +71,8 @@ public class XMLImporter {
 
                     // Get parse and extract type, x and y from XML file
                     String type = shapeElement.getElementsByTagName("type").item(0).getTextContent();
-                    int x = Integer.parseInt(shapeElement.getElementsByTagName("x").item(0).getTextContent());
-                    int y = Integer.parseInt(shapeElement.getElementsByTagName("y").item(0).getTextContent());
+                    int x = Integer.parseInt(shapeElement.getElementsByTagName("x").item(0).getTextContent()+25);
+                    int y = Integer.parseInt(shapeElement.getElementsByTagName("y").item(0).getTextContent()+25);
 
 
                     listShape.add(this.AbstractShapeGenerator(type, x, y));
