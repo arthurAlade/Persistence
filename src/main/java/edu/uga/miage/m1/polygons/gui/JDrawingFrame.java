@@ -52,6 +52,7 @@ public class JDrawingFrame extends JFrame
     private final JButton mJsonButton;
     private final JButton mUndoButton;
     private final JButton mXmlImportButton;
+    private final JButton mXmlImportButton2;
 
     private transient AbstractShape shapeToMove;
     private transient GroupShape groupShapeToDo;
@@ -73,11 +74,12 @@ public class JDrawingFrame extends JFrame
 
         mPanel.addKeyListener(this);
         mPanel.setFocusable(true);
-        
+
         mXmlButton = new JButton("XML");
         mJsonButton = new JButton("JSON");
         mUndoButton = new JButton("Undo");
         mXmlImportButton = new JButton("Import XML");
+        mXmlImportButton2 = new JButton("Import XML2");
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
@@ -119,6 +121,17 @@ public class JDrawingFrame extends JFrame
             }
         });
 
+        mXmlImportButton2.addActionListener(e -> {
+            XMLImporter xmlImporter = new XMLImporter();
+            xmlImporter.importAbstractShape("save.xml");
+            for (AbstractShape shape : xmlImporter.importAbstractShape("save.xml")) {
+                addShape(shape, (Graphics2D) mPanel.getGraphics());
+                if ((Graphics2D) mPanel.getGraphics() == null) {
+                    System.out.println("null");
+                }
+            }
+        });
+
 
         // Fills the panel
         setLayout(new BorderLayout());
@@ -126,18 +139,24 @@ public class JDrawingFrame extends JFrame
         add(mPanel, BorderLayout.CENTER);
         add(mLabel, BorderLayout.SOUTH);
         // Add shapes in the menu
-        addShape(EditButton.SQUARE,new ImageIcon(Objects.requireNonNull(getClass().getResource("images/square.png"))));
-        addShape(EditButton.TRIANGLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/triangle.png"))));
-        addShape(EditButton.CIRCLE,new ImageIcon(Objects.requireNonNull(getClass().getResource("images/circle.png"))));
-        addShape(EditButton.MOVE,new ImageIcon(Objects.requireNonNull(getClass().getResource("images/move.png"))));
-        addShape(EditButton.CUBE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/underc.png"))));
-        addShape(EditButton.GROUP, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/link.png"))));
+        addShape(EditButton.SQUARE,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/square.png"))));
+        addShape(EditButton.TRIANGLE, new ImageIcon(
+                Objects.requireNonNull(getClass().getResource("images/triangle.png"))));
+        addShape(EditButton.CIRCLE,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/circle.png"))));
+        addShape(EditButton.MOVE,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/move.png"))));
+        addShape(EditButton.CUBE,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/underc.png"))));
+        addShape(EditButton.GROUP,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/link.png"))));
 
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
         addButtonToToolbar(mUndoButton);
         addButtonToToolbar(mXmlImportButton);
-        
+        addButtonToToolbar(mXmlImportButton2);
         setPreferredSize(new Dimension(500, 500));
 
         mPanel.requestFocus();
@@ -221,7 +240,7 @@ public class JDrawingFrame extends JFrame
             for (AbstractShape shape : mShapesList) {
                 int x = evt.getX() - shape.getX();
                 int y = evt.getY() - shape.getY();
-                if (!(shape instanceof GroupShape)){
+                if (!(shape instanceof GroupShape)) {
                     if (x >= 0 && x <= 50 && y >= 0 && y <= 50) {
                         shapeToMove = shape;
                         isShapeSelected = true;
@@ -242,13 +261,13 @@ public class JDrawingFrame extends JFrame
         }
     }
 
-    public void removeShapeList(List<AbstractShape> shapeList){
+    public void removeShapeList(List<AbstractShape> shapeList) {
         shapeList.forEach(shape -> removeShape(mShapesList.indexOf(shape)));
     }
 
     public void removeShape(int index) {
         if (!mShapesList.isEmpty()) {
-            AbstractShape abstractShape =  mShapesList.remove(index);
+            AbstractShape abstractShape = mShapesList.remove(index);
             if (abstractShape instanceof GroupShape groupShape) {
                 mShapesList.addAll(groupShape.getShapes());
             }
@@ -306,7 +325,7 @@ public class JDrawingFrame extends JFrame
         if (mPanel.contains(evt.getX(), evt.getY())) {
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
             if (mSelected == EditButton.GROUP) {
-                GroupShape groupShape = new GroupShape(evt.getX()+25, evt.getY()+25);
+                GroupShape groupShape = new GroupShape(evt.getX() + 25, evt.getY() + 25);
                 addShape(groupShape, g2);
                 groupShapeToDo = groupShape;
             }
@@ -393,7 +412,8 @@ public class JDrawingFrame extends JFrame
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if ((e.isMetaDown() || e.isControlDown()) && (e.getKeyChar() == 'z' || e.getKeyChar() == 'Z' )) {
+        if ((e.isMetaDown() || e.isControlDown())
+                && (e.getKeyChar() == 'z' || e.getKeyChar() == 'Z')) {
             commandList.undoneLastCommand();
         }
     }
