@@ -2,7 +2,9 @@ package edu.uga.miage.m1.polygons.gui;
 
 import edu.uga.miage.m1.polygons.gui.command.*;
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
+import edu.uga.miage.m1.polygons.gui.persistence.JSONSaverAdapter;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
+import edu.uga.miage.m1.polygons.gui.persistence.XMLSaverAdapter;
 import edu.uga.miage.m1.polygons.gui.shapes.*;
 
 import javax.swing.*;
@@ -78,10 +80,7 @@ public class JDrawingFrame extends JFrame
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
-            XMLSaver xmlSaver = new XMLSaver(mShapesList);
-            xmlSaver.saveShapes();
-            boolean isSaved = xmlSaver.saveXML();
-            if (isSaved) {
+            if (new XMLSaverAdapter(mShapesList).save()) {
                 JOptionPane.showMessageDialog(this, "File saved successfully", "Success",
                         JOptionPane.INFORMATION_MESSAGE);
             } else {
@@ -90,10 +89,7 @@ public class JDrawingFrame extends JFrame
             }
         });
         mJsonButton.addActionListener(e -> {
-            JSONSaver jsonSaver = new JSONSaver(mShapesList);
-            jsonSaver.saveShapes();
-            boolean isSaved = jsonSaver.saveJSON();
-            if (isSaved) {
+            if (new JSONSaverAdapter(mShapesList).save()) {
                 JOptionPane.showMessageDialog(this, "File saved successfully", "Success",
                         JOptionPane.INFORMATION_MESSAGE);
             } else {
