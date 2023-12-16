@@ -52,7 +52,6 @@ public class JDrawingFrame extends JFrame
     private final JButton mJsonButton;
     private final JButton mUndoButton;
     private final JButton mXmlImportButton;
-    private final JButton mXmlImportButton2;
 
     private transient AbstractShape shapeToMove;
     private transient GroupShape groupShapeToDo;
@@ -79,7 +78,6 @@ public class JDrawingFrame extends JFrame
         mJsonButton = new JButton("JSON");
         mUndoButton = new JButton("Undo");
         mXmlImportButton = new JButton("Import XML");
-        mXmlImportButton2 = new JButton("Import XML2");
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
@@ -109,29 +107,20 @@ public class JDrawingFrame extends JFrame
         mUndoButton.addActionListener(e -> {
             commandList.undoneLastCommand();
         });
+
         mXmlImportButton.addActionListener(e -> {
             XMLImporter xmlImporter = new XMLImporter();
-            boolean isImported = xmlImporter.importXML();
-            if (isImported) {
-                JOptionPane.showMessageDialog(this, "File imported successfully", "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "Error while importing file", "Error",
+            List<AbstractShape> shapesToImport = xmlImporter.importAbstractShape("save.xml");
+
+            if (shapesToImport.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Error while importing. \nThe file is empty or do not exist", "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
-        });
-
-        mXmlImportButton2.addActionListener(e -> {
-            XMLImporter xmlImporter = new XMLImporter();
-            boolean isImported = xmlImporter.importXML("save.xml",(Graphics2D) mPanel.getGraphics());
-            xmlImporter.importAbstractShape("save.xml");
-
-            if (isImported) {
-                JOptionPane.showMessageDialog(this, "File imported successfully", "Success",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "Error while importing file", "Error",
-                        JOptionPane.ERROR_MESSAGE);
+            else {
+                Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
+                shapesToImport.forEach(shape -> {
+                    addShape(shape, g2);
+                });
             }
            
         });
@@ -160,7 +149,6 @@ public class JDrawingFrame extends JFrame
         addButtonToToolbar(mJsonButton);
         addButtonToToolbar(mUndoButton);
         addButtonToToolbar(mXmlImportButton);
-        addButtonToToolbar(mXmlImportButton2);
         setPreferredSize(new Dimension(1200, 500));
 
         mPanel.requestFocus();
