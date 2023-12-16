@@ -21,7 +21,7 @@ public class XMLVisitor extends Visitor {
 
     @Override
     String getSchema(int xStart, int yStart, int xEnd, int yEnd, String type) {
-        return "<shape><type>" + type + "</type><x>" + xStart + "</x><y>" + yStart + "</y><xEnd>" + xEnd + "</xEnd><yEnd>" + yEnd + "</yEnd><shapes>";
+        return "<shape><type>" + type + "</type><x>" + xStart + "</x><y>" + yStart + "</y><xEnd>" + xEnd + "</xEnd><yEnd>" + yEnd + "</yEnd>";
     }
 
     /**

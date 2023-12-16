@@ -8,12 +8,15 @@ public class Saver {
     private final StringBuilder save = new StringBuilder();
 
     private final List<AbstractShape> visitablesList;
+    private int indent;
 
     public Saver(List<AbstractShape> visitablesList) {
         this.visitablesList = visitablesList;
+        this.indent = 0;
     }
 
     public void addShapes(boolean xml){
+        indent++;
         Visitor visitor = xml ? new XMLVisitor() : new JSonVisitor();
         visitablesList.forEach(shape -> {
             System.out.println(shape);
@@ -26,12 +29,32 @@ public class Saver {
         if (shape instanceof GroupShape groupShape) {
             System.out.println("GroupShape");
             addShapeFromList(shape, visitor);
+            indent++;
+            save.append("\n");
+            save.append("\t".repeat(Math.max(0, indent)));
+            save.append(xml ? "<shapes>" : "");
+            save.append("\n");
+            indent++;
             List<AbstractShape> list = groupShape.getShapes();
             list.forEach(shape1 -> {
                 extractGroupShape(xml, shape1, visitor);
-                save.append(getEndShape(list.indexOf(shape1), list.size()));
+                if(!xml){
+                    save.append(getEndShape(list.indexOf(shape1), list.size()));
+                }else {
+                    save.append("\n");
+                }
+
             });
-            save.append(xml ? "</shapes></shape>" : "]}");
+            indent--;
+            save.append("\t".repeat(Math.max(0, indent)));
+            indent--;
+            if (xml) {
+                save.append("</shapes>\n");
+                save.append("\t".repeat(Math.max(0, indent)));
+                save.append("</shape>");
+            }else{
+                save.append("]");
+            }
         }
         else {
             addShapeFromList(shape, visitor);
@@ -40,6 +63,7 @@ public class Saver {
 
     private void addShapeFromList(Visitable shape, Visitor visitor){
             shape.accept(visitor);
+            save.append("\t".repeat(Math.max(0, indent)));
             save.append(visitor.getRepresentation());
     }
 
