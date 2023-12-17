@@ -26,6 +26,7 @@ public class XMLImporter {
             case "circle" -> new Circle(x, y);
             case "triangle" -> new Triangle(x, y);
             case "cube" -> new Cube(x, y);
+            // TODO: replace with GroupShape
             default -> new Square(x, y);
         };
     }
@@ -49,10 +50,12 @@ public class XMLImporter {
 
                     // Get parse and extract type, x and y from XML file
                     String type = shapeElement.getElementsByTagName("type").item(0).getTextContent();
-                    int x = Integer.parseInt(shapeElement.getElementsByTagName("x").item(0).getTextContent()+25);
-                    int y = Integer.parseInt(shapeElement.getElementsByTagName("y").item(0).getTextContent()+25);
+                    String xString = shapeElement.getElementsByTagName("x").item(0).getTextContent();
+                    String yString = shapeElement.getElementsByTagName("y").item(0).getTextContent();
+                    int x = Integer.parseInt(xString);
+                    int y = Integer.parseInt(yString);
 
-                    listShape.add(this.AbstractShapeGenerator(type, x, y));
+                    listShape.add(this.AbstractShapeGenerator(type, x+25, y+25));
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
