@@ -19,6 +19,14 @@ public class GroupShape extends AbstractShape {
         this.isGrouped = false;
     }
 
+    public GroupShape(int x, int y, int xEnd, int yEnd, List<AbstractShape> shapes){
+        super(x,y);
+        this.xEnd = xEnd;
+        this. yEnd = yEnd;
+        this.shapes = shapes;
+        this.isGrouped = true;
+    }
+
     @Override
     public void draw(Graphics2D g2) {
         float[] dashPattern = {5, 5}; // Pattern pour la bordure en trait

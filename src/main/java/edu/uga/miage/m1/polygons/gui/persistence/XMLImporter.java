@@ -25,14 +25,17 @@ public class XMLImporter {
         return switch (shapeType) {
             case "circle" -> new Circle(x, y);
             case "triangle" -> new Triangle(x, y);
-            // case "cube" -> new Cube(x, y);
-            // TODO: replace with GroupShape
             default -> new Square(x, y);
         };
     }
 
     public AbstractShape CubeGenerator(String shape, int x, int y, int size){
         return new Cube(x,y,size);
+    }
+
+    public AbstractShape GroupShapeGenerator(String shape, int x, int y, int xEnd, int yEnd, List<AbstractShape> shapes){
+        return new GroupShape(x, y, xEnd, yEnd, shapes);
+
     }
 
     public List<AbstractShape> importAbstractShape(String filename){
@@ -62,7 +65,14 @@ public class XMLImporter {
                     if(type.equals("cube")){
                         int size = Integer.parseInt(shapeElement.getElementsByTagName("size").item(0).getTextContent());
                         listShape.add(this.CubeGenerator(type, x+25, y+25, size));
-                    } else {
+                    } else if(type.equals("groupShape")){
+                        String xEndString = shapeElement.getElementsByTagName("x").item(0).getTextContent();
+                        String yEndString = shapeElement.getElementsByTagName("y").item(0).getTextContent();   
+                        int xEnd = Integer.parseInt(xEndString);
+                        int yEnd = Integer.parseInt(yEndString);
+                        listShape.add(this.GroupShapeGenerator(type, x+25, y+25, xEnd, yEnd, listShape));
+                    }
+                    else {
                         listShape.add(this.AbstractShapeGenerator(type, x+25, y+25));
                     }
                 }
