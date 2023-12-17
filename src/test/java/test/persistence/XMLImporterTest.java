@@ -12,32 +12,32 @@ import edu.uga.miage.m1.polygons.gui.shapes.GroupShape;
 import edu.uga.miage.m1.polygons.gui.shapes.Square;
 import edu.uga.miage.m1.polygons.gui.shapes.Triangle;
 
-public class XMLImporterTest {
+class XMLImporterTest {
     XMLImporter xmlImporter;
 
     @Test
-    public void testAbstractShapeGenerator() {
+    void testAbstractShapeGenerator() {
         XMLImporter importer = new XMLImporter();
-        AbstractShape circle = importer.AbstractShapeGenerator("circle", 10, 20);
+        AbstractShape circle = importer.abstractShapeGenerator("circle", 10, 20);
         assertTrue(circle instanceof Circle);
         assertEquals(10-25, circle.getX());
         assertEquals(20-25, circle.getY());
 
-        AbstractShape triangle = importer.AbstractShapeGenerator("triangle", 30, 40);
+        AbstractShape triangle = importer.abstractShapeGenerator("triangle", 30, 40);
         assertTrue(triangle instanceof Triangle);
         assertEquals(30-25, triangle.getX());
         assertEquals(40-25, triangle.getY());
 
-        AbstractShape square = importer.AbstractShapeGenerator("square", 50, 60);
+        AbstractShape square = importer.abstractShapeGenerator("square", 50, 60);
         assertTrue(square instanceof Square);
         assertEquals(50-25, square.getX());
         assertEquals(60-25, square.getY());
     }
 
     @Test
-    public void testCubeGenerator() {
+    void testCubeGenerator() {
         XMLImporter importer = new XMLImporter();
-        AbstractShape cube = importer.CubeGenerator("cube", 10, 20, 30);
+        AbstractShape cube = importer.cubeGenerator(10, 20, 30);
         assertTrue(cube instanceof Cube);
         assertEquals(10-25, cube.getX());
         assertEquals(20-25, cube.getY());
@@ -45,10 +45,10 @@ public class XMLImporterTest {
     }
 
     @Test
-    public void testGroupShapeGenerator() {
+    void testGroupShapeGenerator() {
         XMLImporter importer = new XMLImporter();
         List<AbstractShape> shapes = List.of(new Circle(10, 20), new Triangle(30, 40));
-        AbstractShape groupShape = importer.GroupShapeGenerator("groupShape", 0, 0, 100, 100, shapes);
+        AbstractShape groupShape = importer.groupShapeGenerator( 0, 0, 100, 100, shapes);
         assertTrue(groupShape instanceof GroupShape);
         assertEquals(-25, groupShape.getX());
         assertEquals(-25, groupShape.getY());

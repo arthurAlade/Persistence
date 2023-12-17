@@ -17,7 +17,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GroupShapeTest {
+class GroupShapeTest {
 
     Circle circle;
     Triangle triangle;
@@ -82,7 +82,7 @@ public class GroupShapeTest {
     }
 
     @Test
-    @Disabled
+    @Disabled("Need to deliver fast")
     void testGroupShapeAcceptVisitor(){
         ArrayList<AbstractShape> shapes = new ArrayList<>();
         shapes.add(circle);

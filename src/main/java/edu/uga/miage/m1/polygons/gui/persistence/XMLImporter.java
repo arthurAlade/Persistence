@@ -17,9 +17,8 @@ import java.util.List;
 
 
 public class XMLImporter {
-    public XMLImporter() {}
 
-    public AbstractShape AbstractShapeGenerator(String shapeType, int x, int y) {
+    public AbstractShape abstractShapeGenerator(String shapeType, int x, int y) {
 
         return switch (shapeType) {
             case "circle" -> new Circle(x, y);
@@ -28,18 +27,18 @@ public class XMLImporter {
         };
     }
 
-    public AbstractShape CubeGenerator(String shape, int x, int y, int size) {
+    public AbstractShape cubeGenerator( int x, int y, int size) {
         return new Cube(x, y, size);
     }
 
-    public AbstractShape GroupShapeGenerator(String shape, int x, int y, int xEnd, int yEnd,
+    public AbstractShape groupShapeGenerator(int x, int y, int xEnd, int yEnd,
             List<AbstractShape> shapes) {
         return new GroupShape(x, y, xEnd, yEnd, shapes);
 
     }
 
     public List<AbstractShape> importAbstractShape(String filename) {
-        List<AbstractShape> listShape = new ArrayList<AbstractShape>();
+        List<AbstractShape> listShape = new ArrayList<>();
 
         File inputFile = new File(filename);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
@@ -70,7 +69,7 @@ public class XMLImporter {
                     if (type.equals("cube")) {
                         int size = Integer.parseInt(
                                 shapeElement.getElementsByTagName("size").item(0).getTextContent());
-                        listShape.add(this.CubeGenerator(type, x + 25, y + 25, size));
+                        listShape.add(this.cubeGenerator(x + 25, y + 25, size));
                     } else if (type.equals("groupShape")) {
                         String xEndString =
                                 shapeElement.getElementsByTagName("x").item(0).getTextContent();
@@ -78,16 +77,15 @@ public class XMLImporter {
                                 shapeElement.getElementsByTagName("y").item(0).getTextContent();
                         int xEnd = Integer.parseInt(xEndString);
                         int yEnd = Integer.parseInt(yEndString);
-                        listShape.add(this.GroupShapeGenerator(type, x + 25, y + 25, xEnd, yEnd,
+                        listShape.add(this.groupShapeGenerator(x + 25, y + 25, xEnd, yEnd,
                                 listShape));
                     } else {
-                        listShape.add(this.AbstractShapeGenerator(type, x + 25, y + 25));
+                        listShape.add(this.abstractShapeGenerator(type, x + 25, y + 25));
                     }
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
             System.err.println("An error occurred while parsing the XML file:");
-            // e.printStackTrace();
         }
         return listShape;
     }

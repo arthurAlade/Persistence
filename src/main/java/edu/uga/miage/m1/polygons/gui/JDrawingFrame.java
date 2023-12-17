@@ -113,7 +113,6 @@ public class JDrawingFrame extends JFrame
             List<AbstractShape> shapesToImport = xmlImporter.importAbstractShape("save.xml");
 
             mShapesList.forEach(System.out::println);
-            System.out.println("Imported shapes");
             shapesToImport.forEach(System.out::println);
             if (shapesToImport.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Error while importing. \nThe file is empty or do not exist", "Error",
@@ -127,7 +126,6 @@ public class JDrawingFrame extends JFrame
                 clearDrawing(g2);
                 redrawShapes(g2);
             }
-            System.out.println("Shapes list after import");
             mShapesList.forEach(System.out::println);
         });
 
@@ -238,12 +236,10 @@ public class JDrawingFrame extends JFrame
             for (AbstractShape shape : mShapesList) {
                 int x = evt.getX() - shape.getX();
                 int y = evt.getY() - shape.getY();
-                if (!(shape instanceof GroupShape)) {
-                    if (x >= 0 && x <= 50 && y >= 0 && y <= 50) {
+                if (!(shape instanceof GroupShape) && (x >= 0 && x <= 50 && y >= 0 && y <= 50) ) {                    
                         shapeToMove = shape;
                         isShapeSelected = true;
                         break;
-                    }
                 }
             }
             if (isShapeSelected) {
@@ -284,7 +280,6 @@ public class JDrawingFrame extends JFrame
     public void redrawShapes(Graphics2D g2) {
         mShapesList.forEach(shape -> {
             shape.draw(g2);
-            System.out.println(shape+ " shape redrawed");
             if (shape instanceof GroupShape groupShape) {
                 groupShape.getShapes().forEach(shape1 -> shape1.draw(g2));
             }
@@ -346,7 +341,6 @@ public class JDrawingFrame extends JFrame
      */
     public void mouseReleased(MouseEvent evt) {
         if (mSelected == EditButton.GROUP) {
-            System.out.println(mShapesList);
             groupShapeToDo.setxEnd(evt.getX());
             groupShapeToDo.setyEnd(evt.getY());
             ArrayList<AbstractShape> shapesToGroup = new ArrayList<>();
@@ -355,10 +349,8 @@ public class JDrawingFrame extends JFrame
                     shapesToGroup.add(shape);
                 }
             });
-            System.out.println(shapesToGroup);
             groupShapeToDo.setShapes(shapesToGroup);
             removeShapeList(shapesToGroup);
-            System.out.println(mShapesList);
             groupShapeToDo.setGrouped(true);
 
             groupShapeToDo.draw((Graphics2D) mPanel.getGraphics());
