@@ -112,6 +112,9 @@ public class JDrawingFrame extends JFrame
             XMLImporter xmlImporter = new XMLImporter();
             List<AbstractShape> shapesToImport = xmlImporter.importAbstractShape("save.xml");
 
+            mShapesList.forEach(System.out::println);
+            System.out.println("Imported shapes");
+            shapesToImport.forEach(System.out::println);
             if (shapesToImport.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Error while importing. \nThe file is empty or do not exist", "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -124,7 +127,8 @@ public class JDrawingFrame extends JFrame
                 clearDrawing(g2);
                 redrawShapes(g2);
             }
-
+            System.out.println("Shapes list after import");
+            mShapesList.forEach(System.out::println);
         });
 
 
@@ -280,6 +284,7 @@ public class JDrawingFrame extends JFrame
     public void redrawShapes(Graphics2D g2) {
         mShapesList.forEach(shape -> {
             shape.draw(g2);
+            System.out.println(shape+ " shape redrawed");
             if (shape instanceof GroupShape groupShape) {
                 groupShape.getShapes().forEach(shape1 -> shape1.draw(g2));
             }
