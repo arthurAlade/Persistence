@@ -30,7 +30,7 @@ class JSONSaverTest {
     void saveShapes() {
         expected = """
                 {"shapes":[
-                {
+                \t{
                 "type": "circle",
                 "x": 100,
                 "y": 5
