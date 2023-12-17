@@ -37,6 +37,62 @@ class CubeTest {
     }
 
     @Test
+    @DisplayName("Create cube with size 50")
+    void testCreateNewCubeWithCustomSize(){
+        // Create a new Cube object with the x and y coordinates set to 100 and size 50.
+        int size = 50;
+        Cube cube = new Cube(100,100,size);
+
+        // Assert that the Cube object was created successfully.
+        assertNotNull(cube);
+
+        // Assert that the Cube object has the correct x and y coordinates.
+        assertEquals(100 - 25, cube.getX());
+        assertEquals(100 - 25, cube.getY());
+
+        // Assert that the Cube object has the correct size.
+        assertEquals(size, cube.getSize());
+
+
+    }
+
+    @Test
+    @DisplayName("Create cube with max int size")
+    void testCreateNewCubeWithMaxSize(){
+        // Create a new Cube object with the x and y coordinates set to 100 and size MAX Integer.
+        int size = Integer.MAX_VALUE;;
+        Cube cube = new Cube(100,100,size);
+
+        // Assert that the Cube object was created successfully.
+        assertNotNull(cube);
+
+        // Assert that the Cube object has the correct x and y coordinates.
+        assertEquals(100 - 25, cube.getX());
+        assertEquals(100 - 25, cube.getY());
+
+        // Assert that the Cube object has the correct size.
+        assertEquals(size, cube.getSize());
+    }
+
+    @Test
+    @DisplayName("Create cube with max int size")
+    void testCreateNewCubeWithMinSize(){
+        // Create a new Cube object with the x and y coordinates set to 100 and size MIN Integer.
+        int size = Integer.MIN_VALUE;;
+        Cube cube = new Cube(100,100,size);
+
+        // Assert that the Cube object was created successfully.
+        assertNotNull(cube);
+
+        // Assert that the Cube object has the correct x and y coordinates.
+        assertEquals(100 - 25, cube.getX());
+        assertEquals(100 - 25, cube.getY());
+
+        // Assert that the Cube object has the correct size.
+        assertEquals(size, cube.getSize());
+    }
+
+    @Test
     @DisplayName("Create cube with 0 value")
     void createCubeZeroCoords() {
         int coord = 0;

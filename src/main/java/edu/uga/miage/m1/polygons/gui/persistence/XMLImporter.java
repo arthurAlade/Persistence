@@ -25,10 +25,14 @@ public class XMLImporter {
         return switch (shapeType) {
             case "circle" -> new Circle(x, y);
             case "triangle" -> new Triangle(x, y);
-            case "cube" -> new Cube(x, y);
+            // case "cube" -> new Cube(x, y);
             // TODO: replace with GroupShape
             default -> new Square(x, y);
         };
+    }
+
+    public AbstractShape CubeGenerator(String shape, int x, int y, int size){
+        return new Cube(x,y,size);
     }
 
     public List<AbstractShape> importAbstractShape(String filename){
@@ -55,7 +59,12 @@ public class XMLImporter {
                     int x = Integer.parseInt(xString);
                     int y = Integer.parseInt(yString);
 
-                    listShape.add(this.AbstractShapeGenerator(type, x+25, y+25));
+                    if(type.equals("cube")){
+                        int size = Integer.parseInt(shapeElement.getElementsByTagName("size").item(0).getTextContent());
+                        listShape.add(this.CubeGenerator(type, x+25, y+25, size));
+                    } else {
+                        listShape.add(this.AbstractShapeGenerator(type, x+25, y+25));
+                    }
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
