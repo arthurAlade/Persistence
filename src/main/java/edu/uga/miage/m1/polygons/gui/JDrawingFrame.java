@@ -124,7 +124,7 @@ public class JDrawingFrame extends JFrame
                 clearDrawing(g2);
                 redrawShapes(g2);
             }
-           
+
         });
 
 
