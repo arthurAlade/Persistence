@@ -121,6 +121,8 @@ public class JDrawingFrame extends JFrame
                 shapesToImport.forEach(shape -> {
                     addShape(shape, g2);
                 });
+                clearDrawing(g2);
+                redrawShapes(g2);
             }
            
         });
@@ -264,16 +266,24 @@ public class JDrawingFrame extends JFrame
                 mShapesList.addAll(groupShape.getShapes());
             }
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
-            g2.clearRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
-            g2.setColor(Color.WHITE);
-            g2.fillRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
-            mShapesList.forEach(shape -> {
-                shape.draw(g2);
-                if (shape instanceof GroupShape groupShape) {
-                    groupShape.getShapes().forEach(shape1 -> shape1.draw(g2));
-                }
-            });
+            clearDrawing(g2);
+            redrawShapes(g2);
         }
+    }
+
+    public void clearDrawing(Graphics2D g2) {
+        g2.clearRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
+        g2.setColor(Color.WHITE);
+        g2.fillRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
+    }
+
+    public void redrawShapes(Graphics2D g2) {
+        mShapesList.forEach(shape -> {
+            shape.draw(g2);
+            if (shape instanceof GroupShape groupShape) {
+                groupShape.getShapes().forEach(shape1 -> shape1.draw(g2));
+            }
+        });
     }
 
 

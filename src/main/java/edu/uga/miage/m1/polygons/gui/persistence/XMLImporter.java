@@ -58,9 +58,6 @@ public class XMLImporter {
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
-
-
         return listShape;
-
     }
 }
