@@ -55,7 +55,7 @@ Dans notre projet, la classe `CommandList`fait office d'*invoker* pour le patron
 
 ## État du projet
 
-À ce jour, le projet implémente presque toutes les fonctionnalités du visiteur du midi(3).
+À ce jour, le projet implémente presque toutes les fonctionnalités du visiteur du midi(3) & visiteur du soir(5).
 
 - [x] Ajout de formes
 
@@ -78,5 +78,9 @@ Dans notre projet, la classe `CommandList`fait office d'*invoker* pour le patron
 - [x] Réintégration du challenge *visiteur 4* 
 
 - [ ] Déplacement de groupe
+
+- [x] Import en XML (marche bien pour Square, Triangle, Circle, Cube. Marche quasiment pour groupShape)
+
+- [ ] Modularisation de export & import (.jar)
   
   > Lors du undo de groupement, il peut y avoir des problèmes d'affichage des formes, mais un export permet de vérifier que les formes sont toujours présentes

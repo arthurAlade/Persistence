@@ -43,22 +43,22 @@ class SaverTest {
     @Test
     void addShapesTest(){
         expected = """
-                {
+                \t{
                 "type": "circle",
                 "x": 100,
                 "y": 5
                 },
-                {
+                \t{
                 "type": "square",
                 "x": 175,
                 "y": 0
                 },
-                {
+                \t{
                 "type": "circle",
                 "x": 125,
                 "y": 25
                 },
-                {
+                \t{
                 "type": "triangle",
                 "x": 275,
                 "y": 20

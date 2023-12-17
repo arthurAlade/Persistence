@@ -67,11 +67,11 @@ class e2e {
                 jFrame.getmJsonButton().doClick();
                 jFrame.getmXmlButton().doClick();
 
-                String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"square\",\n"
+                String expectedJsonContent = "{\"shapes\":[\n" + "\t{\n" + "\"type\": \"square\",\n"
                                 + "\"x\": 25,\n" + "\"y\": 25\n" + "}\n" + "]}";
 
                 String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
-                                + "<shape><type>square</type><x>25</x><y>25</y></shape>\n"
+                                + "\t<shape><type>square</type><x>25</x><y>25</y></shape>\n"
                                 + "</shapes>";
 
 
@@ -94,11 +94,11 @@ class e2e {
                 jFrame.getmXmlButton().doClick();
 
 
-                String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"circle\",\n"
+                String expectedJsonContent = "{\"shapes\":[\n" + "\t{\n" + "\"type\": \"circle\",\n"
                                 + "\"x\": 25,\n" + "\"y\": 25\n" + "}\n" + "]}";
 
                 String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
-                                + "<shape><type>circle</type><x>25</x><y>25</y></shape>\n"
+                                + "\t<shape><type>circle</type><x>25</x><y>25</y></shape>\n"
                                 + "</shapes>";
 
 
@@ -123,12 +123,12 @@ class e2e {
 
 
 
-                String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"triangle\",\n"
+                String expectedJsonContent = "{\"shapes\":[\n" + "\t{\n" + "\"type\": \"triangle\",\n"
                                 + "\"x\": " + triangle.getX() + ",\n" + "\"y\": " + triangle.getY()
                                 + "\n" + "}\n" + "]}";
 
                 String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
-                                + "<shape><type>triangle</type><x>" + triangle.getX() + "</x><y>"
+                                + "\t<shape><type>triangle</type><x>" + triangle.getX() + "</x><y>"
                                 + triangle.getY() + "</y></shape>\n" + "</shapes>";
 
 
@@ -153,12 +153,12 @@ class e2e {
 
 
 
-                String expectedJsonContent = "{\"shapes\":[\n" + "{\n" + "\"type\": \"cube\",\n"
+                String expectedJsonContent = "{\"shapes\":[\n" + "\t{\n" + "\"type\": \"cube\",\n"
                                 + "\"x\": " + cube.getX() + ",\n" + "\"y\": " + cube.getY() + ",\n"
                                 + "\"size\": " + "100\n" + "}\n" + "]}";
 
                 String expectedXMLContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<shapes>\n"
-                                + "<shape><type>cube</type><x>" + cube.getX() + "</x><y>"
+                                + "\t<shape><type>cube</type><x>" + cube.getX() + "</x><y>"
                                 + cube.getY() + "</y><size>100</size></shape>\n" + "</shapes>";
 
 

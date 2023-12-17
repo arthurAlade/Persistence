@@ -2,6 +2,7 @@ package edu.uga.miage.m1.polygons.gui;
 
 import edu.uga.miage.m1.polygons.gui.command.*;
 import edu.uga.miage.m1.polygons.gui.persistence.JSONSaver;
+import edu.uga.miage.m1.polygons.gui.persistence.XMLImporter;
 import edu.uga.miage.m1.polygons.gui.persistence.XMLSaver;
 import edu.uga.miage.m1.polygons.gui.shapes.*;
 
@@ -47,9 +48,10 @@ public class JDrawingFrame extends JFrame
     private final Map<EditButton, JButton> mButtons = new EnumMap<>(EditButton.class);
 
     private final transient CommandList commandList = new CommandList();
-    private JButton mXmlButton;
-    private JButton mJsonButton;
-    private JButton mUndoButton;
+    private final JButton mXmlButton;
+    private final JButton mJsonButton;
+    private final JButton mUndoButton;
+    private final JButton mXmlImportButton;
 
     private transient AbstractShape shapeToMove;
     private transient GroupShape groupShapeToDo;
@@ -71,10 +73,11 @@ public class JDrawingFrame extends JFrame
 
         mPanel.addKeyListener(this);
         mPanel.setFocusable(true);
-        
+
         mXmlButton = new JButton("XML");
         mJsonButton = new JButton("JSON");
         mUndoButton = new JButton("Undo");
+        mXmlImportButton = new JButton("Import XML");
 
         // Adds action listeners
         mXmlButton.addActionListener(e -> {
@@ -105,6 +108,27 @@ public class JDrawingFrame extends JFrame
             commandList.undoneLastCommand();
         });
 
+        mXmlImportButton.addActionListener(e -> {
+            XMLImporter xmlImporter = new XMLImporter();
+            List<AbstractShape> shapesToImport = xmlImporter.importAbstractShape("save.xml");
+
+            mShapesList.forEach(System.out::println);
+            shapesToImport.forEach(System.out::println);
+            if (shapesToImport.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Error while importing. \nThe file is empty or do not exist", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
+                shapesToImport.forEach(shape -> {
+                    addShape(shape, g2);
+                });
+                clearDrawing(g2);
+                redrawShapes(g2);
+            }
+            mShapesList.forEach(System.out::println);
+        });
+
 
         // Fills the panel
         setLayout(new BorderLayout());
@@ -112,18 +136,24 @@ public class JDrawingFrame extends JFrame
         add(mPanel, BorderLayout.CENTER);
         add(mLabel, BorderLayout.SOUTH);
         // Add shapes in the menu
-        addShape(EditButton.SQUARE,new ImageIcon(Objects.requireNonNull(getClass().getResource("images/square.png"))));
-        addShape(EditButton.TRIANGLE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/triangle.png"))));
-        addShape(EditButton.CIRCLE,new ImageIcon(Objects.requireNonNull(getClass().getResource("images/circle.png"))));
-        addShape(EditButton.MOVE,new ImageIcon(Objects.requireNonNull(getClass().getResource("images/move.png"))));
-        addShape(EditButton.CUBE, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/underc.png"))));
-        addShape(EditButton.GROUP, new ImageIcon(Objects.requireNonNull(getClass().getResource("images/link.png"))));
+        addShape(EditButton.SQUARE,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/square.png"))));
+        addShape(EditButton.TRIANGLE, new ImageIcon(
+                Objects.requireNonNull(getClass().getResource("images/triangle.png"))));
+        addShape(EditButton.CIRCLE,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/circle.png"))));
+        addShape(EditButton.MOVE,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/move.png"))));
+        addShape(EditButton.CUBE,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/underc.png"))));
+        addShape(EditButton.GROUP,
+                new ImageIcon(Objects.requireNonNull(getClass().getResource("images/link.png"))));
 
         addButtonToToolbar(mXmlButton);
         addButtonToToolbar(mJsonButton);
         addButtonToToolbar(mUndoButton);
-        
-        setPreferredSize(new Dimension(500, 500));
+        addButtonToToolbar(mXmlImportButton);
+        setPreferredSize(new Dimension(1200, 500));
 
         mPanel.requestFocus();
     }
@@ -206,12 +236,10 @@ public class JDrawingFrame extends JFrame
             for (AbstractShape shape : mShapesList) {
                 int x = evt.getX() - shape.getX();
                 int y = evt.getY() - shape.getY();
-                if (!(shape instanceof GroupShape)){
-                    if (x >= 0 && x <= 50 && y >= 0 && y <= 50) {
+                if (!(shape instanceof GroupShape) && (x >= 0 && x <= 50 && y >= 0 && y <= 50) ) {                    
                         shapeToMove = shape;
                         isShapeSelected = true;
                         break;
-                    }
                 }
             }
             if (isShapeSelected) {
@@ -227,27 +255,35 @@ public class JDrawingFrame extends JFrame
         }
     }
 
-    public void removeShapeList(List<AbstractShape> shapeList){
+    public void removeShapeList(List<AbstractShape> shapeList) {
         shapeList.forEach(shape -> removeShape(mShapesList.indexOf(shape)));
     }
 
     public void removeShape(int index) {
         if (!mShapesList.isEmpty()) {
-            AbstractShape abstractShape =  mShapesList.remove(index);
+            AbstractShape abstractShape = mShapesList.remove(index);
             if (abstractShape instanceof GroupShape groupShape) {
                 mShapesList.addAll(groupShape.getShapes());
             }
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
-            g2.clearRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
-            g2.setColor(Color.WHITE);
-            g2.fillRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
-            mShapesList.forEach(shape -> {
-                shape.draw(g2);
-                if (shape instanceof GroupShape groupShape) {
-                    groupShape.getShapes().forEach(shape1 -> shape1.draw(g2));
-                }
-            });
+            clearDrawing(g2);
+            redrawShapes(g2);
         }
+    }
+
+    public void clearDrawing(Graphics2D g2) {
+        g2.clearRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
+        g2.setColor(Color.WHITE);
+        g2.fillRect(0, 0, mPanel.getWidth(), mPanel.getHeight());
+    }
+
+    public void redrawShapes(Graphics2D g2) {
+        mShapesList.forEach(shape -> {
+            shape.draw(g2);
+            if (shape instanceof GroupShape groupShape) {
+                groupShape.getShapes().forEach(shape1 -> shape1.draw(g2));
+            }
+        });
     }
 
 
@@ -291,7 +327,7 @@ public class JDrawingFrame extends JFrame
         if (mPanel.contains(evt.getX(), evt.getY())) {
             Graphics2D g2 = (Graphics2D) mPanel.getGraphics();
             if (mSelected == EditButton.GROUP) {
-                GroupShape groupShape = new GroupShape(evt.getX()+25, evt.getY()+25);
+                GroupShape groupShape = new GroupShape(evt.getX() + 25, evt.getY() + 25);
                 addShape(groupShape, g2);
                 groupShapeToDo = groupShape;
             }
@@ -305,7 +341,6 @@ public class JDrawingFrame extends JFrame
      */
     public void mouseReleased(MouseEvent evt) {
         if (mSelected == EditButton.GROUP) {
-            System.out.println(mShapesList);
             groupShapeToDo.setxEnd(evt.getX());
             groupShapeToDo.setyEnd(evt.getY());
             ArrayList<AbstractShape> shapesToGroup = new ArrayList<>();
@@ -314,10 +349,8 @@ public class JDrawingFrame extends JFrame
                     shapesToGroup.add(shape);
                 }
             });
-            System.out.println(shapesToGroup);
             groupShapeToDo.setShapes(shapesToGroup);
             removeShapeList(shapesToGroup);
-            System.out.println(mShapesList);
             groupShapeToDo.setGrouped(true);
 
             groupShapeToDo.draw((Graphics2D) mPanel.getGraphics());
@@ -378,7 +411,8 @@ public class JDrawingFrame extends JFrame
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if ((e.isMetaDown() || e.isControlDown()) && (e.getKeyChar() == 'z' || e.getKeyChar() == 'Z' )) {
+        if ((e.isMetaDown() || e.isControlDown())
+                && (e.getKeyChar() == 'z' || e.getKeyChar() == 'Z')) {
             commandList.undoneLastCommand();
         }
     }
