@@ -86,7 +86,8 @@ public class XMLImporter {
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            System.err.println("An error occurred while parsing the XML file:");
+            // e.printStackTrace();
         }
         return listShape;
     }
