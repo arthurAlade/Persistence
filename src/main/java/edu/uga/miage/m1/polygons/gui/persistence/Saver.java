@@ -19,7 +19,6 @@ public class Saver {
         indent++;
         Visitor visitor = xml ? new XMLVisitor() : new JSonVisitor();
         visitablesList.forEach(shape -> {
-            System.out.println(shape);
             extractGroupShape(xml, shape, visitor);
             save.append(xml ? "\n" : getEndShape(visitablesList.indexOf(shape), visitablesList.size()));
         });
@@ -27,7 +26,6 @@ public class Saver {
 
     private void extractGroupShape(boolean xml, Visitable shape, Visitor visitor) {
         if (shape instanceof GroupShape groupShape) {
-            System.out.println("GroupShape");
             addShapeFromList(shape, visitor);
             indent++;
             save.append("\n");
